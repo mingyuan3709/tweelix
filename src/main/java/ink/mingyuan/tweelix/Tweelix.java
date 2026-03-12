@@ -3,7 +3,6 @@ package ink.mingyuan.tweelix;
 import fi.dy.masa.malilib.config.ConfigManager;
 import fi.dy.masa.malilib.event.InputEventHandler;
 
-import fi.dy.masa.malilib.event.TickHandler;
 import fi.dy.masa.malilib.event.WorldLoadHandler;
 import ink.mingyuan.tweelix.event.InputHandler;
 import ink.mingyuan.tweelix.config.TweelixConfig;
