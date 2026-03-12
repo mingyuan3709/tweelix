@@ -8,7 +8,7 @@ import java.util.List;
 
 public class GuiConfigsBaseExtended extends GuiConfigsBase {
 
-    protected boolean closeSearchBar = true;
+    protected boolean closeSearchBar;
 
     public GuiConfigsBaseExtended(int listX, int listY, String modId, @Nullable Screen parent, String titleKey, boolean closeSearchBar, Object... args)
     {

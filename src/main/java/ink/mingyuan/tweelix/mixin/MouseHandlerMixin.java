@@ -1,6 +1,5 @@
 package ink.mingyuan.tweelix.mixin;
 
-import com.llamalad7.mixinextras.sugar.Local;
 import ink.mingyuan.tweelix.config.TweelixConfig;
 import ink.mingyuan.tweelix.feature.FreeCamHandler;
 import net.minecraft.client.MinecraftClient;
@@ -102,7 +101,7 @@ public class MouseHandlerMixin {
                     default -> {
                         return;
                     }
-                };
+                }
             }else {
 
                 FreeCamHandler.getInstance().setSpectateEntity(false);
