@@ -1,0 +1,132 @@
+{
+  "tweelix.gui.title.configs": "Tweelix 配置 1.0.0",
+  "tweelix.gui.config_gui_tab.generic": "通用",
+  "tweelix.gui.config_gui_tab.tweaks": "调整",
+  "tweelix.gui.config_gui_tab.display": "显示",
+  "tweelix.enum.localizedName": "显示名称",
+  "tweelix.enum.registryName": "注册名 (ID)",
+  "tweelix.enum.position": "坐标",
+
+  "tweelix.toggle.enabled": "§a启用",
+  "tweelix.toggle.disabled": "§c禁用",
+  "tweelix.toggle.message": "%s：%s",
+
+  "tweelix.gui.personalconfig.button": "打开该功能的子设置",
+
+  "tweelix.mining_tweaks.anti_over_mining.message": "[挖掘冷却] 请稍后再挖掘",
+  "tweelix.mining_tweaks.perimeter_wall.message": "[围墙挖掘] 无法破坏方块",
+  "tweelix.mining_tweaks.flat_digger.message": "[平坦挖掘] 无法破坏方块",
+
+  "tweelix.message.copied": "已复制到剪贴板：%s",
+
+  "tweelix.hover.localizedName": "点击复制本地化名称",
+  "tweelix.hover.registryName": "点击复制注册名",
+  "tweelix.hover.position": "点击复制坐标",
+
+  "tweelix.message.position.fallback": "该目标无坐标信息，已复制玩家坐标替代",
+
+  "tweelix.config.generic.name.openConfigGui": "打开配置界面",
+  "tweelix.config.generic.comment.openConfigGui": "打开模组配置界面的快捷键",
+
+  "tweelix.config.generic.name.visitorMode": "参观模式",
+  "tweelix.config.generic.comment.visitorMode": "禁止破坏/放置方块以及伤害实体",
+
+  "tweelix.personal_config.visitor_mode.name.displayPrompt": "参观模式提示",
+  "tweelix.personal_config.visitor_mode.comment.displayPrompt": "显示参观模式被阻止操作的提示",
+
+  "tweelix.config.generic.name.crosshairTargetCopy": "复制准心目标信息",
+  "tweelix.config.generic.comment.crosshairTargetCopy": "复制方块、实体、背包物品的注册名(ID)、显示名称或坐标",
+
+  "tweelix.personal_config.target_copy.name.targetCopyMode": "默认复制模式",
+  "tweelix.personal_config.target_copy.comment.targetCopyMode": "设置默认复制目标的哪部分信息：ID、显示名称或坐标",
+
+  "tweelix.personal_config.target_copy.name.sendAllCopyable": "发送所有可复制信息",
+  "tweelix.personal_config.target_copy.comment.sendAllCopyable": "在聊天框中显示所有可复制的目标信息",
+
+  "tweelix.config.tweaks.name.perimeterWallDigger": "围墙挖掘",
+  "tweelix.config.tweaks.comment.perimeterWallDigger": "启用后，在非潜行状态下无法挖掘位于配置方块下方的方块",
+
+  "tweelix.personal_config.perimeter_wall_digger.name.perimeterOutlineBlocks": "配置方块列表",
+  "tweelix.personal_config.perimeter_wall_digger.comment.perimeterOutlineBlocks": "配置什么方块可以限制",
+
+  "tweelix.config.tweaks.name.flatDigger": "平坦挖掘",
+  "tweelix.config.tweaks.comment.flatDigger": "非潜行状态下，挖掘时保持水平面挖掘，不会破坏脚下方块",
+
+  "tweelix.config.tweaks.name.miningCooldown": "移除挖掘冷却",
+  "tweelix.config.tweaks.comment.miningCooldown": "在生存模式时移除默认的5gt挖掘冷却",
+
+  "tweelix.config.tweaks.name.antiOverMining": "添加挖掘冷却",
+  "tweelix.config.tweaks.comment.antiOverMining": "限制挖掘速度，防止过度挖掘",
+
+  "tweelix.personal_config.anti_over_mining.name.cooldownTicks": "挖掘后冷却",
+  "tweelix.personal_config.anti_over_mining.comment.cooldownTicks": "配置挖掘后的冷却时间（刻）",
+
+  "tweelix.personal_config.anti_over_mining.name.onlyWhenSneaking": "仅潜行生效",
+  "tweelix.personal_config.anti_over_mining.comment.onlyWhenSneaking": "只在潜行状态生效",
+
+
+
+  "tweelix.personal_config.anti_over_mining.name.displayPrompt": "防过度挖掘提示",
+  "tweelix.personal_config.anti_over_mining.comment.displayPrompt": "显示防过度挖掘冷却期间的提示",
+
+  "tweelix.config.generic.name.defaultPrompt": "默认提示开关",
+  "tweelix.config.generic.comment.defaultPrompt": "为没有独立提示开关的功能提供默认值",
+  "tweelix.visitor_mode.prefix": "[参观模式] ",
+  "tweelix.visitor_mode.cant_break_item_frame": "无法破坏展示框",
+  "tweelix.visitor_mode.cant_attack_entity": "无法攻击生物",
+  "tweelix.visitor_mode.cant_break_block": "无法破坏方块",
+  "tweelix.visitor_mode.cant_place_item_frame": "无法放置展示框",
+  "tweelix.visitor_mode.cant_place_block": "无法放置方块",
+  "tweelix.visitor_mode.cant_interact_item_frame": "无法与展示框交互",
+  "tweelix.visitor_mode.need_empty_hand_decorated_pot": "请空手与陶罐交互",
+  "tweelix.config.tweaks.name.drawBedrockCeilingBlocks": "显示单层基岩",
+  "tweelix.config.tweaks.comment.drawBedrockCeilingBlocks": "绘制下界天花板的单层基岩",
+  "tweelix.config.display.name.drawBedrockCeilingBlocks": "显示单层基岩",
+  "tweelix.config.display.comment.drawBedrockCeilingBlocks": "绘制下界天花板的单层基岩",
+  "tweelix.config.display.name.enableGameModeSwitcherEx": "游戏模式切换扩展",
+  "tweelix.config.display.comment.enableGameModeSwitcherEx": "在生存模式下也可打开游戏切换界面无权限时执行自定义命令\n在冒险/旁观模式下，可切换至参观模式/灵魂出窍\n有权限时，可使用空格键选择并执行自定义命令",
+
+  "tweelix.personal_config.enable_game_mode_switcher_ex.name.f3f4Creative": "创造模式指令",
+  "tweelix.personal_config.enable_game_mode_switcher_ex.comment.f3f4Creative": "使用F3+F4选择创造模式时执行的指令",
+
+  "tweelix.personal_config.enable_game_mode_switcher_ex.name.f3f4Survival": "生存模式指令",
+  "tweelix.personal_config.enable_game_mode_switcher_ex.comment.f3f4Survival": "使用F3+F4选择生存模式时执行的指令",
+
+  "tweelix.personal_config.enable_game_mode_switcher_ex.name.f3f4Adventure": "冒险模式指令",
+  "tweelix.personal_config.enable_game_mode_switcher_ex.comment.f3f4Adventure": "使用F3+F4选择冒险模式时执行的指令，为空时默认切换参观模式",
+
+  "tweelix.personal_config.enable_game_mode_switcher_ex.name.f3f4Spectator": "旁观者模式指令",
+  "tweelix.personal_config.enable_game_mode_switcher_ex.comment.f3f4Spectator": "使用F3+F4选择旁观者模式时执行的指令，为空时默认切换灵魂出窍",
+
+  "tweelix.config.tweaks.name.freeCamera": "灵魂出窍",
+  "tweelix.config.tweaks.comment.freeCamera": "类似原版的旁观模式，鼠标中键可以进入实体视角",
+
+  "tweelix.personal_config.free_camera.name.toHidePlayer": "隐藏玩家",
+  "tweelix.personal_config.free_camera.comment.toHidePlayer": "在灵魂出窍下是否隐藏玩家本体",
+
+  "tweelix.personal_config.free_camera.name.hideHotbar": "隐藏快捷栏",
+  "tweelix.personal_config.free_camera.comment.hideHotbar": "在灵魂出窍下是否隐藏快捷栏 HUD",
+
+  "tweelix.personal_config.free_camera.name.hideStatus": "隐藏状态栏",
+  "tweelix.personal_config.free_camera.comment.hideStatus": "在灵魂出窍下是否隐藏状态栏 HUD",
+
+  "tweelix.personal_config.free_camera.name.hideHands": "隐藏手部渲染",
+  "tweelix.personal_config.free_camera.comment.hideHands": "在灵魂出窍下是否隐藏玩家手臂的渲染",
+
+  "tweelix.personal_config.free_camera.name.allowInteraction": "允许本体交互",
+  "tweelix.personal_config.free_camera.comment.allowInteraction": "在灵魂出窍下，玩家本体是否仍可以攻击或放置方块",
+
+  "tweelix.personal_config.free_camera.name.dampingCoefficient": "惯性阻尼",
+  "tweelix.personal_config.free_camera.comment.dampingCoefficient": "值越接近1越滑",
+
+  "tweelix.personal_config.free_camera.name.sprintMultiplier": "冲刺倍率",
+  "tweelix.personal_config.free_camera.comment.sprintMultiplier": "Shift冲刺时的速度倍率",
+
+  "tweelix.personal_config.free_camera.name.acceleration": "加速度",
+  "tweelix.personal_config.free_camera.comment.acceleration": "每tick速度增加的比例，决定响应灵敏度",
+
+  "tweelix.personal_config.free_camera.name.baseMaxSpeed": "基础速度",
+  "tweelix.personal_config.free_camera.comment.baseMaxSpeed": "普通状态下的最大移动速度（格/tick）",
+  "tweelix.config.display.name.lanPortRefreshButton": "固定联机端口",
+  "tweelix.config.display.comment.lanPortRefreshButton": "在开放联机界面添加刷新按钮，用于查找可用端口，默认使用25565"
+}

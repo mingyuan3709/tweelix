@@ -1,0 +1,4 @@
+accessWidener v2 named
+
+# 使 GameModeSwitcherScreen$GameModeSelection 类变得可访问
+accessible class net/minecraft/client/gui/screen/GameModeSwitcherScreen$GameModeSelection
