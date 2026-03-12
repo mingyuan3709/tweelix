@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "tweelix",
+  "version": "${version}",
+  "name": "Tweelix",
+  "description": "A vanilla-focused survival utility mod by ming_yuan",
+  "authors": ["ming_yuan"],
+  "contact": {
+    "homepage": "https://space.bilibili.com/388406072",
+    "sources": "https://github.com/mingyuan3709/tweelix",
+    "issues": "https://github.com/mingyuan3709/tweelix/issues"
+  },
+  "license": "LGPL-3.0-or-later",
+  "icon": "assets/tweelix/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "main": [
+      "ink.mingyuan.tweelix.Tweelix"
+    ],
+    "modmenu": [
+      "ink.mingyuan.tweelix.gui.ModMenuIntegration"
+    ]
+  },
+  "mixins": [
+    "tweelix.mixins.json"
+  ],
+  "accessWidener": "tweelix.accesswidener",
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
