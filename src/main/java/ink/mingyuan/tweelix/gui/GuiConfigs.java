@@ -19,7 +19,7 @@ public class GuiConfigs extends GuiConfigsBase {
     private static ConfigGuiTab currentTab = ConfigGuiTab.GENERIC;
 
     public GuiConfigs() {
-        super(10, 50, Reference.MOD_ID, null, "                                                                                                                                                                                                      .gui.title.configs",false, String.format("%s", Reference.MOD_VERSION));
+        super(10, 50, Reference.MOD_ID, null, "tweelix.gui.title.configs",false, String.format("%s", Reference.MOD_VERSION));
     }
 
     @Override
@@ -63,7 +63,6 @@ public class GuiConfigs extends GuiConfigsBase {
             configs = List.of();
         }
 
-        // Return the config option wrapper list for the current tab
         return GuiConfigsBase.ConfigOptionWrapper.createFor(configs);
     }
 
