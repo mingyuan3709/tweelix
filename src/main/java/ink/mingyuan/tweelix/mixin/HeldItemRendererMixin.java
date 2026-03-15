@@ -24,6 +24,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(HeldItemRenderer.class)
@@ -87,7 +88,7 @@ public abstract class HeldItemRendererMixin {
                 mainHandStartTime = -1;
                 offHandStartTime = -1;
 
-            }else {
+            } else {
                 updateHandState(targetPlayer.getMainHandStack(), true);
                 updateHandState(targetPlayer.getOffHandStack(), false);
             }
@@ -134,7 +135,6 @@ public abstract class HeldItemRendererMixin {
                             matrices, orderedRenderCommandQueue, targetLight);
                 }
             } finally {
-                // 恢复栈
                 matrices.pop();
                 modelViewStack.popMatrix();
             }
@@ -142,6 +142,7 @@ public abstract class HeldItemRendererMixin {
             ci.cancel();
         }
     }
+
     @Unique
     private boolean shouldRenderHand() {
         return true;
@@ -178,4 +179,16 @@ public abstract class HeldItemRendererMixin {
         return Math.min(progress, 1.0F);
     }
 
+    @ModifyVariable(
+            method = "renderArmHoldingItem",
+            at = @At(value = "STORE", ordinal = 0)
+    )
+    private AbstractClientPlayerEntity modifyArmPlayer(AbstractClientPlayerEntity value) {
+        if (TweelixConfig.Tweaks.FREE_CAM.getBooleanValue() && FreeCamHandler.getInstance().isSpectateEntity()) {
+            Entity observed = FreeCamHandler.getInstance().getObservedEntity();
+            if (!(observed instanceof AbstractClientPlayerEntity targetPlayer)) return value;
+            return targetPlayer;
+        }
+        return value;
+    }
 }

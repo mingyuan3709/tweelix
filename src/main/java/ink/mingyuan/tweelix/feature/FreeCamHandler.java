@@ -133,6 +133,25 @@ public class FreeCamHandler implements IClientTickHandler {
         prevPitch = pitch;
     }
 
+    public HitResult raycastBlocksOnly(Vec3d start, float yaw, float pitch) {
+        MinecraftClient client = MinecraftClient.getInstance();
+        ClientPlayerEntity player = client.player;
+        ClientWorld world = client.world;
+        if (player == null || world == null) return null;
+
+        double blockRange = player.getBlockInteractionRange(); // 可使用固定距离
+        Vec3d lookVec = Vec3d.fromPolar(pitch, yaw);
+        Vec3d blockEnd = start.add(lookVec.multiply(blockRange));
+
+        // 只检测方块，排除所有实体（包括观察目标本身）
+        return world.raycast(new RaycastContext(
+                start, blockEnd,
+                RaycastContext.ShapeType.OUTLINE,
+                RaycastContext.FluidHandling.NONE,
+                player  // 排除本地玩家（无关紧要，但保留）
+        ));
+    }
+
     public HitResult raycastFrom(Vec3d start, float yaw, float pitch) {
         MinecraftClient client = MinecraftClient.getInstance();
         ClientPlayerEntity player = client.player;

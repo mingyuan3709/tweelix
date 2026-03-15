@@ -3,8 +3,10 @@ package ink.mingyuan.tweelix.mixin;
 import ink.mingyuan.tweelix.config.TweelixConfig;
 import ink.mingyuan.tweelix.feature.FreeCamHandler;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -22,7 +24,20 @@ public abstract class GameRendererMixin {
             Entity cameraEntity = client.getCameraEntity();
             if (cameraEntity == null) return;
 
-            client.crosshairTarget = FreeCamHandler.getInstance().getCameraTarget();
+            Entity observed = FreeCamHandler.getInstance().getObservedEntity();
+
+            if (FreeCamHandler.getInstance().isSpectateEntity() && observed instanceof AbstractClientPlayerEntity targetPlayer){
+
+                Vec3d start =targetPlayer.getEyePos();
+                float yaw= targetPlayer.getYaw(tickDelta);
+                float pitch=  targetPlayer.getPitch(tickDelta);
+
+                client.crosshairTarget = FreeCamHandler.getInstance().raycastBlocksOnly(start,yaw,pitch);
+
+            }else {
+
+                client.crosshairTarget = FreeCamHandler.getInstance().getCameraTarget();
+            }
 
             ci.cancel();
         }
