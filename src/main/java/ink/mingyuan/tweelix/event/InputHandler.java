@@ -28,7 +28,8 @@ public class InputHandler implements IKeybindProvider, IKeyboardInputHandler, IM
             TweelixConfig.Tweaks.FLAT_DIGGER,
             TweelixConfig.Tweaks.ANTI_OVER_MINING,
             TweelixConfig.Display.DRAW_BEDROCK_CEILING_BLOCKS,
-            TweelixConfig.Tweaks.FREE_CAM
+            TweelixConfig.Tweaks.FREE_CAM,
+            TweelixConfig.Tweaks.PROTECT_SUSPICIOUS_BLOCKS
     );
 
 
@@ -54,8 +55,7 @@ public class InputHandler implements IKeybindProvider, IKeyboardInputHandler, IM
                 List.of(
                         TweelixConfig.Generic.OPEN_CONFIG_GUI,
                         TweelixConfig.Generic.CROSSHAIR_TARGET_COPY,
-                        TweelixConfig.Generic.VISITOR_MODE,
-                        TweelixConfig.Tweaks.FREE_CAM
+                        TweelixConfig.Generic.VISITOR_MODE
                 ));
 
         manager.addHotkeysForCategory(
@@ -64,7 +64,10 @@ public class InputHandler implements IKeybindProvider, IKeyboardInputHandler, IM
                 List.of(
                         TweelixConfig.Tweaks.PERIMETER_WALL_DIGGER,
                         TweelixConfig.Tweaks.FLAT_DIGGER,
-                        TweelixConfig.Tweaks.ANTI_OVER_MINING
+                        TweelixConfig.Tweaks.ANTI_OVER_MINING,
+                        TweelixConfig.Tweaks.PROTECT_SUSPICIOUS_BLOCKS,
+                        TweelixConfig.Tweaks.FREE_CAM,
+                        TweelixConfig.Tweaks.PROTECT_SUSPICIOUS_BLOCKS
                         ));
         manager.addHotkeysForCategory(
                 Reference.MOD_ID,

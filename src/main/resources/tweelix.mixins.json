@@ -4,11 +4,6 @@
   "package": "ink.mingyuan.tweelix.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "ClientPlayerInteractionManagerMixin",
-    "GameModeSwitcherScreenMixin",
-    "KeyboardMixin",
-    "accessor.HandledScreenAccessor",
-    "malilib.WidgetConfigOptionMixin"
   ],
   "injectors": {
     "defaultRequire": 1
@@ -17,6 +12,11 @@
     "requireAnnotations": true
   },
   "client": [
+    "ClientPlayerInteractionManagerMixin",
+    "GameModeSwitcherScreenMixin",
+    "KeyboardMixin",
+    "accessor.HandledScreenAccessor",
+    "malilib.WidgetConfigOptionMixin",
     "CameraMixin",
     "GameRendererMixin",
     "HeldItemRendererMixin",

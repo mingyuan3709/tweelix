@@ -13,9 +13,9 @@
 
   "tweelix.gui.personalconfig.button": "打开该功能的子设置",
 
-  "tweelix.mining_tweaks.anti_over_mining.message": "[挖掘冷却] 请稍后再挖掘",
-  "tweelix.mining_tweaks.perimeter_wall.message": "[围墙挖掘] 无法破坏方块",
-  "tweelix.mining_tweaks.flat_digger.message": "[平坦挖掘] 无法破坏方块",
+  "tweelix.mining_tweaks.anti_over_mining.message": "[挖掘冷却] 阻止挖掘",
+  "tweelix.mining_tweaks.perimeter_wall.message": "[围墙挖掘] 阻止挖掘",
+  "tweelix.mining_tweaks.flat_digger.message": "[平坦挖掘] 阻止挖掘",
 
   "tweelix.message.copied": "已复制到剪贴板：%s",
 
@@ -44,7 +44,7 @@
   "tweelix.personal_config.target_copy.comment.sendAllCopyable": "在聊天框中显示所有可复制的目标信息",
 
   "tweelix.config.tweaks.name.perimeterWallDigger": "围墙挖掘",
-  "tweelix.config.tweaks.comment.perimeterWallDigger": "启用后，在非潜行状态下无法挖掘位于配置方块下方的方块",
+  "tweelix.config.tweaks.comment.perimeterWallDigger": "非潜行状态下,无法挖掘位于配置方块下方的方块",
 
   "tweelix.personal_config.perimeter_wall_digger.name.perimeterOutlineBlocks": "配置方块列表",
   "tweelix.personal_config.perimeter_wall_digger.comment.perimeterOutlineBlocks": "配置什么方块可以限制",
@@ -128,5 +128,11 @@
   "tweelix.personal_config.free_camera.name.baseMaxSpeed": "基础速度",
   "tweelix.personal_config.free_camera.comment.baseMaxSpeed": "普通状态下的最大移动速度（格/tick）",
   "tweelix.config.display.name.lanPortRefreshButton": "固定联机端口",
-  "tweelix.config.display.comment.lanPortRefreshButton": "在开放联机界面添加刷新按钮，用于查找可用端口，默认使用25565"
+  "tweelix.config.display.comment.lanPortRefreshButton": "在开放联机界面添加刷新按钮，用于查找可用端口，默认使用25565",
+
+  "tweelix.config.tweaks.name.protectSuspiciousBlocks": "保护可疑方块",
+  "tweelix.config.tweaks.comment.protectSuspiciousBlocks": "非潜行状态下，禁止左键破坏可疑的沙子/沙砾及其支撑方块",
+  "tweelix.mining_tweaks.suspicious_block.message": "[保护可疑方块] 阻止挖掘"
+
+
 }

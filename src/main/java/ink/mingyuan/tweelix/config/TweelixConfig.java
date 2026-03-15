@@ -99,12 +99,19 @@ public class TweelixConfig implements IConfigHandler {
         public static final ConfigBooleanHotkeyedWithSettings FREE_CAM = new ConfigBooleanHotkeyedWithSettings(
                 "freeCamera", false, "", "Open the free camera", PersonalConfig.FreeCamera.OPTIONS).apply(TWEAKS_KEY);
 
+
+        public static final ConfigBooleanHotkeyed PROTECT_SUSPICIOUS_BLOCKS = new ConfigBooleanHotkeyed(
+                "protectSuspiciousBlocks",false,"",
+                "Protect suspicious blocks, except when squatting down"
+        ).apply(TWEAKS_KEY);
+
         public static final List<IConfigBase> TWEAKS_OPTIONS = List.of(
                 FLAT_DIGGER,
                 MINING_COOLDOWN,
                 ANTI_OVER_MINING,
                 PERIMETER_WALL_DIGGER,
-                FREE_CAM
+                FREE_CAM,
+                PROTECT_SUSPICIOUS_BLOCKS
         );
     }
 

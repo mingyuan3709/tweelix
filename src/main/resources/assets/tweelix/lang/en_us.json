@@ -10,9 +10,9 @@
   "tweelix.toggle.disabled": "§cDisabled",
   "tweelix.toggle.message": "%s: %s",
   "tweelix.gui.personalconfig.button": "Open Subsettings for this Feature",
-  "tweelix.mining_tweaks.anti_over_mining.message": "[Mining Cooldown] Please wait before mining again",
-  "tweelix.mining_tweaks.perimeter_wall.message": "[Perimeter Wall] Cannot break blocks",
-  "tweelix.mining_tweaks.flat_digger.message": "[Flat Digger] Cannot break blocks",
+  "tweelix.mining_tweaks.anti_over_mining.message": "[Mining Cooldown] Mining blocked",
+  "tweelix.mining_tweaks.perimeter_wall.message": "[Perimeter Wall] Mining blocked",
+  "tweelix.mining_tweaks.flat_digger.message": "[Flat Digger] Mining blocked",
   "tweelix.message.copied": "Copied to clipboard: %s",
   "tweelix.hover.localizedName": "Click to copy localized name",
   "tweelix.hover.registryName": "Click to copy registry name",
@@ -91,5 +91,9 @@
   "tweelix.personal_config.free_camera.name.baseMaxSpeed": "Base Max Speed",
   "tweelix.personal_config.free_camera.comment.baseMaxSpeed": "Maximum movement speed in normal state (blocks/tick).",
   "tweelix.config.display.name.lanPortRefreshButton": "LAN Port Refresh Button",
-  "tweelix.config.display.comment.lanPortRefreshButton": "Add a refresh button to the Open to LAN screen for finding available ports."
+  "tweelix.config.display.comment.lanPortRefreshButton": "Add a refresh button to the Open to LAN screen for finding available ports.",
+
+  "tweelix.config.tweaks.name.protectSuspiciousBlocks": "Protect Suspicious Blocks",
+  "tweelix.config.tweaks.comment.protectSuspiciousBlocks": "Prevents left-click breaking of suspicious sand/gravel and their supporting blocks when not sneaking.",
+  "tweelix.mining_tweaks.suspicious_block.message": "[Suspicious Block] Mining blocked"
 }

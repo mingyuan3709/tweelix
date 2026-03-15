@@ -7,7 +7,11 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.event.client.player.ClientPlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.client.player.ClientPreAttackCallback;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.FallingBlock;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
@@ -15,6 +19,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.Heightmap;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,6 +31,7 @@ public class MiningTweaks {
     private static final MiningTweaks INSTANCE = new MiningTweaks();
     private static final List<Block> PERIMETER_OUTLINE_BLOCKS = new ArrayList<>();
 
+    private static final String SUSPICIOUS_BLOCK_KEY = "tweelix.mining_tweaks.suspicious_block.message";
     private static final String ANTI_OVER_MINING_KEY = "tweelix.mining_tweaks.anti_over_mining.message";
     private static final String PERIMETER_WALL_KEY = "tweelix.mining_tweaks.perimeter_wall.message";
     private static final String FLAT_DIGGER_KEY = "tweelix.mining_tweaks.flat_digger.message";
@@ -75,9 +81,71 @@ public class MiningTweaks {
             if (shouldBlockDueToCooldown(player)) return true;
             if (shouldBlockDueToPerimeterWall(player, pos)) return true;
             if (shouldBlockDueToFlatDigger(player, pos)) return true;
-
+            if (shouldBlockDueToSuspiciousBlock(player, pos)) return true;
             return false;
         });
+    }
+
+    private boolean shouldBlockDueToSuspiciousBlock(ClientPlayerEntity player, BlockPos pos) {
+
+        if (!TweelixConfig.Tweaks.PROTECT_SUSPICIOUS_BLOCKS.getBooleanValue()) return false;
+
+        if (player.isCreative()) return false;
+
+        if (player.isSneaking()) return false;
+
+        // 直接破坏可疑方块
+        if (isSuspiciousBlock(pos)) {
+            Util.sendDefaultPrompt(player, SUSPICIOUS_BLOCK_KEY);
+            return true;
+        }
+
+        // 破坏可能导致上方可疑方块掉落
+        if (wouldCauseSuspiciousBlockFall(pos)) {
+            Util.sendDefaultPrompt(player, SUSPICIOUS_BLOCK_KEY);
+            return true;
+        }
+
+        return false;
+
+
+    }
+
+    private boolean wouldCauseSuspiciousBlockFall(BlockPos pos) {
+        ClientWorld world = MinecraftClient.getInstance().world;
+        if (world == null) return false;
+
+        BlockPos.Mutable mutablePos = new BlockPos.Mutable(pos.getX(), pos.getY() + 1, pos.getZ());
+
+        int maxY = 200;
+
+        while (mutablePos.getY() < maxY) {
+            BlockState state = world.getBlockState(mutablePos);
+            Block block = state.getBlock();
+
+            // 如果是可疑方块，则破坏当前方块会导致它掉落
+            if (isSuspiciousBlock(mutablePos)) {
+                return true;
+            }
+
+            // 遇到空气或非重力方块，链条终止
+            if (state.isAir() || !(block instanceof FallingBlock)) {
+                return false;
+            }
+
+            mutablePos.move(Direction.UP);
+        }
+
+        return false;
+
+
+    }
+
+    private boolean isSuspiciousBlock(BlockPos pos) {
+        ClientWorld world = MinecraftClient.getInstance().world;
+        if (world == null) return false;
+        Block block = world.getBlockState(pos).getBlock();
+        return block == Blocks.SUSPICIOUS_GRAVEL || block == Blocks.SUSPICIOUS_SAND;
     }
 
     private boolean shouldBlockDueToCooldown(net.minecraft.entity.player.PlayerEntity player) {
