@@ -139,6 +139,14 @@ public class PersonalConfig {
                 new ConfigDouble("baseMaxSpeed", 0.7, 0.3, 2.0, true, "Maximum movement speed in normal state (blocks/tick)")
                         .apply(TRANSLATION_KEY);
 
+        public static final ConfigBoolean AUTO_NIGHT_VISION =
+                new ConfigBoolean("autoNightVision", false, "Automatically enable night vision when entering free camera mode")
+                        .apply(TRANSLATION_KEY);
+
+        public static final ConfigBoolean RENDER_OBSERVED_HANDS =
+                new ConfigBoolean("renderObservedHands", false, "When spectating another player, render their first-person hands")
+                        .apply(TRANSLATION_KEY);
+
         public static final List<? extends IConfigBase> OPTIONS = ImmutableList.of(
                 DAMPING_COEFFICIENT,
                 SPRINT_MULTIPLIER,
@@ -148,7 +156,9 @@ public class PersonalConfig {
                 HIDE_HOTBAR,
                 HIDE_STATUS,
                 HIDE_HANDS,
-                ALLOW_INTERACTION
+                ALLOW_INTERACTION,
+                AUTO_NIGHT_VISION,
+                RENDER_OBSERVED_HANDS
         );
     }
 }

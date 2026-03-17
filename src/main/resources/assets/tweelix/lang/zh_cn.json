@@ -130,6 +130,12 @@
   "tweelix.config.display.name.lanPortRefreshButton": "固定联机端口",
   "tweelix.config.display.comment.lanPortRefreshButton": "在开放联机界面添加刷新按钮，用于查找可用端口，默认使用25565",
 
+  "tweelix.personal_config.free_camera.name.autoNightVision": "自动夜视",
+  "tweelix.personal_config.free_camera.comment.autoNightVision": "进入灵魂出窍模式时自动启用夜视效果",
+
+  "tweelix.personal_config.free_camera.name.renderObservedHands": "渲染被旁观者的手",
+  "tweelix.personal_config.free_camera.comment.renderObservedHands": "旁观其他玩家时，渲染对方的第一人称手部",
+
   "tweelix.config.tweaks.name.protectSuspiciousBlocks": "保护可疑方块",
   "tweelix.config.tweaks.comment.protectSuspiciousBlocks": "非潜行状态下，禁止左键破坏可疑的沙子/沙砾及其支撑方块",
   "tweelix.mining_tweaks.suspicious_block.message": "[保护可疑方块] 阻止挖掘"

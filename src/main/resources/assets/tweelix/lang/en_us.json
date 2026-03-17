@@ -92,7 +92,11 @@
   "tweelix.personal_config.free_camera.comment.baseMaxSpeed": "Maximum movement speed in normal state (blocks/tick).",
   "tweelix.config.display.name.lanPortRefreshButton": "LAN Port Refresh Button",
   "tweelix.config.display.comment.lanPortRefreshButton": "Add a refresh button to the Open to LAN screen for finding available ports.",
+  "tweelix.personal_config.free_camera.name.autoNightVision": "Auto Night Vision",
+  "tweelix.personal_config.free_camera.comment.autoNightVision": "Automatically enable night vision when entering free camera mode",
 
+  "tweelix.personal_config.free_camera.name.renderObservedHands": "Render Observed Player's Hands",
+  "tweelix.personal_config.free_camera.comment.renderObservedHands": "When spectating another player, render their first-person hands",
   "tweelix.config.tweaks.name.protectSuspiciousBlocks": "Protect Suspicious Blocks",
   "tweelix.config.tweaks.comment.protectSuspiciousBlocks": "Prevents left-click breaking of suspicious sand/gravel and their supporting blocks when not sneaking.",
   "tweelix.mining_tweaks.suspicious_block.message": "[Suspicious Block] Mining blocked"

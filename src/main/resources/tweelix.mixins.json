@@ -4,6 +4,7 @@
   "package": "ink.mingyuan.tweelix.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "LivingEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1
@@ -12,18 +13,18 @@
     "requireAnnotations": true
   },
   "client": [
+    "CameraMixin",
     "ClientPlayerInteractionManagerMixin",
     "GameModeSwitcherScreenMixin",
-    "KeyboardMixin",
-    "accessor.HandledScreenAccessor",
-    "malilib.WidgetConfigOptionMixin",
-    "CameraMixin",
     "GameRendererMixin",
     "HeldItemRendererMixin",
     "InGameHudMixin",
+    "KeyboardMixin",
     "MinecraftClientMixin",
     "MouseHandlerMixin",
     "OpenToLanScreenMixin",
-    "WorldRendererMixin"
+    "WorldRendererMixin",
+    "accessor.HandledScreenAccessor",
+    "malilib.WidgetConfigOptionMixin"
   ]
 }

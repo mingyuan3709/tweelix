@@ -1,11 +1,13 @@
 package ink.mingyuan.tweelix.mixin;
 
+import ink.mingyuan.tweelix.config.PersonalConfig;
 import ink.mingyuan.tweelix.config.TweelixConfig;
 import ink.mingyuan.tweelix.feature.FreeCamHandler;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -13,6 +15,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(GameRenderer.class)
 public abstract class GameRendererMixin {
@@ -41,5 +44,15 @@ public abstract class GameRendererMixin {
 
             ci.cancel();
         }
+    }
+
+    @Inject(method = "getNightVisionStrength", at = @At("HEAD"), cancellable = true)
+    private static void fakeNightVision(LivingEntity entity, float tickProgress, CallbackInfoReturnable<Float> cir) {
+            if (!TweelixConfig.Tweaks.FREE_CAM.getBooleanValue() || !PersonalConfig.FreeCamera.AUTO_NIGHT_VISION.getBooleanValue()) return;
+            MinecraftClient mc = MinecraftClient.getInstance();
+            if (entity == mc.player || entity == mc.getCameraEntity()) {
+                cir.setReturnValue(1.0F);
+            }
+
     }
 }

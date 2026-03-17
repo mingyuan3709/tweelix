@@ -76,7 +76,10 @@ public abstract class HeldItemRendererMixin {
     @Inject(method = "renderItem(FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/command/OrderedRenderCommandQueue;Lnet/minecraft/client/network/ClientPlayerEntity;I)V",
             at = @At("HEAD"), cancellable = true)
     private void onRenderItem1(float tickProgress, MatrixStack matrices, OrderedRenderCommandQueue orderedRenderCommandQueue, ClientPlayerEntity player, int light, CallbackInfo ci) {
-        if (TweelixConfig.Tweaks.FREE_CAM.getBooleanValue() && FreeCamHandler.getInstance().isSpectateEntity()) {
+        if (TweelixConfig.Tweaks.FREE_CAM.getBooleanValue() &&
+                FreeCamHandler.getInstance().isSpectateEntity()&&
+                PersonalConfig.FreeCamera.RENDER_OBSERVED_HANDS.getBooleanValue()
+        ) {
             Entity observed = FreeCamHandler.getInstance().getObservedEntity();
             if (!(observed instanceof AbstractClientPlayerEntity targetPlayer)) return;
 
