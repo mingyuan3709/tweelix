@@ -23,8 +23,11 @@
     "MinecraftClientMixin",
     "MouseHandlerMixin",
     "OpenToLanScreenMixin",
+    "OptionsScreenMixin",
+    "PlayerEntityRendererMixin",
     "WorldRendererMixin",
     "accessor.HandledScreenAccessor",
+    "litematica.GuiMainMenuMixin",
     "malilib.WidgetConfigOptionMixin"
   ]
 }

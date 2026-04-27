@@ -25,6 +25,20 @@ public class Util {
         }
     }
 
+
+    public static void sendDefaultPrompt(String translationKey) {
+
+        PlayerEntity player  = MinecraftClient.getInstance().player;
+
+        if (player == null) return;
+
+        if (TweelixConfig.Generic.DEFAULT_PROMPT.getBooleanValue()) {
+            player.sendMessage(Text.translatable(translationKey), true);
+
+        }
+    }
+
+
     public static void handleToggle(IConfigBoolean config) {
 
         boolean newValue = !config.getBooleanValue();

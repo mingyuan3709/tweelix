@@ -30,15 +30,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(HeldItemRenderer.class)
 public abstract class HeldItemRendererMixin {
 
-    @Inject(method = "renderItem(FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/command/OrderedRenderCommandQueue;Lnet/minecraft/client/network/ClientPlayerEntity;I)V",
-            at = @At("HEAD"),
-            cancellable = true)
-    private void onRenderItem(float tickProgress, MatrixStack matrices, OrderedRenderCommandQueue orderedRenderCommandQueue, ClientPlayerEntity player, int light, CallbackInfo ci) {
-        if (TweelixConfig.Tweaks.FREE_CAM.getBooleanValue() && PersonalConfig.FreeCamera.HIDE_HANDS.getBooleanValue()) {
-            ci.cancel();
-        }
-    }
-
     @Shadow
     protected abstract void renderFirstPersonItem(AbstractClientPlayerEntity player, float tickProgress, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, OrderedRenderCommandQueue orderedRenderCommandQueue, int light);
 
@@ -76,10 +67,19 @@ public abstract class HeldItemRendererMixin {
     @Inject(method = "renderItem(FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/command/OrderedRenderCommandQueue;Lnet/minecraft/client/network/ClientPlayerEntity;I)V",
             at = @At("HEAD"), cancellable = true)
     private void onRenderItem1(float tickProgress, MatrixStack matrices, OrderedRenderCommandQueue orderedRenderCommandQueue, ClientPlayerEntity player, int light, CallbackInfo ci) {
-        if (TweelixConfig.Tweaks.FREE_CAM.getBooleanValue() &&
-                FreeCamHandler.getInstance().isSpectateEntity()&&
-                PersonalConfig.FreeCamera.RENDER_OBSERVED_HANDS.getBooleanValue()
-        ) {
+
+        if (!TweelixConfig.Tweaks.FREE_CAM.getBooleanValue()) return;
+
+        //隐藏玩家的手
+        if (PersonalConfig.FreeCamera.HIDE_HANDS.getBooleanValue()) {
+            ci.cancel();
+            return;
+        }
+
+        //旁观玩家第一人称
+        if (PersonalConfig.FreeCamera.RENDER_OBSERVED_HANDS.getBooleanValue() &&
+                FreeCamHandler.getInstance().isSpectateEntity()) {
+
             Entity observed = FreeCamHandler.getInstance().getObservedEntity();
             if (!(observed instanceof AbstractClientPlayerEntity targetPlayer)) return;
 
@@ -144,6 +144,7 @@ public abstract class HeldItemRendererMixin {
 
             ci.cancel();
         }
+
     }
 
     @Unique
@@ -187,11 +188,14 @@ public abstract class HeldItemRendererMixin {
             at = @At(value = "STORE", ordinal = 0)
     )
     private AbstractClientPlayerEntity modifyArmPlayer(AbstractClientPlayerEntity value) {
-        if (TweelixConfig.Tweaks.FREE_CAM.getBooleanValue() && FreeCamHandler.getInstance().isSpectateEntity()) {
+        if (TweelixConfig.Tweaks.FREE_CAM.getBooleanValue() &&
+                FreeCamHandler.getInstance().isSpectateEntity()&&
+                PersonalConfig.FreeCamera.RENDER_OBSERVED_HANDS.getBooleanValue()
+        ) {
             Entity observed = FreeCamHandler.getInstance().getObservedEntity();
             if (!(observed instanceof AbstractClientPlayerEntity targetPlayer)) return value;
             return targetPlayer;
         }
-        return value;
+            return value;
     }
 }

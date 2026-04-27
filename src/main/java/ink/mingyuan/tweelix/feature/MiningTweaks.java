@@ -94,13 +94,11 @@ public class MiningTweaks {
 
         if (player.isSneaking()) return false;
 
-        // 直接破坏可疑方块
         if (isSuspiciousBlock(pos)) {
             Util.sendDefaultPrompt(player, SUSPICIOUS_BLOCK_KEY);
             return true;
         }
 
-        // 破坏可能导致上方可疑方块掉落
         if (wouldCauseSuspiciousBlockFall(pos)) {
             Util.sendDefaultPrompt(player, SUSPICIOUS_BLOCK_KEY);
             return true;
@@ -123,12 +121,10 @@ public class MiningTweaks {
             BlockState state = world.getBlockState(mutablePos);
             Block block = state.getBlock();
 
-            // 如果是可疑方块，则破坏当前方块会导致它掉落
             if (isSuspiciousBlock(mutablePos)) {
                 return true;
             }
 
-            // 遇到空气或非重力方块，链条终止
             if (state.isAir() || !(block instanceof FallingBlock)) {
                 return false;
             }

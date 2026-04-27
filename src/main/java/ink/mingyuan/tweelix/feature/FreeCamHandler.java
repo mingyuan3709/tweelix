@@ -25,7 +25,7 @@ public class FreeCamHandler implements IClientTickHandler {
     }
 
     private Input originalPlayerInput = null;
-    private ClientPlayerEntity activePlayer = null;
+    public ClientPlayerEntity activePlayer = null;
     private Entity observedEntity = null;
 
     private boolean isSpectateEntity = false;
@@ -38,6 +38,7 @@ public class FreeCamHandler implements IClientTickHandler {
     private float prevPitch;
 
     private Vec3d velocity = Vec3d.ZERO;
+
 
     private FreeCamHandler() { }
 
@@ -87,6 +88,9 @@ public class FreeCamHandler implements IClientTickHandler {
 
         updatePrev();
         handleMovement(mc);
+
+
+
     }
 
     private void handleMovement(MinecraftClient client) {

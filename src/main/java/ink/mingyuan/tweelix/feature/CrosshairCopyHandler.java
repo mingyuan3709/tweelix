@@ -13,19 +13,33 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.*;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 
+import java.util.List;
+
 public class CrosshairCopyHandler {
 
     private static final String MOD_PREFIX = "[Tweelix] ";
 
-    private record TargetInfo(String registryName, String localizedName, String position, boolean hasOwnPosition) {}
+    private record TargetInfo(
+            String registryName,
+            String localizedName,
+            String position,
+            boolean hasOwnPosition,
+            List<String> tags
+    ) {
+        TargetInfo(String registryName, String localizedName, String position, boolean hasOwnPosition) {
+            this(registryName, localizedName, position, hasOwnPosition, List.of());
+        }
+    }
 
     public static void copyTargetInfo(MinecraftClient client) {
 
@@ -65,7 +79,14 @@ public class CrosshairCopyHandler {
             String registryName = Registries.ITEM.getId(stack.getItem()).toString();
             String localizedName = stack.getName().getString();
             String pos = formatPlayerPos(client.player); // Items use player position
-            buildOutput(client, new TargetInfo(registryName, localizedName, pos, false));
+
+            // 获取物品的所有标签
+            List<String> tags = stack.streamTags()
+                    .map(TagKey::id)
+                    .map(Identifier::toString)
+                    .toList();
+
+            buildOutput(client, new TargetInfo(registryName, localizedName, pos, false,tags));
             return true;
         }
         return false;
@@ -78,21 +99,37 @@ public class CrosshairCopyHandler {
         BlockPos pos = hit.getBlockPos();
         BlockState state = client.world.getBlockState(pos);
         Block block = state.getBlock();
+
+        List<String> blockTags = Registries.BLOCK.getEntry(block)
+                .streamTags()
+                .map(TagKey::id)
+                .map(Identifier::toString)
+                .toList();
+
         return new TargetInfo(
                 Registries.BLOCK.getId(block).toString(),
                 block.getName().getString(),
                 formatBlockPos(pos),
-                true
+                true,
+                blockTags
         );
     }
 
     private static TargetInfo createEntityInfo(EntityHitResult hit) {
         Entity entity = hit.getEntity();
+
+        List<String> entityTags = Registries.ENTITY_TYPE.getEntry(entity.getType())
+                .streamTags()
+                .map(TagKey::id)
+                .map(Identifier::toString)
+                .toList();
+
         return new TargetInfo(
                 Registries.ENTITY_TYPE.getId(entity.getType()).toString(),
                 entity.getType().getName().getString(),
                 formatBlockPos(entity.getBlockPos()),
-                true
+                true,
+                entityTags
         );
     }
 
@@ -105,7 +142,6 @@ public class CrosshairCopyHandler {
     }
 
     private static void buildOutput(MinecraftClient client, TargetInfo info) {
-
         if (client.player == null) return;
 
         TargetCopyMode mode = getCopyMode();
@@ -114,12 +150,18 @@ public class CrosshairCopyHandler {
             case REGISTRY_NAME -> info.registryName;
             case POSITION -> {
                 if (!info.hasOwnPosition) {
-                    // Only warn when copying position for items
                     client.player.sendMessage(
                             Text.literal(MOD_PREFIX).formatted(Formatting.YELLOW)
                                     .append(Text.translatable("tweelix.message.position.fallback").formatted(Formatting.WHITE)), false);
                 }
                 yield info.position;
+            }
+            case TAG -> {
+                if (info.tags.isEmpty()) {
+                    yield "";
+                }
+                // 将所有标签用逗号拼接，便于复制
+                yield String.join(", ", info.tags);
             }
         };
 
@@ -143,11 +185,16 @@ public class CrosshairCopyHandler {
         MutableText idText   = copyableText(info.registryName,  "tweelix.hover.registryName");
         MutableText posText  = copyableText(info.position,      "tweelix.hover.position");
 
+        String tagsDisplay = info.tags.isEmpty() ? "-" : String.join(", ", info.tags);
+        MutableText tagsText = copyableText(tagsDisplay, "tweelix.hover.tags");
+
         Text separator = Text.literal(" | ")
                 .formatted(Formatting.DARK_GRAY, Formatting.BOLD);
 
         player.sendMessage(prefix.append(nameText).append(separator)
-                .append(idText).append(separator).append(posText), false);
+                .append(idText).append(separator)
+                .append(posText).append(separator)
+                .append(tagsText), false);
     }
 
     private static MutableText copyableText(String display, String translationKey) {
@@ -166,7 +213,8 @@ public class CrosshairCopyHandler {
     public enum TargetCopyMode implements IConfigOptionListEntry {
         LOCALIZED_NAME("localizedName", "tweelix.enum.localizedName"),
         REGISTRY_NAME("registryName", "tweelix.enum.registryName"),
-        POSITION("position", "tweelix.enum.position");
+        POSITION("position", "tweelix.enum.position"),
+        TAG("tag", "tweelix.enum.tag");
 
         private final String configName;
         private final String displayName;

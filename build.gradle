@@ -26,6 +26,10 @@ repositories {
         url = 'https://masa.dy.fi/maven'
     }
     maven {
+        url = 'https://masa.dy.fi/maven/sakura-ryoko'
+        content { includeGroupAndSubgroups('fi.dy.masa') }
+    }
+    maven {
         url = 'https://maven.terraformersmc.com/releases'
     }
     maven {
@@ -37,6 +41,8 @@ repositories {
     maven {
         url = 'https://maven.fallenbreath.me/releases'
     }
+    maven {
+        url = "https://api.modrinth.com/maven" }
 }
 
 dependencies {
@@ -51,7 +57,13 @@ dependencies {
 
     modImplementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
 
-    modImplementation "com.github.sakura-ryoko:tweakeroo:${project.tweakeroo_version}"
+    modCompileOnly "maven.modrinth:iris:${iris_version}"
+
+    modCompileOnly "maven.modrinth:sodium:${sodium_version}"
+
+    modCompileOnly "com.github.sakura-ryoko:litematica:${project.litematica_version}"
+
+    //modImplementation "com.github.sakura-ryoko:tweakeroo:${project.tweakeroo_version}"
 
 }
 

@@ -105,13 +105,22 @@ public class TweelixConfig implements IConfigHandler {
                 "Protect suspicious blocks, except when squatting down"
         ).apply(TWEAKS_KEY);
 
+        public static final ConfigBooleanHotkeyedWithSettings EMPTY_INVENTORY =
+                new ConfigBooleanHotkeyedWithSettings(
+                        "emptyInventory",
+                        false,
+                        "",
+                        "Enable Empty Inventory feature",
+                        PersonalConfig.EmptyInventory.OPTIONS).apply(TWEAKS_KEY);
+
         public static final List<IConfigBase> TWEAKS_OPTIONS = List.of(
                 FLAT_DIGGER,
                 MINING_COOLDOWN,
                 ANTI_OVER_MINING,
                 PERIMETER_WALL_DIGGER,
                 FREE_CAM,
-                PROTECT_SUSPICIOUS_BLOCKS
+                PROTECT_SUSPICIOUS_BLOCKS,
+                EMPTY_INVENTORY
         );
     }
 
@@ -131,11 +140,32 @@ public class TweelixConfig implements IConfigHandler {
                 new ConfigBoolean("lanPortRefreshButton", false,
                         "Add a refresh button to the Open to LAN screen for finding available ports").apply(DISPLAY_KEY);
 
+        public static final ConfigBoolean SHOW_SHADERS_BUTTON =
+                new ConfigBoolean("showShadersButton", false, "Show shader packs button in options screen").apply(DISPLAY_KEY);
+
+        public static final ConfigBoolean HIDE_CROSS_TEAM_PLAYER_NAMES =
+                new ConfigBoolean("hideCrossTeamPlayerNames", false,
+                        "When enabled, press F1 to toggle hiding name tags of players from other teams").apply(DISPLAY_KEY);
+
+        public static final ConfigBoolean SHOW_LITEMATICA_SCHEMATICS_BUTTON =
+                new ConfigBoolean("showLitematicaSchematicsButton", false,
+                        "Add a button to open the schematics folder in Litematica's main menu").apply(DISPLAY_KEY);
+
         public static final List<IConfigBase> DISPLAY_OPTIONS = List.of(
                 DRAW_BEDROCK_CEILING_BLOCKS,
                 ENABLE_GAME_MODE_SWITCHER_EX,
-                LAN_PORT_REFRESH_BUTTON
+                LAN_PORT_REFRESH_BUTTON,
+                SHOW_SHADERS_BUTTON,
+                HIDE_CROSS_TEAM_PLAYER_NAMES,
+                SHOW_LITEMATICA_SCHEMATICS_BUTTON
         );
+
+    }
+
+    public static class Disable{
+
+
+
 
     }
 
@@ -148,7 +178,8 @@ public class TweelixConfig implements IConfigHandler {
             "PerimeterWallDigger", PersonalConfig.PerimeterWallDigger.OPTIONS,
             "AntiOverMining", PersonalConfig.AntiOverMining.OPTIONS,
             "EnableGameModeSwitcherEx", PersonalConfig.EnableGameModeSwitcherEx.OPTIONS,
-            "FreeCamera", PersonalConfig.FreeCamera.OPTIONS
+            "FreeCamera", PersonalConfig.FreeCamera.OPTIONS,
+            "EmptyInventory",PersonalConfig.EmptyInventory.OPTIONS
     );
 
     @Override

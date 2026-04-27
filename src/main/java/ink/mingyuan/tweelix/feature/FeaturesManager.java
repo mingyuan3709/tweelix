@@ -20,9 +20,7 @@ public class FeaturesManager {
         if (initialized) return;
         initialized = true;
 
-        ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
-            FreeCamHandler.getInstance().resetState();
-        });
+        ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> FreeCamHandler.getInstance().resetState());
 
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
             FreeCamHandler.getInstance().resetState();
