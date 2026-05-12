@@ -1,0 +1,42 @@
+plugins {
+    id "com.gradleup.shadow" version "9.2.2"
+    id "maven-publish"
+}
+
+architectury {
+    platformSetupLoomIde()
+    neoForge()
+}
+
+configurations {
+    common
+    shadowCommon
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentNeoForge.extendsFrom common
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings loom.officialMojangMappings()
+    neoForge "net.neoforged:neoforge:${project.neoforge_version}"
+
+    common(project(path: ":common", configuration: "namedElements")) { transitive false }
+    shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
+
+}
+
+processResources {
+    filesMatching("META-INF/neoforge.mods.toml") {
+        expand "version": project.version
+    }
+    inputs.property "META-INF/neoforge.mods.toml", project.version
+}
+
+shadowJar {
+    exclude "fabric.mod.json"
+    exclude "tweelix.accessWidener"
+
+    configurations = [project.configurations.shadowCommon]
+    archiveClassifier = "shadow"
+}
