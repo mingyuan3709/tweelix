@@ -4,14 +4,25 @@ architectury {
 
 loom {
 
+
+
 }
+
+repositories {
+
+    maven {
+        url = "https://api.modrinth.com/maven" }
+
+}
+
+
 
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings loom.officialMojangMappings()
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-    modApi "me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}"
 
+    modCompileOnly "maven.modrinth:malilib:${project.malilib_version}"
 }
 
 java {

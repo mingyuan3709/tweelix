@@ -1,14 +1,18 @@
-package ink.mingyuan.tweelix.gui;
+package ink.mingyuan.tweelix.fabric.gui;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
-import net.minecraft.client.gui.screens.Screen;
+import ink.mingyuan.tweelix.gui.GuiConfigs;
+
 
 public class ModMenuIntegration implements ModMenuApi {
 
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
-        //return GuiConfig::build;
-        return null;
+        return (screen) -> {
+            GuiConfigs gui = new GuiConfigs();
+            gui.setParent(screen);
+            return gui;
+        };
     }
 }

@@ -1,0 +1,9 @@
+{
+  "tweelix.gui.title.configs": "Tweelix Configs 0.1.0_by_ming_yuan",
+  "tweelix.gui.config_gui_tab.generic": "Generic",
+  "tweelix.gui.config_gui_tab.tweaks": "Tweaks",
+  "tweelix.gui.config_gui_tab.display": "Display",
+
+  "tweelix.config.generic.name.openConfigGui": "Open Config GUI",
+  "tweelix.config.generic.comment.openConfigGui": "Keybind to open the mod configuration GUI"
+}

@@ -4,6 +4,7 @@
   "package": "ink.mingyuan.tweelix.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "malilib.WidgetConfigOptionMixin"
   ],
   "injectors": {
     "defaultRequire": 1
@@ -12,6 +13,10 @@
     "requireAnnotations": true
   },
   "client": [
-
+    "ScreenMixin",
+    "SuggestionsListMixin",
+    "accessor.CommandSuggestionsAccessor",
+    "accessor.HandledScreenAccessor",
+    "accessor.SuggestionsListAccessor"
   ]
 }

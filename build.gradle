@@ -1,14 +1,17 @@
 plugins {
-    id 'architectury-plugin' version '3.4-SNAPSHOT'
-    id 'dev.architectury.loom' version '1.14-SNAPSHOT' apply false
+    id 'architectury-plugin' version '3.5-SNAPSHOT'
+    id 'dev.architectury.loom' version '1.17-SNAPSHOT' apply false
     id 'java'
 }
 
 subprojects {
-    apply plugin: 'dev.architectury.loom'
     apply plugin: 'architectury-plugin'
+    apply plugin: 'dev.architectury.loom'
     apply plugin: 'maven-publish'
 
+
+    group = rootProject.maven_group
+    version = rootProject.mod_version
 
     repositories {
         mavenCentral()

@@ -15,10 +15,10 @@
   "environment": "client",
   "entrypoints": {
     "main": [
-      "ink.mingyuan.tweelix.Tweelix"
+      "ink.mingyuan.tweelix.fabric.Tweelix"
     ],
     "modmenu": [
-      "ink.mingyuan.tweelix.gui.ModMenuIntegration"
+      "ink.mingyuan.tweelix.fabric.gui.ModMenuIntegration"
     ]
   },
   "mixins": [

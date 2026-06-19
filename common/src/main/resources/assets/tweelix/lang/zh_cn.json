@@ -1,0 +1,39 @@
+{
+  "tweelix.gui.title.configs": "Tweelix 配置 V0.1.0 _By_明渊",
+  "tweelix.gui.config_gui_tab.generic": "通用",
+  "tweelix.gui.config_gui_tab.tweaks": "调整",
+  "tweelix.gui.config_gui_tab.display": "显示",
+
+  "tweelix.enum.localizedName": "翻译名",
+  "tweelix.enum.registryName": "注册名",
+  "tweelix.enum.position": "坐标",
+  "tweelix.enum.tag": "标签",
+
+  "tweelix.hover.click_to_copy": "点击复制",
+  "tweelix.hover.tags": "点击展开",
+
+  "tweelix.message.position.fallback": "该目标无坐标信息，使用玩家坐标替代",
+  "tweelix.message.copied": "已复制到剪切板",
+
+  "tweelix.toggle.enabled": "§a启用",
+  "tweelix.toggle.disabled": "§c禁用",
+  "tweelix.toggle.message": "%s：%s",
+
+  "tweelix.gui.sub_config.button": "打开该功能的子设置",
+
+  "tweelix.config.generic.name.openConfigGui": "打开配置界面",
+  "tweelix.config.generic.comment.openConfigGui": "打开模组配置界面的快捷键",
+
+  "tweelix.config.generic.name.crosshairCopy": "复制准心目标信息",
+  "tweelix.config.generic.comment.crosshairCopy": "复制方块、实体、背包物品的注册名(ID)、显示名称或坐标",
+
+  "tweelix.sub_config.crosshair_copy.name.targetCopyMode": "默认复制",
+  "tweelix.sub_config.crosshair_copy.comment.targetCopyMode": "设置默认复制目标的哪部分信息：ID、显示名称或坐标",
+
+  "tweelix.sub_config.crosshair_copy.name.sendAllCopyable": "发送所有可复制信息",
+  "tweelix.sub_config.crosshair_copy.comment.sendAllCopyable": "在聊天框中显示所有可复制的目标信息",
+
+  "tweelix.config.generic.name.enableCommandHint": "命令提示",
+  "tweelix.config.generic.comment.enableCommandHint": "在聊天中启用命令描述提示"
+
+}
