@@ -7,7 +7,10 @@ import fi.dy.masa.malilib.hotkeys.KeyAction;
 import fi.dy.masa.malilib.hotkeys.KeybindSettings;
 import ink.mingyuan.tweelix.Reference;
 import ink.mingyuan.tweelix.config.subconfig.CrosshairCopySub;
+import ink.mingyuan.tweelix.config.subconfig.DefaultPromptSub;
+import ink.mingyuan.tweelix.config.subconfig.VisitorModeSub;
 import ink.mingyuan.tweelix.options.ConfigBooleanHotkeyedWithSettings;
+import ink.mingyuan.tweelix.options.ConfigBooleanWithSettings;
 
 import java.util.List;
 
@@ -31,17 +34,21 @@ public class GenericCategory {
                     CrosshairCopySub.OPTIONS).apply(TRANSLATION_KEY);
 
 
-    public static final ConfigBoolean ENABLE_COMMAND_HINT = new ConfigBoolean(
-            "enableCommandHint", true,
-            "Enable command description hints in chat")
-            .apply(TRANSLATION_KEY);
+    public static final ConfigBooleanHotkeyedWithSettings VISITOR_MODE =
+            new ConfigBooleanHotkeyedWithSettings("visitorMode", false, "",
+                    "Visitor mode: no block breaking/placing, no entity damage", VisitorModeSub.OPTIONS).apply(TRANSLATION_KEY);
 
-
+    public static final ConfigBooleanWithSettings DEFAULT_PROMPT =
+            new ConfigBooleanWithSettings(
+                    "defaultPrompt",
+                    false,
+                    "Default value for features that do not have their own prompt setting", DefaultPromptSub.OPTIONS).apply(TRANSLATION_KEY);
 
     public static final List<IConfigBase> OPTIONS = ImmutableList.of(
             OPEN_CONFIG_GUI,
             CROSSHAIR_COPY,
-            ENABLE_COMMAND_HINT
+            VISITOR_MODE,
+            DEFAULT_PROMPT
             );
 
 }

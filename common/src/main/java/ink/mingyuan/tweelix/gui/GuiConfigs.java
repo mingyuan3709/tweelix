@@ -19,7 +19,7 @@ public class GuiConfigs extends GuiConfigsBase {
     private static ConfigGuiTab currentTab = ConfigGuiTab.GENERIC;
 
     public GuiConfigs() {
-        super(10, 50, Reference.MOD_ID, null,translateOrDefault("tweelix.gui.title.configs","TweelixConfig") ,false, String.format("%s", Reference.MOD_VERSION));
+        super(10, 50, Reference.MOD_ID, null,"tweelix.gui.title.configs",TweelixConfig.getModVersion());
     }
 
     @Override

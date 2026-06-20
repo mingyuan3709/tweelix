@@ -1,4 +1,4 @@
-package ink.mingyuan.tweelix.extended.malilib;
+package ink.mingyuan.tweelix.compat.malilib;
 
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import net.minecraft.client.gui.screens.Screen;

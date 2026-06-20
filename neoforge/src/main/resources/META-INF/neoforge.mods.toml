@@ -29,3 +29,9 @@ side = "BOTH"
 
 [[mixins]]
 config = "tweelix.mixins.json"
+
+[[mods.packs]]
+modId = "tweelix"
+packName = "command_hints"
+displayName = "Tweelix 命令提示扩展翻译"
+alwaysEnabled = false

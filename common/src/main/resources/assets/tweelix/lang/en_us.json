@@ -1,9 +1,94 @@
 {
-  "tweelix.gui.title.configs": "Tweelix Configs 0.1.0_by_ming_yuan",
+  "tweelix.gui.title.configs": "Tweelix Configs V_%s_By_ming_yuan",
   "tweelix.gui.config_gui_tab.generic": "Generic",
   "tweelix.gui.config_gui_tab.tweaks": "Tweaks",
   "tweelix.gui.config_gui_tab.display": "Display",
 
+  "tweelix.enum.localizedName": "Display Name",
+  "tweelix.enum.registryName": "Registry Name",
+  "tweelix.enum.position": "Position",
+  "tweelix.enum.tag": "Tags",
+
+  "tweelix.hover.click_to_copy": "Click to copy",
+  "tweelix.hover.tags": "Click to expand",
+
+  "tweelix.message.position.fallback": "No position data for this target, using player position instead",
+  "tweelix.message.copied": "Copied to clipboard: %s",
+
+  "tweelix.toggle.enabled": "§aEnabled",
+  "tweelix.toggle.disabled": "§cDisabled",
+  "tweelix.toggle.message": "%s: %s",
+
+  "tweelix.config.generic.name.visitorMode": "Visitor Mode",
+  "tweelix.config.generic.comment.visitorMode": "Prevents block breaking/placing and entity damage",
+
+  "tweelix.sub_config.visitor_mode.name.displayPrompt": "Visitor Mode Notifications",
+  "tweelix.sub_config.visitor_mode.comment.displayPrompt": "Show notifications when an action is blocked by Visitor Mode",
+
+  "tweelix.visitor_mode.prefix": "[Visitor Mode] ",
+  "tweelix.visitor_mode.cant_break_item_frame": "Cannot break item frame",
+  "tweelix.visitor_mode.cant_attack_entity": "Cannot attack entities",
+  "tweelix.visitor_mode.cant_break_block": "Cannot break blocks",
+  "tweelix.visitor_mode.cant_place_item_frame": "Cannot place item frame",
+  "tweelix.visitor_mode.cant_place_block": "Cannot place blocks",
+  "tweelix.visitor_mode.cant_interact_item_frame": "Cannot interact with item frame",
+  "tweelix.visitor_mode.need_empty_hand_decorated_pot": "Empty hand required to interact with Decorated Pot",
+
+  "tweelix.config.generic.name.defaultPrompt": "Default Prompt Toggle",
+  "tweelix.config.generic.comment.defaultPrompt": "Default value for features that do not have their own prompt setting",
+
+  "tweelix.gui.position.action_bar": "Action Bar",
+
+  "tweelix.gui.position.chat": "Chat",
+
+  "tweelix.sub_config.default_prompt.name.showModPrefix": "Show Mod Prefix",
+  "tweelix.sub_config.default_prompt.comment.showModPrefix": "Whether to display the mod name prefix at the beginning of notifications, e.g. [Tweelix]",
+
+  "tweelix.sub_config.default_prompt.name.showPrefix": "Show Feature Prefix",
+  "tweelix.sub_config.default_prompt.comment.showPrefix": "Whether to display the triggered feature name in notifications, e.g. [Visitor Mode]",
+
+  "tweelix.sub_config.default_prompt.name.prefixColor": "Prefix Color",
+  "tweelix.sub_config.default_prompt.comment.prefixColor": "Text color for the mod and feature prefixes",
+
+  "tweelix.sub_config.default_prompt.name.textColor": "Normal Text Color",
+  "tweelix.sub_config.default_prompt.comment.textColor": "Text color for regular notification content when highlight is disabled",
+
+  "tweelix.sub_config.default_prompt.name.boldText": "Bold Notification Text",
+  "tweelix.sub_config.default_prompt.comment.boldText": "Whether to display core notification text in bold for improved visibility",
+
+  "tweelix.sub_config.default_prompt.name.useAttentionColor": "Enable Highlight Color",
+  "tweelix.sub_config.default_prompt.comment.useAttentionColor": "When enabled, warning/interception notifications will use the attention color instead of the normal text color",
+
+  "tweelix.sub_config.default_prompt.name.attentionColor": "Attention Color",
+  "tweelix.sub_config.default_prompt.comment.attentionColor": "The eye-catching color used for dangerous action interceptions or feature rejections (default: bright orange-red)",
+
+  "tweelix.sub_config.default_prompt.name.promptCooldown": "Notification Cooldown (ms)",
+  "tweelix.sub_config.default_prompt.comment.promptCooldown": "Minimum interval between identical notifications (in milliseconds). Set to 0 to disable cooldown entirely.",
+
+  "tweelix.sub_config.default_prompt.name.promptPosition": "Notification Position",
+  "tweelix.sub_config.default_prompt.comment.promptPosition": "Where to display notifications: action bar or chat",
+
+  "tweelix.sub_config.default_prompt.name.blockedFeatures": "Feature Notification Blacklist",
+  "tweelix.sub_config.default_prompt.comment.blockedFeatures": "Add feature names you want to mute. For example, entering 'Visitor Mode' will suppress all notifications from that feature.",
+
+  "tweelix.gui.sub_config.button": "Open sub-settings for this feature",
+
   "tweelix.config.generic.name.openConfigGui": "Open Config GUI",
-  "tweelix.config.generic.comment.openConfigGui": "Keybind to open the mod configuration GUI"
+  "tweelix.config.generic.comment.openConfigGui": "Keybind to open the mod configuration GUI",
+
+  "tweelix.config.generic.name.crosshairCopy": "Copy Crosshair Target Info",
+  "tweelix.config.generic.comment.crosshairCopy": "Copies the namespace, translation key, and NBT data of the block or item you are looking at",
+
+  "tweelix.sub_config.crosshair_copy.name.targetCopyMode": "Default Copy Mode",
+  "tweelix.sub_config.crosshair_copy.comment.targetCopyMode": "Sets which part of the targeted block/item will be copied by default: ID, display name, or position",
+
+  "tweelix.sub_config.crosshair_copy.name.sendAllCopyable": "Send All Copyable Info",
+  "tweelix.sub_config.crosshair_copy.comment.sendAllCopyable": "Display all copyable information in chat",
+
+  "tweelix.config.display.name.enableCommandHint": "Command Hints",
+  "tweelix.config.display.comment.enableCommandHint": "Enable command description hints in chat",
+
+  "tweelix.config.tweaks.name.placeholder": "Placeholder",
+  "tweelix.config.tweaks.comment.placeholder": "TODO - tweak options coming soon"
+
 }

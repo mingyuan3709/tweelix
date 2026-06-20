@@ -1,15 +1,14 @@
 package ink.mingyuan.tweelix;
 
 import fi.dy.masa.malilib.event.InitializationHandler;
+import ink.mingyuan.tweelix.bootstrap.InitHandler;
+import ink.mingyuan.tweelix.config.TweelixConfig;
 
 public class TweelixCommon {
 
-    public static void init() {
+    public void onInitialize(String modVersion) {
 
-        Reference.LOGGER.info("Tweelix Config Registered!");
-    }
-
-    public void onInitialize() {
+        TweelixConfig.setModVersion(modVersion);
 
         InitializationHandler.getInstance().registerInitializationHandler(new InitHandler());
 

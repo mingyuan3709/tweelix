@@ -14,7 +14,7 @@ if (JavaVersion.current() < JavaVersion.VERSION_21) {
     )
 }
 
-rootProject.name = "tweelit"
+rootProject.name = "tweelix"
 
 include("common")
 include("fabric")

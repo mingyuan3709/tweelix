@@ -31,14 +31,21 @@ dependencies {
     neoForge "net.neoforged:neoforge:${project.neoforge_version}"
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
-    shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
+    shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive false }
 
     modImplementation "maven.modrinth:mafglib:${project.mafglib_version}"
 
-    modRuntimeOnly "me.fallenbreath:conditional-mixin-${loom.platform.get().id()}:${project.conditionalmixin_version}"
+    include(implementation("me.fallenbreath:conditional-mixin-${loom.platform.get().id()}:${project.conditionalmixin_version}"))
 }
 
 processResources {
+
+    // 1. 声明依赖于 common 模块的 processResources 结果
+    dependsOn project(":common").tasks.processResources
+
+    // 2. 引入公共模块的资源文件
+    from project(":common").sourceSets.main.resources
+
     filesMatching("META-INF/neoforge.mods.toml") {
         expand "version": project.version
     }

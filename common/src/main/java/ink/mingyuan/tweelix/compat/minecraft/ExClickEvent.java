@@ -1,4 +1,4 @@
-package ink.mingyuan.tweelix.extended.minecraft;
+package ink.mingyuan.tweelix.compat.minecraft;
 
 import ink.mingyuan.tweelix.feature.CrosshairCopyHandler;
 import net.minecraft.ChatFormatting;

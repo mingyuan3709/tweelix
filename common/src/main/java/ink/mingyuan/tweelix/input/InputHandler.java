@@ -1,4 +1,4 @@
-package ink.mingyuan.tweelix.event;
+package ink.mingyuan.tweelix.input;
 
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.config.options.ConfigBoolean;
@@ -29,6 +29,8 @@ public class InputHandler implements IKeybindProvider, IKeyboardInputHandler, IM
 
         this.toggleConfigs = List.of(
 
+                GenericCategory.VISITOR_MODE
+
         );
     }
 
@@ -53,6 +55,8 @@ public class InputHandler implements IKeybindProvider, IKeyboardInputHandler, IM
         manager.addHotkeysForCategory(Reference.MOD_ID, "General", List.of(
                 GenericCategory.OPEN_CONFIG_GUI
         ));
+
+        manager.addHotkeysForCategory(Reference.MOD_ID, "toggleConfigs", toggleConfigs);
 
     }
 

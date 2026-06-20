@@ -103,6 +103,7 @@ processResources {
                 "minecraft_version": project.minecraft_version,
                 "loader_version": project.loader_version
     }
+
 }
 
 def targetJavaVersion = 21
@@ -122,9 +123,6 @@ java {
 }
 
 jar {
-
-    from project(":common").sourceSets.main.resources
-
     from("LICENSE") {
         rename { "${it}_${project.archives_base_name}" }
     }

@@ -1,5 +1,5 @@
 {
-  "tweelix.gui.title.configs": "Tweelix 配置 V0.1.0 _By_明渊",
+  "tweelix.gui.title.configs": "Tweelix 配置 V_%s_By_明渊",
   "tweelix.gui.config_gui_tab.generic": "通用",
   "tweelix.gui.config_gui_tab.tweaks": "调整",
   "tweelix.gui.config_gui_tab.display": "显示",
@@ -13,11 +13,63 @@
   "tweelix.hover.tags": "点击展开",
 
   "tweelix.message.position.fallback": "该目标无坐标信息，使用玩家坐标替代",
-  "tweelix.message.copied": "已复制到剪切板",
+  "tweelix.message.copied": "已成功复制到剪贴板: %s",
 
   "tweelix.toggle.enabled": "§a启用",
   "tweelix.toggle.disabled": "§c禁用",
   "tweelix.toggle.message": "%s：%s",
+
+  "tweelix.config.generic.name.visitorMode": "参观模式",
+  "tweelix.config.generic.comment.visitorMode": "禁止破坏/放置方块以及伤害实体",
+
+  "tweelix.sub_config.visitor_mode.name.displayPrompt": "参观模式提示",
+  "tweelix.sub_config.visitor_mode.comment.displayPrompt": "显示参观模式被阻止操作的提示",
+
+  "tweelix.visitor_mode.prefix": "[参观模式] ",
+  "tweelix.visitor_mode.cant_break_item_frame": "无法破坏展示框",
+  "tweelix.visitor_mode.cant_attack_entity": "无法攻击生物",
+  "tweelix.visitor_mode.cant_break_block": "无法破坏方块",
+  "tweelix.visitor_mode.cant_place_item_frame": "无法放置展示框",
+  "tweelix.visitor_mode.cant_place_block": "无法放置方块",
+  "tweelix.visitor_mode.cant_interact_item_frame": "无法与展示框交互",
+  "tweelix.visitor_mode.need_empty_hand_decorated_pot": "请空手与陶罐交互",
+
+  "tweelix.config.generic.name.defaultPrompt": "默认提示开关",
+  "tweelix.config.generic.comment.defaultPrompt": "为没有独立提示开关的功能提供默认值",
+
+  "tweelix.gui.position.action_bar": "快捷栏上方 (ActionBar)",
+
+  "tweelix.gui.position.chat": "左下角聊天框 (Chat)",
+
+  "tweelix.sub_config.default_prompt.name.showModPrefix": "显示模组前缀",
+  "tweelix.sub_config.default_prompt.comment.showModPrefix": "是否在提示的最前端显示模组名称前缀，例如: [Tweelix]",
+
+  "tweelix.sub_config.default_prompt.name.showPrefix": "显示功能前缀",
+  "tweelix.sub_config.default_prompt.comment.showPrefix": "是否在提示中显示当前触发的功能模块名称，例如: [访客模式]",
+
+  "tweelix.sub_config.default_prompt.name.prefixColor": "前缀颜色",
+  "tweelix.sub_config.default_prompt.comment.prefixColor": "模组前缀与功能前缀的文本颜色",
+
+  "tweelix.sub_config.default_prompt.name.textColor": "普通文本颜色",
+  "tweelix.sub_config.default_prompt.comment.textColor": "未开启高亮警示时，常规提示内容的文本颜色",
+
+  "tweelix.sub_config.default_prompt.name.boldText": "提示文本加粗",
+  "tweelix.sub_config.default_prompt.comment.boldText": "是否加粗显示核心提示内容，开启后视觉效果更明显",
+
+  "tweelix.sub_config.default_prompt.name.useAttentionColor": "启用高亮警示色",
+  "tweelix.sub_config.default_prompt.comment.useAttentionColor": "开启后，拦截或警告类提示的内容将强制使用下方配置的高亮色而非普通文本色",
+
+  "tweelix.sub_config.default_prompt.name.attentionColor": "警示色具体色彩",
+  "tweelix.sub_config.default_prompt.comment.attentionColor": "用于危险操作被拦截或功能驳回时的醒目警告颜色（默认明亮的橙红色）",
+
+  "tweelix.sub_config.default_prompt.name.promptCooldown": "防刷屏冷却时间(ms)",
+  "tweelix.sub_config.default_prompt.comment.promptCooldown": "高频触发相同提示时的最小间隔时间（单位：毫秒）。设置为 0 彻底关闭冷却限制。",
+
+  "tweelix.sub_config.default_prompt.name.promptPosition": "提示显示位置",
+  "tweelix.sub_config.default_prompt.comment.promptPosition": "配置提示信息的渲染位置：快捷栏上方 (action_bar) 或是左下角聊天框 (chat)。",
+
+  "tweelix.sub_config.default_prompt.name.blockedFeatures": "功能提示黑名单",
+  "tweelix.sub_config.default_prompt.comment.blockedFeatures": "在此列表中直接添加你不想看到的功能名称。例如输入 '访客模式'，则该功能下的所有提示都将被屏蔽。",
 
   "tweelix.gui.sub_config.button": "打开该功能的子设置",
 
@@ -33,7 +85,10 @@
   "tweelix.sub_config.crosshair_copy.name.sendAllCopyable": "发送所有可复制信息",
   "tweelix.sub_config.crosshair_copy.comment.sendAllCopyable": "在聊天框中显示所有可复制的目标信息",
 
-  "tweelix.config.generic.name.enableCommandHint": "命令提示",
-  "tweelix.config.generic.comment.enableCommandHint": "在聊天中启用命令描述提示"
+  "tweelix.config.display.name.enableCommandHint": "命令提示",
+  "tweelix.config.display.comment.enableCommandHint": "在聊天中启用命令描述提示",
+
+  "tweelix.config.tweaks.name.placeholder": "预留项",
+  "tweelix.config.tweaks.comment.placeholder": "TODO - 调整类功能即将推出"
 
 }

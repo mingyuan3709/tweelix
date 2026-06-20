@@ -3,9 +3,7 @@
   "minVersion": "0.8",
   "package": "ink.mingyuan.tweelix.mixin",
   "compatibilityLevel": "JAVA_21",
-  "mixins": [
-    "malilib.WidgetConfigOptionMixin"
-  ],
+  "mixins": [],
   "injectors": {
     "defaultRequire": 1
   },
@@ -13,8 +11,11 @@
     "requireAnnotations": true
   },
   "client": [
-    "ScreenMixin",
-    "SuggestionsListMixin",
+    "core.MinecraftMixin",
+    "gameplay.MultiPlayerGameModeMixin",
+    "gui.ScreenMixin",
+    "gui.SuggestionsListMixin",
+    "compat.malilib.WidgetConfigOptionMixin",
     "accessor.CommandSuggestionsAccessor",
     "accessor.HandledScreenAccessor",
     "accessor.SuggestionsListAccessor"

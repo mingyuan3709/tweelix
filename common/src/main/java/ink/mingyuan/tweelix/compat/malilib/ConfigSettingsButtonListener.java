@@ -1,4 +1,4 @@
-package ink.mingyuan.tweelix.extended.malilib;
+package ink.mingyuan.tweelix.compat.malilib;
 
 import fi.dy.masa.malilib.gui.GuiBase;
 import fi.dy.masa.malilib.gui.button.ButtonBase;

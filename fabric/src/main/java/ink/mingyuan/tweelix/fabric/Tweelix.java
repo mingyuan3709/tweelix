@@ -1,6 +1,6 @@
 package ink.mingyuan.tweelix.fabric;
 
-import ink.mingyuan.tweelix.CommandExporter;
+import ink.mingyuan.tweelix.util.CommandExporter;
 import ink.mingyuan.tweelix.TweelixCommon;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
@@ -18,7 +18,10 @@ public class Tweelix implements ModInitializer {
     @Override
     public void onInitialize() {
 
-        new TweelixCommon().onInitialize();
+        String version = FabricLoader.getInstance().getModContainer("tweelix")
+                .map(c -> c.getMetadata().getVersion().getFriendlyString())
+                .orElse("unknown");
+        new TweelixCommon().onInitialize(version);
 
         FabricLoader.getInstance().getModContainer("tweelix").ifPresent(modContainer -> {
             boolean registered = ResourceLoader.registerBuiltinPack(
