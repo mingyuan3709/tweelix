@@ -67,4 +67,24 @@ public final class ClientAttackEvents {
          */
         InteractionResult onAttackEntity(LocalPlayer player, Entity entity, EntityHitResult hitResult);
     }
+
+    // ========== 破坏方块（方块已被破坏后） ==========
+    public static final TweelixEventFactory.Event<BreakBlock> BREAK = TweelixEventFactory.create(BreakBlock.class,
+            (listeners) -> (player, pos) -> {
+                for (BreakBlock listener : listeners) {
+                    listener.onBreakBlock(player, pos);
+                }
+            }
+    );
+
+    @FunctionalInterface
+    public interface BreakBlock {
+        /**
+         * 当玩家成功破坏方块后触发（通知性质，不可拦截）
+         *
+         * @param player 本地玩家
+         * @param pos    被破坏的方块位置
+         */
+        void onBreakBlock(LocalPlayer player, BlockPos pos);
+    }
 }

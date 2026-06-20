@@ -88,4 +88,14 @@ public class MultiPlayerGameModeMixin {
             ci.cancel();
         }
     }
+
+    /** 方块被成功破坏后通知 */
+    @Inject(method = "destroyBlock", at = @At("RETURN"))
+    private void onDestroyBlock(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
+        if (cir.getReturnValue()) {
+            LocalPlayer player = Minecraft.getInstance().player;
+            if (player == null) return;
+            ClientAttackEvents.BREAK.invoker().onBreakBlock(player, pos);
+        }
+    }
 }
