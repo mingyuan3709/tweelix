@@ -3,7 +3,9 @@
   "minVersion": "0.8",
   "package": "ink.mingyuan.tweelix.mixin",
   "compatibilityLevel": "JAVA_21",
-  "mixins": [],
+  "refmap": "tweelix.mixins.refmap.json",
+  "mixins": [
+  ],
   "injectors": {
     "defaultRequire": 1
   },
@@ -11,13 +13,27 @@
     "requireAnnotations": true
   },
   "client": [
-    "core.MinecraftMixin",
-    "gameplay.MultiPlayerGameModeMixin",
-    "gui.ScreenMixin",
-    "gui.SuggestionsListMixin",
-    "compat.malilib.WidgetConfigOptionMixin",
     "accessor.CommandSuggestionsAccessor",
     "accessor.HandledScreenAccessor",
-    "accessor.SuggestionsListAccessor"
+    "accessor.SuggestionsListAccessor",
+    "compat.malilib.WidgetConfigOptionMixin",
+    "core.GuiMixin",
+    "core.KeyboardHandlerMixin",
+    "core.LevelRendererMixin",
+    "core.MinecraftMixin",
+    "core.MouseHandlerMixin",
+    "core.TextFieldHelperMixin",
+    "gameplay.MultiPlayerGameModeMixin",
+    "gui.AbstractSignEditScreenMixin",
+    "gui.GameModeSwitcherScreenMixin",
+    "gui.OptionsScreenMixin",
+    "gui.ScreenMixin",
+    "gui.ShareToLanScreenMixin",
+    "gui.SuggestionsListMixin",
+    "litematica.GuiMainMenuMixin",
+    "render.AvatarRendererMixin",
+    "render.CameraMixin",
+    "render.GameRendererMixin",
+    "render.LivingEntityMixin"
   ]
 }

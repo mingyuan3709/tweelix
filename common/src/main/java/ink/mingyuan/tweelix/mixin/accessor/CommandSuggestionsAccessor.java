@@ -20,10 +20,6 @@ public interface CommandSuggestionsAccessor {
     @Accessor("input") // 对应原版的 EditBox input 字段
     EditBox getInput();
 
-    /**
-     * 获取当前命令的 Brigadier 解析结果
-     * 它是 100% 精确获取光标处处于哪个 CommandNode 的核心数据
-     */
     @Accessor("currentParse")
     ParseResults<SharedSuggestionProvider> getCurrentParse();
 }

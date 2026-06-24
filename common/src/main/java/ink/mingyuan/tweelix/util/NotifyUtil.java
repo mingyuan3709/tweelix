@@ -2,7 +2,7 @@ package ink.mingyuan.tweelix.util;
 
 import com.google.common.collect.ImmutableList;
 import fi.dy.masa.malilib.config.IConfigBase;
-import ink.mingyuan.tweelix.config.category.GenericCategory;
+import ink.mingyuan.tweelix.config.category.Generic;
 import ink.mingyuan.tweelix.config.subconfig.DefaultPromptSub;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -17,13 +17,9 @@ import java.util.Objects;
 
 /**
  * 统一通知工具类 - 负责各类玩家提示消息的发送
- * 💡 集成了防刷屏（可选）、动态位置分发、黑名单拦截、全局前缀及加粗联动机制
  */
 public final class NotifyUtil {
 
-    // 冷却拦截控制变量
-    private static String lastErrorKey = "";
-    private static long lastPromptTime = 0L;
 
     private NotifyUtil() {}
 
@@ -39,7 +35,7 @@ public final class NotifyUtil {
      *
      * @param feature     触发该提示的功能模块配置项
      * @param errorKey    具体的提示内容翻译键
-     * @param useCooldown 💡 是否启用防刷屏冷却检查（true为启用，false为强制立刻显示）
+     * @param useCooldown 是否启用防刷屏冷却检查（true为启用，false为强制立刻显示）
      * @param args        动态参数
      */
     public static void sendFeatureActionbarInternal(IConfigBase feature, String errorKey, boolean useCooldown, Object... args) {
@@ -47,11 +43,11 @@ public final class NotifyUtil {
         if (player == null) return;
 
         // 1. 全局通知总开关拦截
-        if (!GenericCategory.DEFAULT_PROMPT.getBooleanValue()) return;
+        if (!Generic.DEFAULT_PROMPT.getBooleanValue()) return;
 
         // 2. 防刷屏冷却检查（仅在 useCooldown 为 true 时触发）
-        long currentTime = System.currentTimeMillis();
-        if (useCooldown && errorKey.equals(lastErrorKey) && (currentTime - lastPromptTime) < DefaultPromptSub.PROMPT_COOLDOWN.getIntegerValue()) return;
+        if (useCooldown && TimeManager.checkAndRecordMillisCooldown(
+                "prompt_" + errorKey, DefaultPromptSub.PROMPT_COOLDOWN::getIntegerValue)) return;
 
         // 3. 黑名单过滤（仅匹配功能名称）
         String featureName = Component.translatable(feature.getTranslatedName()).getString();
@@ -70,11 +66,6 @@ public final class NotifyUtil {
             }
         }
 
-        // 通过过滤拦截后，仅在启用了冷却时更新时间戳，避免不常驻的通知冲掉高频通知的冷却节奏
-        if (useCooldown) {
-            lastErrorKey = errorKey;
-            lastPromptTime = currentTime;
-        }
 
         // 4. 解析文本样式与颜色
         boolean shouldBold = DefaultPromptSub.BOLD_TEXT.getBooleanValue();

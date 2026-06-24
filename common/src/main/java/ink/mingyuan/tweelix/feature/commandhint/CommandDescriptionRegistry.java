@@ -1,14 +1,12 @@
 package ink.mingyuan.tweelix.feature.commandhint;
 
-import ink.mingyuan.tweelix.config.category.DisplayCategory;
+import ink.mingyuan.tweelix.config.category.Display;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-
-import java.util.*;
 
 public class CommandDescriptionRegistry {
 
@@ -23,7 +21,7 @@ public class CommandDescriptionRegistry {
 
     public Component getHint(String suggestionText, String inputCommandText, String CommandPath) {
 
-        if (!DisplayCategory.ENABLE_COMMAND_HINT.getBooleanValue()
+        if (!Display.ENABLE_COMMAND_HINT.getBooleanValue()
                 || suggestionText == null
                 || inputCommandText == null) {
             return null;
@@ -44,6 +42,10 @@ public class CommandDescriptionRegistry {
         if (I18n.exists(genericKey)) {
             return Component.translatable(genericKey);
         }
+
+        // 本模组命令描述查找
+        Component modHint = getModCommandHint(suggestionText);
+        if (modHint != null) return modHint;
 
         if (isItemId(suggestionText)) {
             return getItemDisplayName(suggestionText);
@@ -106,6 +108,30 @@ public class CommandDescriptionRegistry {
                 ? inputWithoutSlash.substring(inputWithoutSlash.lastIndexOf(' ') + 1).trim()
                 : inputWithoutSlash.trim();
         return pathLastNode.equals(inputLastNode);
+    }
+
+    /**
+     * 查找本模組（/tweelix）子命令的描述翻译。
+     * 顺序：{@code tweelix.command.<name>.description} → 配置 comment → 配置 name
+     */
+    private static Component getModCommandHint(String suggestion) {
+        // 专用命令描述
+        String cmdKey = "tweelix.command." + suggestion + ".description";
+        if (I18n.exists(cmdKey)) {
+            return Component.translatable(cmdKey);
+        }
+
+        String[] cats = {"generic", "display", "tweaks"};
+
+        // 配置项 name
+        for (String cat : cats) {
+            String nameKey = "tweelix.config." + cat + ".name." + suggestion;
+            if (I18n.exists(nameKey)) {
+                return Component.translatable(nameKey);
+            }
+        }
+
+        return null;
     }
 
     private String getShortCommandKey(String suggestionText, String inputCommandText) {

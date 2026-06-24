@@ -2,7 +2,7 @@ package ink.mingyuan.tweelix.feature;
 
 import fi.dy.masa.malilib.config.IConfigOptionListEntry;
 import fi.dy.masa.malilib.util.StringUtils;
-import ink.mingyuan.tweelix.config.category.GenericCategory;
+import ink.mingyuan.tweelix.config.category.Generic;
 import ink.mingyuan.tweelix.config.subconfig.CrosshairCopySub;
 import ink.mingyuan.tweelix.compat.minecraft.ExClickEvent;
 import ink.mingyuan.tweelix.mixin.accessor.HandledScreenAccessor;
@@ -35,7 +35,7 @@ import java.util.function.Function;
 
 import static ink.mingyuan.tweelix.util.TranslationUtil.translateOrDefault;
 
-public class CrosshairCopyHandler {
+public class CrosshairCopy {
 
     private static final String MOD_PREFIX = "[Tweelix] ";
     /** 详情模式下的字段分隔符，深灰色加粗 */
@@ -50,7 +50,7 @@ public class CrosshairCopyHandler {
     ) {}
 
     public static void copyTargetInfo(Minecraft client) {
-        if (!GenericCategory.CROSSHAIR_COPY.getBooleanValue()) return;
+        if (!Generic.CROSSHAIR_COPY.getBooleanValue()) return;
         if (client.player == null || client.level == null) return;
 
         resolveTarget(client).ifPresent(target -> {
@@ -58,7 +58,7 @@ public class CrosshairCopyHandler {
             String content = mode.extract(target, client.player);
             client.keyboardHandler.setClipboard(content);
 
-            NotifyUtil.sendFeatureActionbar(GenericCategory.CROSSHAIR_COPY, "tweelix.message.copied", content);
+            NotifyUtil.sendFeatureActionbar(Generic.CROSSHAIR_COPY, "tweelix.message.copied", content);
 
             if (CrosshairCopySub.SEND_ALL_COPYABLE.getBooleanValue()) {
                 sendAllInfo(client.player, target);
@@ -184,7 +184,7 @@ public class CrosshairCopyHandler {
 
         String extract(TargetInfo target, Player player) {
             if (needsOwnPosition && !target.hasOwnPosition) {
-                NotifyUtil.sendFeatureActionbar(GenericCategory.CROSSHAIR_COPY, "tweelix.message.position.fallback");
+                NotifyUtil.sendFeatureActionbar(Generic.CROSSHAIR_COPY, "tweelix.message.position.fallback");
             }
             return extractor.apply(target);
         }
@@ -201,31 +201,11 @@ public class CrosshairCopyHandler {
 
         @Override
         public IConfigOptionListEntry fromString(String name) {
-            for (TargetCopyMode m : values()) {
-                if (m.configName.equalsIgnoreCase(name)) return m;
+            for (TargetCopyMode mode : values()) {
+                if (mode.configName.equalsIgnoreCase(name)) return mode;
             }
             return REGISTRY_NAME;
         }
-    }
-
-    private static List<String> collectTags(Block block) {
-        return BuiltInRegistries.BLOCK.wrapAsHolder(block).tags().map(tagKey -> tagKey.location().toString()).toList();
-    }
-
-    private static List<String> collectTags(EntityType<?> entityType) {
-        return BuiltInRegistries.ENTITY_TYPE.wrapAsHolder(entityType).tags().map(tagKey -> tagKey.location().toString()).toList();
-    }
-
-    private static List<String> collectTags(ItemStack stack) {
-        return stack.getTags().map(tagKey -> tagKey.location().toString()).toList();
-    }
-
-    private static String formatBlockPos(BlockPos pos) {
-        return pos.getX() + " " + pos.getY() + " " + pos.getZ();
-    }
-
-    private static String formatPlayerPos(Player player) {
-        return String.format("%.2f %.2f %.2f", player.getX(), player.getY(), player.getZ());
     }
 
     private static TargetCopyMode getCopyMode() {
@@ -234,24 +214,46 @@ public class CrosshairCopyHandler {
     }
 
     public static void handleExpandTags(String data) {
-        Minecraft mc = Minecraft.getInstance();
-        if (mc.player == null) return;
+        Player player = Minecraft.getInstance().player;
+        if (player == null) return;
 
-        String[] tags = data.split("\n", -1);
-        MutableComponent result = Component.empty();
+        String[] tags = data.split("\n");
+        MutableComponent message = Component.literal(MOD_PREFIX).withStyle(ChatFormatting.DARK_GREEN)
+                .append(Component.literal("Tags:").withStyle(ChatFormatting.WHITE));
 
-        for (int i = 0; i < tags.length; i++) {
-            String tag = tags[i];
-            MutableComponent tagComponent = Component.literal(tag).withStyle(style -> style
-                    .withColor(ChatFormatting.WHITE)
-                    .withHoverEvent(new HoverEvent.ShowText(Component.translatable("tweelix.hover.click_to_copy")))
-                    .withClickEvent(new ClickEvent.CopyToClipboard(tag))
-            );
-            result.append(tagComponent);
-            if (i < tags.length - 1) {
-                result.append(Component.literal("\n"));
-            }
+        for (String tag : tags) {
+            if (tag.trim().isEmpty()) continue;
+            message.append(Component.literal("\n  - ").withStyle(ChatFormatting.GRAY))
+                    .append(Component.literal(tag.trim()).withStyle(ChatFormatting.YELLOW)
+                            .withStyle(style -> style
+                                    .withClickEvent(new ClickEvent.CopyToClipboard(tag.trim()))
+                                    .withHoverEvent(new HoverEvent.ShowText(Component.translatable("tweelix.hover.click_to_copy")))
+                            ));
         }
-        mc.player.displayClientMessage(result, false);
+
+        player.displayClientMessage(message, false);
+    }
+
+    // ==================== 位置格式化 ====================
+    private static String formatBlockPos(BlockPos pos) {
+        return pos.getX() + " " + pos.getY() + " " + pos.getZ();
+    }
+
+    private static String formatPlayerPos(Player player) {
+        BlockPos p = player.blockPosition();
+        return p.getX() + " " + p.getY() + " " + p.getZ();
+    }
+
+    // ==================== 标签收集 ====================
+    private static List<String> collectTags(ItemStack stack) {
+        return stack.getTags().map(t -> t.location().toString()).toList();
+    }
+
+    private static List<String> collectTags(Block block) {
+        return block.builtInRegistryHolder().tags().map(t -> t.location().toString()).toList();
+    }
+
+    private static List<String> collectTags(EntityType<?> type) {
+        return type.builtInRegistryHolder().tags().map(t -> t.location().toString()).toList();
     }
 }

@@ -54,4 +54,22 @@ public final class ClientTickEvents {
          */
         void onEndTick(Minecraft client);
     }
+
+    // ========== 冷却时钟（每帧递减倒计时） ==========
+    public static final TweelixEventFactory.Event<CooldownTick> COOLDOWN = TweelixEventFactory.create(CooldownTick.class,
+            (listeners) -> {
+                if (listeners.length == 0) return (client) -> {};
+                return (client) -> {
+                    for (CooldownTick listener : listeners) {
+                        listener.onCooldownTick(client);
+                    }
+                };
+            }
+    );
+
+    @FunctionalInterface
+    public interface CooldownTick {
+        /** 冷却时钟脉冲，每帧触发一次，用于全局倒计时递减 */
+        void onCooldownTick(Minecraft client);
+    }
 }

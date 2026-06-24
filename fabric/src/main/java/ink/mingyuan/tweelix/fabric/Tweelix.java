@@ -1,12 +1,11 @@
 package ink.mingyuan.tweelix.fabric;
 
-import ink.mingyuan.tweelix.util.CommandExporter;
+import ink.mingyuan.tweelix.command.TweelixCommonCommands;
 import ink.mingyuan.tweelix.TweelixCommon;
+import ink.mingyuan.tweelix.util.PlatformHelper;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
-import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
-import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
+import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.fabricmc.fabric.api.resource.v1.pack.PackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
@@ -18,6 +17,8 @@ public class Tweelix implements ModInitializer {
     @Override
     public void onInitialize() {
 
+        PlatformHelper.setModLoadChecker(modId -> FabricLoader.getInstance().isModLoaded(modId));
+
         String version = FabricLoader.getInstance().getModContainer("tweelix")
                 .map(c -> c.getMetadata().getVersion().getFriendlyString())
                 .orElse("unknown");
@@ -25,10 +26,10 @@ public class Tweelix implements ModInitializer {
 
         FabricLoader.getInstance().getModContainer("tweelix").ifPresent(modContainer -> {
             boolean registered = ResourceLoader.registerBuiltinPack(
-                    Identifier.parse("tweelix:command_hints"),           // 包 ID
+                    Identifier.parse("tweelix:command_hints"),
                     modContainer,
-                    Component.literal("Tweelix 命令提示扩展翻译"),           // 显示名称
-                    PackActivationType.NORMAL                              // ← 新类型，默认禁用
+                    Component.literal("Tweelix 命令提示扩展翻译"),
+                    PackActivationType.NORMAL
             );
 
             if (!registered) {
@@ -36,19 +37,11 @@ public class Tweelix implements ModInitializer {
             }
         });
 
-        // 在 onInitialize() 里面加上这一段
+        // 统一在客户端命令注册事件中处理所有客户端命令
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
-            dispatcher.register(ClientCommandManager.literal("exportkeys")
-                    .executes(context -> {
-                        // 调用你的导出工具
-                        CommandExporter.exportAllCommandKeys();
 
-                        // 在游戏聊天栏提示一下玩家
-                        context.getSource().sendFeedback(Component.literal("§a[Tweelix] 命令 Key 导出成功！"));
-                        return 1;
-                    }));
+            TweelixCommonCommands.register(dispatcher, FabricClientCommandSource::sendFeedback);
+
         });
-
-
     }
 }

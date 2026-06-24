@@ -74,7 +74,7 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
             int settingsBtnWidth = 22;
             ButtonGeneric settingsButton = new ButtonGeneric(x, y, 20, 20, "",
                     TweelixIcons.SETTINGS,
-                    StringUtils.translate("tweelix.gui.personalconfig.button"));
+                    StringUtils.translate("tweelix.gui.sub_config.button"));
             this.addButton(settingsButton, new ConfigSettingsButtonListener(boolConfig));
             x += settingsBtnWidth;
             configWidth -= settingsBtnWidth;

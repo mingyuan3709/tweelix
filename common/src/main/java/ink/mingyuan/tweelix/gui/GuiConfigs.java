@@ -43,6 +43,10 @@ public class GuiConfigs extends GuiConfigsBase {
 
     @Override
     public List<GuiConfigsBase.ConfigOptionWrapper> getConfigs() {
+        if (currentTab == ConfigGuiTab.ALL) {
+            List<? extends IConfigBase> configs = TweelixConfig.INSTANCE.getAllOptions();
+            return GuiConfigsBase.ConfigOptionWrapper.createFor(configs);
+        }
         String categoryId = currentTab.name().toLowerCase();
         List<? extends IConfigBase> configs = TweelixConfig.INSTANCE.getOptionsForCategory(categoryId);
         return GuiConfigsBase.ConfigOptionWrapper.createFor(configs);
@@ -61,9 +65,10 @@ public class GuiConfigs extends GuiConfigsBase {
     }
 
     public enum ConfigGuiTab {
+        ALL ("tweelix.gui.config_gui_tab.all"),
         GENERIC ("tweelix.gui.config_gui_tab.generic"),
-        TWEAKS("tweelix.gui.config_gui_tab.tweaks"),
-        DISPLAY("tweelix.gui.config_gui_tab.display");
+        TWEAKS ("tweelix.gui.config_gui_tab.tweaks"),
+        DISPLAY ("tweelix.gui.config_gui_tab.display");
 
         private final String translationKey;
 

@@ -133,3 +133,7 @@ runs/
 
 # CodeWhale
 .codewhale/
+
+# Editor / tool caches
+.deepseek/
+*.txt

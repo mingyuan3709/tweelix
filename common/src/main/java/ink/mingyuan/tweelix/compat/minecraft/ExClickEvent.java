@@ -1,6 +1,6 @@
 package ink.mingyuan.tweelix.compat.minecraft;
 
-import ink.mingyuan.tweelix.feature.CrosshairCopyHandler;
+import ink.mingyuan.tweelix.feature.CrosshairCopy;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.ClickEvent;
@@ -20,7 +20,7 @@ public class ExClickEvent {
 
     public enum Action {
 
-        EXPAND_TAGS("expand_tags",CrosshairCopyHandler::handleExpandTags);
+        EXPAND_TAGS("expand_tags", CrosshairCopy::handleExpandTags);
 
         private final String id;
         private final Consumer<String> handler;

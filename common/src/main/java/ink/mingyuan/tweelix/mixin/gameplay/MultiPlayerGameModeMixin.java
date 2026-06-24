@@ -1,5 +1,6 @@
 package ink.mingyuan.tweelix.mixin.gameplay;
 
+import ink.mingyuan.tweelix.config.category.Tweaks;
 import ink.mingyuan.tweelix.event.ClientAttackEvents;
 import ink.mingyuan.tweelix.event.ClientUseEvents;
 import net.minecraft.client.Minecraft;
@@ -17,6 +18,7 @@ import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -25,6 +27,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  */
 @Mixin(MultiPlayerGameMode.class)
 public class MultiPlayerGameModeMixin {
+
+    @Shadow private int destroyDelay;
 
     /** 右键点击方块 */
     @Inject(method = "useItemOn", at = @At("HEAD"), cancellable = true)
@@ -72,6 +76,7 @@ public class MultiPlayerGameModeMixin {
         if (player == null) return;
         InteractionResult result = ClientAttackEvents.BLOCK.invoker().onAttackBlock(player, pos, direction);
         if (result != InteractionResult.PASS) {
+            ((MultiPlayerGameMode) (Object) this).stopDestroyBlock(); // 清零残留的 isDestroying
             cir.setReturnValue(result.consumesAction());
         }
     }
@@ -97,5 +102,25 @@ public class MultiPlayerGameModeMixin {
             if (player == null) return;
             ClientAttackEvents.BREAK.invoker().onBreakBlock(player, pos);
         }
+    }
+
+    /** 持续挖掘 — 斩断 sameDestroyTarget 绕过漏洞 */
+    @Inject(method = "continueDestroyBlock", at = @At("HEAD"), cancellable = true)
+    private void onContinueDestroyBlock(BlockPos pos, Direction direction, CallbackInfoReturnable<Boolean> cir) {
+        LocalPlayer player = Minecraft.getInstance().player;
+        if (player == null) return;
+        InteractionResult result = ClientAttackEvents.BLOCK.invoker().onAttackBlock(player, pos, direction);
+        if (result != InteractionResult.PASS) {
+            // 强制清零原版残留的连续挖掘状态，打断进度累加
+            ((MultiPlayerGameMode) (Object) this).stopDestroyBlock();
+            cir.setReturnValue(result.consumesAction());
+        }
+    }
+
+    /** 移除挖掘冷却 — continueDestroyBlock 返回前清零 */
+    @Inject(method = "continueDestroyBlock", at = @At("RETURN"))
+    private void onContinueDestroyBlockReturn(BlockPos pos, Direction direction, CallbackInfoReturnable<Boolean> cir) {
+        if (!Tweaks.MINING_COOLDOWN.getBooleanValue()) return;
+        this.destroyDelay = 0;
     }
 }

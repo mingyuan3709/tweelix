@@ -4,8 +4,7 @@ import com.mojang.brigadier.ParseResults;
 import com.mojang.brigadier.context.ParsedCommandNode;
 import com.mojang.brigadier.suggestion.Suggestion;
 import com.mojang.brigadier.tree.CommandNode;
-import ink.mingyuan.tweelix.feature.commandhint.CommandDescriptionRegistry;
-import ink.mingyuan.tweelix.config.category.DisplayCategory;
+import ink.mingyuan.tweelix.config.category.Display;
 import ink.mingyuan.tweelix.mixin.accessor.CommandSuggestionsAccessor;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -32,7 +31,7 @@ public final class CommandHintRenderer {
      */
     public static int calculateWidth(int originalK, CommandSuggestions outerInstance,
                                       List<Suggestion> list) {
-        if (!DisplayCategory.ENABLE_COMMAND_HINT.getBooleanValue()
+        if (!Display.ENABLE_COMMAND_HINT.getBooleanValue()
                 || list == null || list.isEmpty()) {
             return originalK;
         }
@@ -69,7 +68,7 @@ public final class CommandHintRenderer {
     public static void renderDescriptions(GuiGraphics guiGraphics, int mouseX, int mouseY,
                                            CommandSuggestions outerInstance, List<Suggestion> suggestionList,
                                            int offset, int rectX, int rectY, int rectWidth) {
-        if (!DisplayCategory.ENABLE_COMMAND_HINT.getBooleanValue()) return;
+        if (!Display.ENABLE_COMMAND_HINT.getBooleanValue()) return;
         if (outerInstance == null || suggestionList == null || suggestionList.isEmpty()) return;
 
         CommandSuggestionsAccessor outerAcc = (CommandSuggestionsAccessor) outerInstance;

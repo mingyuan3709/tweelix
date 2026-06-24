@@ -5,7 +5,7 @@ import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.config.options.ConfigBoolean;
 import fi.dy.masa.malilib.config.options.ConfigOptionList;
 import ink.mingyuan.tweelix.Reference;
-import ink.mingyuan.tweelix.feature.CrosshairCopyHandler;
+import ink.mingyuan.tweelix.feature.CrosshairCopy;
 import java.util.List;
 
 public class CrosshairCopySub{
@@ -14,7 +14,7 @@ public class CrosshairCopySub{
 
     public static final ConfigOptionList TARGET_COPY_MODE =
             new ConfigOptionList("targetCopyMode",
-                    CrosshairCopyHandler.TargetCopyMode.REGISTRY_NAME,
+                    CrosshairCopy.TargetCopyMode.REGISTRY_NAME,
                     "Sets which part of the targeted block/item will be copied by default")
                     .apply(TRANSLATION_KEY);
 

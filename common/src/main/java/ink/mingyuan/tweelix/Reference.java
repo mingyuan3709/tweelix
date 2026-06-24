@@ -9,4 +9,6 @@ public class Reference {
 
     public static final String MOD_ID = "tweelix";
 
+    public static String MOD_VERSION = "unknown";
+
 }

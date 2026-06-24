@@ -79,11 +79,11 @@ dependencies {
 
     include(implementation("me.fallenbreath:conditional-mixin-fabric:${project.conditionalmixin_version}"))
 
-   // modCompileOnly "maven.modrinth:iris:${project.iris_version}"
+    modImplementation "maven.modrinth:iris:${project.iris_version}"
 
-   // modCompileOnly "maven.modrinth:sodium:${project.sodium_version}"
+    modImplementation "maven.modrinth:sodium:${project.sodium_version}"
 
-    //modCompileOnly "com.github.sakura-ryoko:litematica:${project.litematica_version}"
+    modImplementation "com.github.sakura-ryoko:litematica:${project.litematica_version}"
 
     //modImplementation "com.github.sakura-ryoko:tweakeroo:${project.tweakeroo_version}"
 

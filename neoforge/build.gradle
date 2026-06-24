@@ -8,6 +8,10 @@ architectury {
     neoForge()
 }
 
+loom {
+    accessWidenerPath = project(":common").file("src/main/resources/tweelix.accesswidener")
+}
+
 configurations {
     common
     shadowCommon
@@ -23,6 +27,10 @@ repositories {
     maven {url = 'https://maven.fallenbreath.me/releases'
         content {includeGroupAndSubgroups("me.fallenbreath")}
     }
+
+    maven {
+        url = "https://dl.cloudsmith.io/public/thinkingstudio/forgifiedfabricapi/maven/"
+    }
 }
 
 dependencies {
@@ -36,6 +44,12 @@ dependencies {
     modImplementation "maven.modrinth:mafglib:${project.mafglib_version}"
 
     include(implementation("me.fallenbreath:conditional-mixin-${loom.platform.get().id()}:${project.conditionalmixin_version}"))
+
+    // ForgifiedFabricAPI — ForgeMatica 所需的 Fabric API 兼容层
+    //modImplementation("org.sinytra.forgified-fabric-api:fabric-api-base:0.4.42+d1308ded49") { transitive = false }
+    //modImplementation("org.sinytra.forgified-fabric-api:fabric-networking-api-v1:4.3.3+e76757cb6c") { transitive = false }
+
+    //modImplementation "maven.modrinth:forgematica:${project.forgematica_version}"
 }
 
 processResources {
@@ -58,4 +72,14 @@ shadowJar {
 
     configurations = [project.configurations.shadowCommon]
     archiveClassifier = "shadow"
+}
+
+jar {
+    archiveClassifier = "bare"
+}
+
+remapJar {
+    inputFile.set(shadowJar.archiveFile)
+    dependsOn shadowJar
+    archiveClassifier = null
 }

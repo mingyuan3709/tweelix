@@ -5,7 +5,7 @@ import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.render.GuiContext;
 import fi.dy.masa.malilib.render.RenderUtils;
 import fi.dy.masa.malilib.util.StringUtils;
-import ink.mingyuan.tweelix.compat.malilib.GuiConfigsBaseExtended;
+import ink.mingyuan.tweelix.gui.GuiConfigsBaseExtended;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.gui.GuiGraphics;

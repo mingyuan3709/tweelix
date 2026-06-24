@@ -24,6 +24,7 @@
   "mixins": [
     "tweelix.mixins.json"
   ],
+  "accessWidener": "tweelix.accesswidener",
   "depends": {
     "fabricloader": ">=${loader_version}",
     "fabric-api": "*",

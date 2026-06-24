@@ -3,15 +3,14 @@ architectury {
 }
 
 loom {
+    accessWidenerPath = file("src/main/resources/tweelix.accesswidener")
 }
 
 repositories {
 
     maven {
         url = "https://api.modrinth.com/maven" }
-
 }
-
 
 
 dependencies {
@@ -20,6 +19,9 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
     modCompileOnly "maven.modrinth:malilib:${project.malilib_version}"
+
+    modCompileOnly "maven.modrinth:litematica:0.26.9"
+
 }
 
 java {
