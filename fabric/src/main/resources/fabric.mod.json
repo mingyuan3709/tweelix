@@ -3,7 +3,7 @@
   "id": "tweelix",
   "version": "${version}",
   "name": "Tweelix",
-  "description": "A vanilla-focused survival utility mod by ming_yuan",
+  "description": "一个面向原版生存的轻量客户端辅助模组\nA vanilla-focused lightweight client-side utility mod.",
   "authors": ["ming_yuan"],
   "contact": {
     "homepage": "https://space.bilibili.com/388406072",

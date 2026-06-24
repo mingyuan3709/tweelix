@@ -1,6 +1,6 @@
 modLoader = "javafml"
 loaderVersion = "[2,)"
-#issueTrackerURL = ""
+issueTrackerURL = "https://github.com/mingyuan3709/tweelix/issues"
 license = "GNU LGPL 3.0"
 
 [[mods]]
@@ -9,7 +9,8 @@ version = "${version}"
 displayName = "Tweelix"
 authors = "ming_yuan"
 description = '''
-
+一个面向原版生存的轻量客户端辅助模组
+A vanilla-focused lightweight client-side utility mod.
 '''
 logoFile = "assets/tweelix/icon.png"
 

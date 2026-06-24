@@ -27,6 +27,7 @@
   "tweelix.toggle.enabled": "§a启用",
   "tweelix.toggle.disabled": "§c禁用",
   "tweelix.toggle.message": "%s：%s",
+  "tweelix.toggle.status": "%s",
   "tweelix.config.generic.name.visitorMode": "参观模式",
   "tweelix.config.generic.comment.visitorMode": "禁止破坏/放置方块以及伤害实体",
   "tweelix.config.generic.name.defaultPrompt": "默认提示开关",

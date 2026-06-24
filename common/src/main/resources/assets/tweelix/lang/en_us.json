@@ -27,6 +27,7 @@
   "tweelix.toggle.enabled": "§aEnabled",
   "tweelix.toggle.disabled": "§cDisabled",
   "tweelix.toggle.message": "%s: %s",
+  "tweelix.toggle.status": "%s",
   "tweelix.config.generic.name.visitorMode": "Visitor Mode",
   "tweelix.config.generic.comment.visitorMode": "Prevents block breaking/placing and entity damage",
   "tweelix.config.generic.name.defaultPrompt": "Default Prompt Toggle",

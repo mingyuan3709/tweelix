@@ -12,6 +12,18 @@ loom {
     accessWidenerPath = project(":common").file("src/main/resources/tweelix.accesswidener")
 }
 
+base {
+    archivesName = project.archives_base_name
+}
+
+tasks.named('remapJar') {
+    archiveFileName = "${project.archives_base_name}-${project.version}-mc${project.minecraft_version}-neoforge.jar"
+}
+
+tasks.named('shadowJar') {
+    archiveFileName = "${project.archives_base_name}-${project.version}-mc${project.minecraft_version}-neoforge-shadow.jar"
+}
+
 configurations {
     common
     shadowCommon
@@ -45,11 +57,6 @@ dependencies {
 
     include(implementation("me.fallenbreath:conditional-mixin-${loom.platform.get().id()}:${project.conditionalmixin_version}"))
 
-    // ForgifiedFabricAPI — ForgeMatica 所需的 Fabric API 兼容层
-    //modImplementation("org.sinytra.forgified-fabric-api:fabric-api-base:0.4.42+d1308ded49") { transitive = false }
-    //modImplementation("org.sinytra.forgified-fabric-api:fabric-networking-api-v1:4.3.3+e76757cb6c") { transitive = false }
-
-    //modImplementation "maven.modrinth:forgematica:${project.forgematica_version}"
 }
 
 processResources {

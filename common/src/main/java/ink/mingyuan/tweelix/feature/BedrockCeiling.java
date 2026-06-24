@@ -30,8 +30,8 @@ public final class BedrockCeiling {
 
     private static final int MAX_Y = 127;
     private static final int MIN_Y = 123;
-    private static final int MIN_PLAYER_Y_FOR_SCAN = 120;
-    private static final long UPDATE_INTERVAL = 2;
+    private static final int MIN_PLAYER_Y_FOR_SCAN = 118;
+    private static final long UPDATE_INTERVAL = 5;
     private static final Color4f COLOR = Color4f.fromColor(0x7F00FF00);
     private static final Set<BlockPos> CACHE = new HashSet<>();
     private static final String SCAN_COOLDOWN_KEY = "bedrock_scan";
@@ -109,8 +109,8 @@ public final class BedrockCeiling {
                 //如果玩家是想要在下面上天花板
                 if(playerY<123 && playerY > MIN_PLAYER_Y_FOR_SCAN ){
                      bb = new IntBoundingBox(
-                            pos.getX(), pos.getY(), pos.getZ(),
-                            pos.getX(), 122 , pos.getZ()
+                            pos.getX(), pos.getY()+1, pos.getZ(),
+                            pos.getX(), 121 , pos.getZ()
                     );
 
                 }else {

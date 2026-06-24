@@ -111,7 +111,16 @@ public final class NotifyUtil {
      */
     public static void sendToggleMessage(IConfigBase config, boolean enabled) {
         String statusKey = enabled ? "tweelix.toggle.enabled" : "tweelix.toggle.disabled";
-        sendFeatureActionbarInternal(config, "tweelix.toggle.message", false, Component.translatable(config.getTranslatedName()), Component.translatable(statusKey));
+        if (DefaultPromptSub.SHOW_PREFIX.getBooleanValue()) {
+            // 功能前缀已包含功能名，消息体只显示状态
+            sendFeatureActionbarInternal(config, "tweelix.toggle.status", false,
+                    Component.translatable(statusKey));
+        } else {
+            // 未显示功能前缀，显示完整：功能名称：状态
+            sendFeatureActionbarInternal(config, "tweelix.toggle.message", false,
+                    Component.translatable(config.getTranslatedName()),
+                    Component.translatable(statusKey));
+        }
     }
 
     /**

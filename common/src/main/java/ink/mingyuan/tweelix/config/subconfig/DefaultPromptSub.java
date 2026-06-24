@@ -19,11 +19,11 @@ public class DefaultPromptSub {
 
     public static final ConfigBoolean SHOW_MOD_PREFIX = new ConfigBoolean("showModPrefix", true, "Whether to display the Mod name prefix").apply(TRANSLATION_KEY);
     public static final ConfigBoolean SHOW_PREFIX = new ConfigBoolean("showPrefix", true, "Whether to display the feature name prefix").apply(TRANSLATION_KEY);
-    public static final ConfigColor PREFIX_COLOR = new ConfigColor("prefixColor", "0xFFAAAAAA", "Color of the prefixes").apply(TRANSLATION_KEY);
-    public static final ConfigColor TEXT_COLOR = new ConfigColor("textColor", "0xFFFFFFFF", "Color of the main notification text").apply(TRANSLATION_KEY);
+    public static final ConfigColor PREFIX_COLOR = new ConfigColor("prefixColor", "#00379FDD", "Color of the prefixes").apply(TRANSLATION_KEY);
+    public static final ConfigColor TEXT_COLOR = new ConfigColor("textColor", "#00FF779E", "Color of the main notification text").apply(TRANSLATION_KEY);
     public static final ConfigBoolean BOLD_TEXT = new ConfigBoolean("boldText", false, "Whether to bold the notification text").apply(TRANSLATION_KEY);
     public static final ConfigBoolean USE_ATTENTION_COLOR = new ConfigBoolean("useAttentionColor", false, "Force use a distinct color for warnings").apply(TRANSLATION_KEY);
-    public static final ConfigColor ATTENTION_COLOR = new ConfigColor("attentionColor", "0xFFFF5555", "The eye-catching color used when enabled").apply(TRANSLATION_KEY);
+    public static final ConfigColor ATTENTION_COLOR = new ConfigColor("attentionColor", "#FFFF5555", "The eye-catching color used when enabled").apply(TRANSLATION_KEY);
 
     public static final ConfigInteger PROMPT_COOLDOWN =
             new ConfigInteger("promptCooldown", 500, 0, 5000, "Cooldown between identical notifications (ms)").apply(TRANSLATION_KEY);

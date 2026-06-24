@@ -137,3 +137,5 @@ runs/
 # Editor / tool caches
 .deepseek/
 *.txt
+**/.codewhale/*
+!**/.codewhale/constitution.json
