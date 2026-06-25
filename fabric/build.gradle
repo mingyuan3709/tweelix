@@ -17,8 +17,22 @@ configurations {
 }
 
 repositories {
-    maven { url = 'https://masa.dy.fi/maven' }
-    maven { url = 'https://maven.terraformersmc.com/releases' }
+    mavenCentral()
+    maven {
+        url = "https://api.modrinth.com/maven" }
+    maven { url = "https://masa.dy.fi/maven/sakura-ryoko"
+        content {includeGroupAndSubgroups("fi.dy.masa")}
+    }
+    maven { url = 'https://maven.fallenbreath.me/releases'
+        content {includeGroupAndSubgroups("me.fallenbreath")}
+    }
+    maven { url = 'https://maven.terraformersmc.com/releases/'
+        content { includeGroupAndSubgroups("com.terraformersmc")}
+    }
+
+    maven { url = 'https://jitpack.io'
+        content { includeGroupAndSubgroups("com.github")}
+    }
     maven { url = 'https://www.cursemaven.com' }
     maven { url = 'https://maven.fallenbreath.me/jitpack' }
     maven { url = 'https://maven.fallenbreath.me/releases' }
@@ -35,8 +49,10 @@ dependencies {
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
 
-    implementation "maven.modrinth:malilib:${project.malilib_version}"
-    implementation "maven.modrinth:modmenu:${project.mod_menu_version}"
+    implementation "fi.dy.masa.malilib:malilib-fabric-${project.minecraft_version}:${project.malilib_version}"
+    //implementation "maven.modrinth:malilib:${project.malilib_version}"
+    //implementation "maven.modrinth:modmenu:${project.mod_menu_version}"
+    implementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
 
     implementation("me.fallenbreath:conditional-mixin-fabric:${project.conditionalmixin_version}")
     compileOnly "maven.modrinth:iris:${project.iris_version}"
