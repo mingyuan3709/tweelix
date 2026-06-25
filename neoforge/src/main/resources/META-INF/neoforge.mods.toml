@@ -17,14 +17,14 @@ logoFile = "assets/tweelix/icon.png"
 [[dependencies.tweelix]]
 modId = "neoforge"
 type = "required"
-versionRange = "[21,)"
+versionRange = "[26.1,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.tweelix]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.21.11,)"
+versionRange = "[26.1,)"
 ordering = "NONE"
 side = "BOTH"
 

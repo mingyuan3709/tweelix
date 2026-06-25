@@ -16,7 +16,6 @@ configurations {
     developmentNeoForge.extendsFrom common
 }
 
-// ---------- 仓库 ----------
 repositories {
     maven { url = 'https://masa.dy.fi/maven' }
     maven { url = 'https://maven.terraformersmc.com/releases' }
@@ -26,7 +25,6 @@ repositories {
     maven { url = "https://api.modrinth.com/maven" }
 }
 
-// ---------- 依赖 ----------
 dependencies {
 
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
@@ -39,14 +37,14 @@ dependencies {
 
     implementation "maven.modrinth:malilib:${project.malilib_version}"
     implementation "maven.modrinth:modmenu:${project.mod_menu_version}"
-    include(implementation("me.fallenbreath:conditional-mixin-fabric:${project.conditionalmixin_version}"))
 
+    implementation("me.fallenbreath:conditional-mixin-fabric:${project.conditionalmixin_version}")
     compileOnly "maven.modrinth:iris:${project.iris_version}"
     compileOnly "maven.modrinth:sodium:${project.sodium_version}"
     compileOnly "maven.modrinth:litematica:${project.litematica_version}"
 }
 
-// ---------- 资源处理 ----------
+
 processResources {
     dependsOn project(":common").tasks.processResources
     from project(":common").sourceSets.main.resources
@@ -63,50 +61,11 @@ processResources {
     }
 }
 
-// ---------- Java 编译配置 ----------
-def targetJavaVersion = 25
-tasks.withType(JavaCompile).configureEach {
-    it.options.encoding = "UTF-8"
-    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
-        it.options.release.set(targetJavaVersion)
-    }
-}
-
-java {
-    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
-    if (JavaVersion.current() < javaVersion) {
-        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
-    }
-}
-
-// ---------- ShadowJar（最终产物） ----------
 shadowJar {
     exclude "META-INF/neoforge.mods.toml"
+    exclude "architectury.common.json"
     configurations = [project.configurations.shadowCommon]
-    archiveClassifier = null  // 最终产物不需要 classifier
     archiveFileName = "${project.archives_base_name}-${project.version}-mc${project.minecraft_version}-fabric.jar"
+    archiveClassifier = null
 
-    from("LICENSE") {
-        rename { "${it}_${project.archives_base_name}" }
-    }
-}
-
-jar {
-    from("LICENSE") {
-        rename { "${it}_${project.archives_base_name}" }
-    }
-    archiveClassifier = "bare"
-}
-
-// ---------- 发布 ----------
-publishing {
-    publications {
-        create("mavenJava", MavenPublication) {
-            artifactId = project.archives_base_name
-            from components.java
-        }
-    }
-    repositories {
-        // 配置发布仓库
-    }
 }

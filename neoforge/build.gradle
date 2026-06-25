@@ -6,16 +6,6 @@ plugins {
 architectury {
     platformSetupLoomIde()
     neoForge()
-
-}
-
-base {
-    archivesName = project.archives_base_name
-}
-
-
-tasks.named('shadowJar') {
-    archiveFileName = "${project.archives_base_name}-${project.version}-mc${project.minecraft_version}-neoforge.jar"
 }
 
 configurations {
@@ -52,23 +42,24 @@ dependencies {
 }
 
 processResources {
+
     dependsOn project(":common").tasks.processResources
+
     from project(":common").sourceSets.main.resources
 
     filesMatching("META-INF/neoforge.mods.toml") {
         expand "version": project.version
     }
+
     inputs.property "META-INF/neoforge.mods.toml", project.version
 }
 
+
 shadowJar {
     exclude "fabric.mod.json"
-    exclude "tweelix.accessWidener"
-
+    exclude "tweelix.accesswidener"
+    exclude "architectury.common.json"
+    archiveFileName = "${project.archives_base_name}-${project.version}-mc${project.minecraft_version}-neoforge.jar"
     configurations = [project.configurations.shadowCommon]
-    archiveClassifier = null  // 最终产物
-}
-
-jar {
-    archiveClassifier = "bare"
+    archiveClassifier = null
 }

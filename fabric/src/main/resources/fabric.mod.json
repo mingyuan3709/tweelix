@@ -26,8 +26,8 @@
   ],
   "accessWidener": "tweelix.accesswidener",
   "depends": {
-    "fabricloader": ">=${loader_version}",
+    "fabricloader": "*",
     "fabric-api": "*",
-    "minecraft": "${minecraft_version}"
+    "minecraft": ">=26.1 <26.2"
   }
 }
