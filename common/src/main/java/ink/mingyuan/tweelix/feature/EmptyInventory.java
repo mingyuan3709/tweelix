@@ -2,15 +2,12 @@ package ink.mingyuan.tweelix.feature;
 
 import fi.dy.masa.malilib.hotkeys.IKeybind;
 import fi.dy.masa.malilib.hotkeys.KeyAction;
-import ink.mingyuan.tweelix.Reference;
-import ink.mingyuan.tweelix.config.category.Generic;
 import ink.mingyuan.tweelix.config.category.Tweaks;
 import ink.mingyuan.tweelix.config.subconfig.EmptyInventorySub;
 import ink.mingyuan.tweelix.util.DynamicMatchHelper;
 import ink.mingyuan.tweelix.util.NotifyUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.ContainerInput;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -59,11 +56,11 @@ public class EmptyInventory {
             boolean shouldDrop = itemsToDrop.stream()
                     .anyMatch(rule -> DynamicMatchHelper.matches(stack, rule));
             if (shouldDrop) {
-                client.gameMode.handleInventoryMouseClick(
+                client.gameMode.handleContainerInput (
                         handler.containerId,
                         slotId,
                         1,
-                        ClickType.THROW,
+                        ContainerInput.THROW,
                         client.player
                 );
                 droppedCount++;
@@ -71,11 +68,11 @@ public class EmptyInventory {
         }
 
         if (!handler.getCarried().isEmpty()) {
-            client.gameMode.handleInventoryMouseClick(
+            client.gameMode.handleContainerInput(
                     handler.containerId,
                     -999,
                     0,
-                    ClickType.PICKUP,
+                    ContainerInput.PICKUP,
                     client.player
             );
         }

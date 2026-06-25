@@ -22,7 +22,7 @@ public class CommandExporter {
     public static void exportAllCommandKeys() {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null) {
-            mc.gui.getChat().addMessage(
+            mc.gui.getChat().addClientSystemMessage(
                     Component.literal("§c[Tweelix] Please join a world or server first to load the command tree!"));
             return;
         }
@@ -54,7 +54,7 @@ public class CommandExporter {
         try (FileWriter writer = new FileWriter(exportFile)) {
             Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
             gson.toJson(root, writer);
-            mc.gui.getChat().addMessage(
+            mc.gui.getChat().addClientSystemMessage(
                     Component.literal("§a[Tweelix] Command keys exported to: " + exportFile.getAbsolutePath()));
         } catch (IOException e) {
             Reference.LOGGER.error("Failed to export command keys", e);

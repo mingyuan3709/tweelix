@@ -1,13 +1,10 @@
 package ink.mingyuan.tweelix.config;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
+import com.google.gson.*;
 import fi.dy.masa.malilib.config.ConfigUtils;
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.config.IConfigHandler;
 import fi.dy.masa.malilib.util.FileUtils;
-import fi.dy.masa.malilib.util.JsonUtils;
 import ink.mingyuan.tweelix.Reference;
 import ink.mingyuan.tweelix.config.category.Display;
 import ink.mingyuan.tweelix.config.category.Generic;
@@ -22,6 +19,8 @@ import ink.mingyuan.tweelix.config.subconfig.GameModeSwitcherSub;
 import ink.mingyuan.tweelix.config.subconfig.NightVisionSub;
 import ink.mingyuan.tweelix.config.subconfig.PerimeterWallDiggerSub;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -134,41 +133,47 @@ public class TweelixConfig implements IConfigHandler {
 
     @Override
     public void load() {
-        Path configFile = FileUtils.getConfigDirectoryAsPath().resolve(CONFIG_FILE_NAME);
+        Path configFile = FileUtils.getConfigDirectory().resolve(CONFIG_FILE_NAME); // 替换
         if (Files.exists(configFile) && Files.isReadable(configFile)) {
-            JsonElement element = JsonUtils.parseJsonFileAsPath(configFile);
-            if (element != null && element.isJsonObject()) {
-                JsonObject root = element.getAsJsonObject();
-
-                // 读取上次保存时的版本号，用于功能迁移
-                if (root.has("_version")) {
-                    savedVersion = root.get("_version").getAsString();
+            try (BufferedReader reader = Files.newBufferedReader(configFile)) {
+                JsonElement element = JsonParser.parseReader(reader);
+                if (element != null && element.isJsonObject()) {
+                    JsonObject root = element.getAsJsonObject();
+                    if (root.has("_version")) {
+                        savedVersion = root.get("_version").getAsString();
+                    }
+                    configMap.forEach((cat, opts) -> ConfigUtils.readConfigBase(root, cat, opts));
+                } else {
+                    Reference.LOGGER.error("loadFromFile(): Failed to parse config file '{}' as a JSON element.", configFile.toAbsolutePath());
                 }
-
-                configMap.forEach((cat, opts) -> ConfigUtils.readConfigBase(root, cat, opts));
-            } else {
-                Reference.LOGGER.error("loadFromFile(): Failed to parse config file '{}' as a JSON element.", configFile.toAbsolutePath());
+            } catch (Exception e) {
+                Reference.LOGGER.error("Failed to load config file", e);
             }
         }
     }
 
     @Override
     public void save() {
-        Path dir = FileUtils.getConfigDirectoryAsPath();
+        Path dir = FileUtils.getConfigDirectory(); // 替换
         if (!Files.exists(dir)) {
             FileUtils.createDirectoriesIfMissing(dir);
         }
-
         if (Files.isDirectory(dir)) {
             JsonObject root = new JsonObject();
-
-            // 持久化当前版本号，供下次 load() 做迁移判断
             if (modVersion != null) {
                 root.add("_version", new JsonPrimitive(modVersion));
             }
-
             configMap.forEach((cat, opts) -> ConfigUtils.writeConfigBase(root, cat, opts));
-            JsonUtils.writeJsonToFileAsPath(root, dir.resolve(CONFIG_FILE_NAME));
+
+            // 使用 Gson 写入
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            Path configFile = dir.resolve(CONFIG_FILE_NAME);
+            try (BufferedWriter writer = Files.newBufferedWriter(configFile)) {
+                gson.toJson(root, writer);
+            } catch (Exception e) {
+                Reference.LOGGER.error("Failed to save config file", e);
+            }
         }
     }
+
 }

@@ -8,7 +8,7 @@ import fi.dy.masa.malilib.util.StringUtils;
 import ink.mingyuan.tweelix.gui.GuiConfigsBaseExtended;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import org.jspecify.annotations.NonNull;
 
 import java.util.List;
@@ -73,9 +73,9 @@ public class GuiSubSettings extends GuiConfigsBaseExtended {
     protected int getBrowserHeight() { return dialogHeight - 24 - 20; }
 
     @Override
-    public void render(@NonNull GuiGraphics drawContext, int mouseX, int mouseY, float partialTicks)
+    public void extractRenderState(@NonNull GuiGraphicsExtractor drawContext, int mouseX, int mouseY, float partialTicks)
     {
-        if (this.getParent() != null) this.getParent().render(drawContext, mouseX, mouseY, partialTicks);
+        if (this.getParent() != null) this.getParent().extractRenderState(drawContext, mouseX, mouseY, partialTicks);
 
         this.drawScreenBackground(GuiContext.fromGuiGraphics(drawContext), mouseX, mouseY);
 
@@ -86,7 +86,7 @@ public class GuiSubSettings extends GuiConfigsBaseExtended {
                 this.dialogTop + this.dialogHeight - 20
         );
 
-        super.render(drawContext, mouseX, mouseY, partialTicks);
+        super.extractRenderState(drawContext, mouseX, mouseY, partialTicks);
 
         drawContext.disableScissor();
 

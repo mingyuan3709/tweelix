@@ -102,7 +102,11 @@ public final class NotifyUtil {
 
         // 6. 根据玩家配置动态分发显示位置
         DefaultPromptSub.PromptPosition position = (DefaultPromptSub.PromptPosition) DefaultPromptSub.PROMPT_POSITION.getOptionListValue();
-        player.displayClientMessage(finalMessage, position != DefaultPromptSub.PromptPosition.CHAT);
+        if (position == DefaultPromptSub.PromptPosition.CHAT) {
+            player.sendSystemMessage(finalMessage);
+        } else {
+            player.sendOverlayMessage(finalMessage);
+        }
     }
 
     /**
@@ -139,6 +143,6 @@ public final class NotifyUtil {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) return;
         Component debugMsg = Component.literal("[Debug] " + message).withStyle(ChatFormatting.GRAY);
-        player.displayClientMessage(debugMsg, false);
+        player.sendSystemMessage(debugMsg);
     }
 }

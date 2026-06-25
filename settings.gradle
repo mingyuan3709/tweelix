@@ -1,3 +1,4 @@
+//配置Gradle插件的下载解析仓库
 pluginManagement {
     repositories {
         maven { url = uri("https://maven.fabricmc.net/") }
@@ -8,14 +9,16 @@ pluginManagement {
     }
 }
 
+
+//运行环境强制性检查,当前执行Gradle构建任务的JDK版本必须是Java21或更高版本
 if (JavaVersion.current() < JavaVersion.VERSION_21) {
-    throw new IllegalStateException(
-            "Please run Gradle with Java 21 or newer! Current: ${JavaVersion.current()}"
-    )
+    throw new IllegalStateException("Please run gradle with Java 21+!")
 }
 
+//根项目的名称
 rootProject.name = "tweelix"
 
+//声明项目包含下面3个子模块
 include("common")
 include("fabric")
 include("neoforge")

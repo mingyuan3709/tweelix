@@ -6,65 +6,53 @@ plugins {
 architectury {
     platformSetupLoomIde()
     neoForge()
-}
 
-loom {
-    accessWidenerPath = project(":common").file("src/main/resources/tweelix.accesswidener")
 }
 
 base {
     archivesName = project.archives_base_name
 }
 
-tasks.named('remapJar') {
-    archiveFileName = "${project.archives_base_name}-${project.version}-mc${project.minecraft_version}-neoforge.jar"
-}
 
 tasks.named('shadowJar') {
-    archiveFileName = "${project.archives_base_name}-${project.version}-mc${project.minecraft_version}-neoforge-shadow.jar"
+    archiveFileName = "${project.archives_base_name}-${project.version}-mc${project.minecraft_version}-neoforge.jar"
 }
 
 configurations {
     common
     shadowCommon
-    compileClasspath.extendsFrom(common)
-    runtimeClasspath.extendsFrom(common)
-    developmentNeoForge.extendsFrom(common)
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentNeoForge.extendsFrom common
 }
 
 repositories {
-    maven {
-        url = "https://api.modrinth.com/maven" }
-
-    maven {url = 'https://maven.fallenbreath.me/releases'
-        content {includeGroupAndSubgroups("me.fallenbreath")}
+    maven { url = "https://api.modrinth.com/maven" }
+    maven { url = 'https://maven.fallenbreath.me/releases'
+        content { includeGroupAndSubgroups("me.fallenbreath") }
     }
-
-    maven {
-        url = "https://dl.cloudsmith.io/public/thinkingstudio/forgifiedfabricapi/maven/"
-    }
+    maven { url = "https://dl.cloudsmith.io/public/thinkingstudio/forgifiedfabricapi/maven/" }
 }
 
 dependencies {
+
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings loom.officialMojangMappings()
+
     neoForge "net.neoforged:neoforge:${project.neoforge_version}"
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
+
     shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive false }
 
-    modImplementation "maven.modrinth:mafglib:${project.mafglib_version}"
+    implementation "maven.modrinth:mafglib:${project.mafglib_version}"
 
-    include(implementation("me.fallenbreath:conditional-mixin-${loom.platform.get().id()}:${project.conditionalmixin_version}"))
+    implementation "maven.modrinth:foxifiedclasstweaker:${project.foxified_classtweaker_version}"
 
+    implementation "me.fallenbreath:conditional-mixin-neoforge:${project.conditionalmixin_version}"
 }
 
 processResources {
-
-    // 1. 声明依赖于 common 模块的 processResources 结果
     dependsOn project(":common").tasks.processResources
-
-    // 2. 引入公共模块的资源文件
     from project(":common").sourceSets.main.resources
 
     filesMatching("META-INF/neoforge.mods.toml") {
@@ -78,15 +66,9 @@ shadowJar {
     exclude "tweelix.accessWidener"
 
     configurations = [project.configurations.shadowCommon]
-    archiveClassifier = "shadow"
+    archiveClassifier = null  // 最终产物
 }
 
 jar {
     archiveClassifier = "bare"
-}
-
-remapJar {
-    inputFile.set(shadowJar.archiveFile)
-    dependsOn shadowJar
-    archiveClassifier = null
 }

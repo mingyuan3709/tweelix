@@ -1,8 +1,6 @@
 package ink.mingyuan.tweelix.mixin.gui;
 
 import ink.mingyuan.tweelix.feature.commandhint.CommandHintRenderer;
-import ink.mingyuan.tweelix.mixin.accessor.CommandSuggestionsAccessor;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.CommandSuggestions;
 import net.minecraft.client.renderer.Rect2i;
 import org.spongepowered.asm.mixin.Final;
@@ -17,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 
 import com.mojang.brigadier.suggestion.Suggestion;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 /**
  * 命令补全提示增强 — 薄注入层，业务逻辑委托给 {@link CommandHintRenderer}。
@@ -46,8 +44,8 @@ public class SuggestionsListMixin {
     }
 
     /** 渲染命令描述提示 */
-    @Inject(method = "render", at = @At("TAIL"))
-    private void renderDescriptions(GuiGraphics guiGraphics, int mouseX, int mouseY, CallbackInfo ci) {
+    @Inject(method = "extractRenderState", at = @At("TAIL"))
+    private void renderDescriptions(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, CallbackInfo ci) {
         CommandHintRenderer.renderDescriptions(
                 guiGraphics, mouseX, mouseY,
                 tweelix$outer, suggestionList, offset,

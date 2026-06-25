@@ -1,10 +1,24 @@
+plugins {
+    id "maven-publish"
+}
+
+
 architectury {
     common("fabric", "neoforge")
 }
 
 loom {
-    accessWidenerPath = file("src/main/resources/tweelix.accesswidener")
+    accessWidenerPath = file("src/main/resources/tweelix.accessWidener")
 }
+
+configurations {
+    common
+    shadowCommon
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentFabric.extendsFrom common
+}
+
 
 repositories {
 
@@ -14,16 +28,56 @@ repositories {
 
 
 dependencies {
+
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings loom.officialMojangMappings()
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    modCompileOnly "maven.modrinth:malilib:${project.malilib_version}"
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    modCompileOnly "maven.modrinth:litematica:0.26.9"
+    implementation "maven.modrinth:malilib:${project.malilib_version}"
+
+    implementation "maven.modrinth:litematica:${project.litematica_version}"
 
 }
 
+// 包含生成的资源
+sourceSets {
+    main {
+        resources {
+            srcDir file('src/generated/resources')
+        }
+    }
+}
+
+
 java {
     withSourcesJar()
+}
+
+// 1. 让原版 jar 任务输出 bare/raw 文件
+jar {
+    archiveClassifier = "raw"
+}
+
+// 在 common 模块中定义两个配置，并输出编译产物
+configurations {
+    namedElements {
+        canBeResolved = false
+        canBeConsumed = true
+    }
+}
+
+// 创建任务打包 main 输出（或者直接使用 sourceSets.main.output）
+tasks.register('namedJar', Jar) {
+    from sourceSets.main.output
+    archiveClassifier = 'named'
+}
+tasks.register('transformProductionFabricJar', Jar) {
+    from sourceSets.main.output
+    archiveClassifier = 'transformProductionFabric'
+}
+
+// 将产物挂到对应配置
+artifacts {
+    namedElements namedJar
+    transformProductionFabric transformProductionFabricJar
 }

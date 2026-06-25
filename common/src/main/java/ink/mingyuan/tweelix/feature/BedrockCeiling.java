@@ -19,6 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
+import org.joml.Matrix4fc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.HashSet;
@@ -73,12 +74,12 @@ public final class BedrockCeiling {
         TimeManager.setTickCooldown(SCAN_COOLDOWN_KEY, (int) UPDATE_INTERVAL);
 
         //获取玩家脚下的区块坐标（chunkX, chunkZ）
-        ChunkPos playerChunk = new ChunkPos(client.player.blockPosition());
+        ChunkPos playerChunk = ChunkPos.containing(client.player.blockPosition());
         Set<BlockPos> newCache = new HashSet<>();
 
         for (int dx = -1; dx <= 1; dx++) {
             for (int dz = -1; dz <= 1; dz++) {
-                ChunkPos chunkPos = new ChunkPos(playerChunk.x + dx, playerChunk.z + dz);
+                ChunkPos chunkPos = new ChunkPos(playerChunk.x() + dx, playerChunk.z() + dz);
                 scanChunk(client.level, chunkPos, newCache);
             }
         }
@@ -87,7 +88,7 @@ public final class BedrockCeiling {
         CACHE.addAll(newCache);
     }
 
-    private static void onRenderWorldLast(Matrix4f modelViewMatrix, Camera camera, DeltaTracker deltaTracker) {
+    private static void onRenderWorldLast(Matrix4fc modelViewMatrix, Camera camera, DeltaTracker deltaTracker) {
 
         if (!Display.DRAW_BEDROCK_CEILING_BLOCKS.getBooleanValue()) return;
 

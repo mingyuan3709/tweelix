@@ -7,7 +7,7 @@ import com.mojang.brigadier.tree.CommandNode;
 import ink.mingyuan.tweelix.config.category.Display;
 import ink.mingyuan.tweelix.mixin.accessor.CommandSuggestionsAccessor;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.CommandSuggestions;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.commands.SharedSuggestionProvider;
@@ -65,7 +65,7 @@ public final class CommandHintRenderer {
     /**
      * 在图形界面上渲染 “ - 提示文本”
      */
-    public static void renderDescriptions(GuiGraphics guiGraphics, int mouseX, int mouseY,
+    public static void renderDescriptions(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY,
                                            CommandSuggestions outerInstance, List<Suggestion> suggestionList,
                                            int offset, int rectX, int rectY, int rectWidth) {
         if (!Display.ENABLE_COMMAND_HINT.getBooleanValue()) return;
@@ -110,8 +110,8 @@ public final class CommandHintRenderer {
             }
 
             int itemY = rectY + 12 * n + 2;
-            guiGraphics.drawString(font, " - ", sepX, itemY, SEP_COLOR, false);
-            guiGraphics.drawString(font, descStr, descX, itemY, DESC_COLOR, false);
+            guiGraphics.text(font, " - ", sepX, itemY, SEP_COLOR, false);
+            guiGraphics.text(font, descStr, descX, itemY, DESC_COLOR, false);
         }
     }
 

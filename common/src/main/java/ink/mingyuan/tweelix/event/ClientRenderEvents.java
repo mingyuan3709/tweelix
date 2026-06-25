@@ -1,10 +1,9 @@
 package ink.mingyuan.tweelix.event;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Camera;
 import net.minecraft.client.DeltaTracker;
-import net.minecraft.client.gui.GuiGraphics;
-import org.joml.Matrix4f;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import org.joml.Matrix4fc;
 
 /**
  * 客户端渲染相关事件（适配 1.21.1）
@@ -35,7 +34,7 @@ public final class ClientRenderEvents {
          * @param camera          当前帧的游戏相机
          * @param deltaTracker    帧间插值追踪器
          */
-        void onAfterEntities(Matrix4f modelViewMatrix, Camera camera, DeltaTracker deltaTracker);
+        void onAfterEntities(Matrix4fc modelViewMatrix, Camera camera, DeltaTracker deltaTracker);
     }
 
 
@@ -60,7 +59,7 @@ public final class ClientRenderEvents {
          * @param camera          当前帧的游戏相机
          * @param deltaTracker    帧间插值追踪器
          */
-        void onRenderWorldLast(Matrix4f modelViewMatrix, Camera camera, DeltaTracker deltaTracker);
+        void onRenderWorldLast(Matrix4fc modelViewMatrix, Camera camera, DeltaTracker deltaTracker);
     }
 
     // ========== 2D 屏幕渲染（用于绘制 HUD / 功能文字列表） ==========
@@ -83,6 +82,6 @@ public final class ClientRenderEvents {
          * @param guiGraphics  现代渲染器封装（提供 drawString、fill 等 2D 绘制方法）
          * @param deltaTracker 1.21+ 的帧间插值追踪器
          */
-        void onRenderHud(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
+        void onRenderHud(GuiGraphicsExtractor guiGraphics, DeltaTracker deltaTracker);
     }
 }

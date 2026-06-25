@@ -149,11 +149,11 @@ public class CrosshairCopy {
                 translateOrDefault("tweelix.enum.tag")
         ).data(tagsPlain).hover(translateOrDefault("tweelix.hover.tags")).build();
 
-        player.displayClientMessage(prefix
+        player.sendSystemMessage(prefix
                 .append(copyableText(info.localizedName)).append(SEPARATOR)
                 .append(copyableText(info.registryName)).append(SEPARATOR)
                 .append(copyableText(info.position)).append(SEPARATOR)
-                .append(tagsDisplay), false);
+                .append(tagsDisplay));
     }
 
     private static MutableComponent copyableText(String display) {
@@ -231,7 +231,7 @@ public class CrosshairCopy {
                             ));
         }
 
-        player.displayClientMessage(message, false);
+        player.sendSystemMessage(message);
     }
 
     // ==================== 位置格式化 ====================
@@ -244,16 +244,23 @@ public class CrosshairCopy {
         return p.getX() + " " + p.getY() + " " + p.getZ();
     }
 
-    // ==================== 标签收集 ====================
     private static List<String> collectTags(ItemStack stack) {
-        return stack.getTags().map(t -> t.location().toString()).toList();
+        return stack.typeHolder().tags()
+                .map(t -> t.location().toString())
+                .toList();
     }
 
     private static List<String> collectTags(Block block) {
-        return block.builtInRegistryHolder().tags().map(t -> t.location().toString()).toList();
+        return BuiltInRegistries.BLOCK.wrapAsHolder(block)
+                .tags()
+                .map(t -> t.location().toString())
+                .toList();
     }
 
     private static List<String> collectTags(EntityType<?> type) {
-        return type.builtInRegistryHolder().tags().map(t -> t.location().toString()).toList();
+        return BuiltInRegistries.ENTITY_TYPE.wrapAsHolder(type)
+                .tags()
+                .map(t -> t.location().toString())
+                .toList();
     }
 }

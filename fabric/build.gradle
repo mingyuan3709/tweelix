@@ -5,75 +5,45 @@ plugins {
 
 architectury {
     platformSetupLoomIde()
-    fabric()  // 改为 Fabric 平台
+    fabric()
 }
 
-loom {
-    accessWidenerPath = project(":common").file("src/main/resources/tweelix.accesswidener")
-}
-
-base {
-    archivesName = project.archives_base_name
-}
-
-// ---------- 配置 ----------
 configurations {
     common
     shadowCommon
-    compileClasspath.extendsFrom(common)
-    runtimeClasspath.extendsFrom(common)
-    developmentFabric.extendsFrom(common)  // Fabric 的开发配置
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentNeoForge.extendsFrom common
 }
 
 // ---------- 仓库 ----------
 repositories {
-    maven {
-        url = 'https://masa.dy.fi/maven'
-    }
-    maven {
-        url = 'https://masa.dy.fi/maven/sakura-ryoko'
-        content { includeGroupAndSubgroups('fi.dy.masa') }
-    }
-    maven {
-        url = 'https://maven.terraformersmc.com/releases'
-    }
-    maven {
-        url = 'https://www.cursemaven.com'
-    }
-    maven {
-        url = 'https://maven.fallenbreath.me/jitpack'
-    }
-    maven {
-        url = 'https://maven.fallenbreath.me/releases'
-    }
-    maven {
-        url = "https://api.modrinth.com/maven"
-    }
-    // 对于 Fabric API，通常使用官方 Maven，但如果您需要，可以保留
+    maven { url = 'https://masa.dy.fi/maven' }
+    maven { url = 'https://maven.terraformersmc.com/releases' }
+    maven { url = 'https://www.cursemaven.com' }
+    maven { url = 'https://maven.fallenbreath.me/jitpack' }
+    maven { url = 'https://maven.fallenbreath.me/releases' }
+    maven { url = "https://api.modrinth.com/maven" }
 }
 
 // ---------- 依赖 ----------
 dependencies {
+
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings loom.officialMojangMappings()
 
-    // Fabric 专属依赖
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    // 公共模块（与 NeoForge 一致）
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
 
-    // 第三方库
-    modImplementation "maven.modrinth:malilib:${project.malilib_version}"
-    modImplementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
-    include(implementation("me.fallenbreath:conditional-mixin-${loom.platform.get().id()}:${project.conditionalmixin_version}"))
+    implementation "maven.modrinth:malilib:${project.malilib_version}"
+    implementation "maven.modrinth:modmenu:${project.mod_menu_version}"
+    include(implementation("me.fallenbreath:conditional-mixin-fabric:${project.conditionalmixin_version}"))
 
-    // 编译时依赖（可选）
-    modCompileOnly "maven.modrinth:iris:${project.iris_version}"
-    modCompileOnly "maven.modrinth:sodium:${project.sodium_version}"
-    modCompileOnly "com.github.sakura-ryoko:litematica:${project.litematica_version}"
+    compileOnly "maven.modrinth:iris:${project.iris_version}"
+    compileOnly "maven.modrinth:sodium:${project.sodium_version}"
+    compileOnly "maven.modrinth:litematica:${project.litematica_version}"
 }
 
 // ---------- 资源处理 ----------
@@ -94,7 +64,7 @@ processResources {
 }
 
 // ---------- Java 编译配置 ----------
-def targetJavaVersion = 21
+def targetJavaVersion = 25
 tasks.withType(JavaCompile).configureEach {
     it.options.encoding = "UTF-8"
     if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
@@ -109,7 +79,18 @@ java {
     }
 }
 
-// ---------- 普通 JAR（bare） ----------
+// ---------- ShadowJar（最终产物） ----------
+shadowJar {
+    exclude "META-INF/neoforge.mods.toml"
+    configurations = [project.configurations.shadowCommon]
+    archiveClassifier = null  // 最终产物不需要 classifier
+    archiveFileName = "${project.archives_base_name}-${project.version}-mc${project.minecraft_version}-fabric.jar"
+
+    from("LICENSE") {
+        rename { "${it}_${project.archives_base_name}" }
+    }
+}
+
 jar {
     from("LICENSE") {
         rename { "${it}_${project.archives_base_name}" }
@@ -117,25 +98,7 @@ jar {
     archiveClassifier = "bare"
 }
 
-// ---------- ShadowJar 任务 ----------
-shadowJar {
-    // 排除其他平台的描述文件
-    exclude "META-INF/neoforge.mods.toml"
-
-    configurations = [project.configurations.shadowCommon]
-    archiveClassifier = "shadow"
-    archiveFileName = "${project.archives_base_name}-${project.version}-mc${project.minecraft_version}-fabric-shadow.jar"
-}
-
-// ---------- RemapJar（最终产物） ----------
-remapJar {
-    inputFile.set(shadowJar.archiveFile)
-    dependsOn shadowJar
-    archiveClassifier = null
-    archiveFileName = "${project.archives_base_name}-${project.version}-mc${project.minecraft_version}-fabric.jar"
-}
-
-// ---------- 发布（可选） ----------
+// ---------- 发布 ----------
 publishing {
     publications {
         create("mavenJava", MavenPublication) {

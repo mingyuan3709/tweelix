@@ -41,26 +41,11 @@ public class MultiPlayerGameModeMixin {
         }
     }
 
-    /** 右键点击实体（普通交互） */
-    @Inject(method = "interact(Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/InteractionHand;)Lnet/minecraft/world/InteractionResult;",
+    /** 右键点击实体（所有实体交互，通过 EntityHitResult 传递位置） */
+    @Inject(method = "interact(Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/phys/EntityHitResult;Lnet/minecraft/world/InteractionHand;)Lnet/minecraft/world/InteractionResult;",
             at = @At("HEAD"), cancellable = true)
-    private void onInteractEntity(Player player, Entity entity, InteractionHand hand,
+    private void onInteractEntity(Player player, Entity entity, EntityHitResult hitResult, InteractionHand hand,
                                   CallbackInfoReturnable<InteractionResult> cir) {
-        if (!(player instanceof LocalPlayer localPlayer)) return;
-        Vec3 hitLocation = entity.getBoundingBox().getCenter();
-        EntityHitResult hitResult = new EntityHitResult(entity, hitLocation);
-        InteractionResult result = ClientUseEvents.ENTITY.invoker()
-                .onUseEntity(localPlayer, hand, entity, hitResult);
-        if (result != InteractionResult.PASS) {
-            cir.setReturnValue(result);
-        }
-    }
-
-    /** 右键点击实体特定位置（如盔甲架） */
-    @Inject(method = "interactAt(Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/phys/EntityHitResult;Lnet/minecraft/world/InteractionHand;)Lnet/minecraft/world/InteractionResult;",
-            at = @At("HEAD"), cancellable = true)
-    private void onInteractEntityAt(Player player, Entity entity, EntityHitResult hitResult, InteractionHand hand,
-                                    CallbackInfoReturnable<InteractionResult> cir) {
         if (!(player instanceof LocalPlayer localPlayer)) return;
         InteractionResult result = ClientUseEvents.ENTITY.invoker()
                 .onUseEntity(localPlayer, hand, entity, hitResult);
