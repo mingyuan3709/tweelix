@@ -90,7 +90,7 @@ public class InputHandler implements IKeybindProvider, IKeyboardInputHandler, IM
     }
 
     public static boolean executeOpenConfigGui() {
-        Minecraft.getInstance().setScreen(new GuiConfigs());
+        Minecraft.getInstance().setScreenAndShow(new GuiConfigs());
         return true;
     }
 

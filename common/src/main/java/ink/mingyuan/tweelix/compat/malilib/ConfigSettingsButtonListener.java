@@ -20,7 +20,7 @@ public class ConfigSettingsButtonListener implements IButtonActionListener {
 
     @Override
     public void actionPerformedWithButton(ButtonBase button, int mouseButton) {
-        Screen parent = Minecraft.getInstance().screen;
+        Screen parent = Minecraft.getInstance().gui.screen();
         GuiSubSettings gui = new GuiSubSettings(
                 Reference.MOD_ID,
                 config.getTranslatedName(),

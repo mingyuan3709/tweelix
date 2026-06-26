@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class GameRendererMixin {
 
 
-    @Inject(method = "getNightVisionScale", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "nightVisionScale", at = @At("HEAD"), cancellable = true)
     private static void fakeNightVision(LivingEntity livingEntity, float f, CallbackInfoReturnable<Float> cir) {
         if (!Display.NIGHT_VISION.getBooleanValue()) return;
         Minecraft mc = Minecraft.getInstance();

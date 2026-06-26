@@ -18,7 +18,7 @@ public class AvatarRendererMixin {
     private void hideNametagInF1(AvatarRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, net.minecraft.client.renderer.state.level.CameraRenderState camera, CallbackInfo ci) {
         Minecraft client = Minecraft.getInstance();
 
-        if (Display.HIDE_CROSS_TEAM_PLAYER_NAMES.getBooleanValue()&& client.options.hideGui) {
+        if (Display.HIDE_CROSS_TEAM_PLAYER_NAMES.getBooleanValue()&& client.gui.hud.isHidden()) {
             ci.cancel();
         }
     }

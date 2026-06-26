@@ -6,60 +6,35 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import org.joml.Matrix4fc;
 
 /**
- * 客户端渲染相关事件（适配 1.21.1）
+ * 客户端渲染相关事件
  */
 public final class ClientRenderEvents {
 
     private ClientRenderEvents() {}
 
-    // ========== 实体渲染后、半透明地形前 ==========
-    public static final TweelixEventFactory.Event<AfterEntities> AFTER_ENTITIES = TweelixEventFactory.create(AfterEntities.class,
+    // ========== 主渲染结束 ==========
+    public static final TweelixEventFactory.Event<AfterRender> END_MAIN = TweelixEventFactory.create(AfterRender.class,
             (listeners) -> {
                 if (listeners.length == 0) return (poseStack, camera, deltaTracker) -> {};
                 return (poseStack, camera, deltaTracker) -> {
-                    for (AfterEntities listener : listeners) {
-                        listener.onAfterEntities(poseStack, camera, deltaTracker);
+                    for (AfterRender listener : listeners) {
+                        listener.onAfterRender(poseStack, camera, deltaTracker);
                     }
                 };
             }
     );
 
     @FunctionalInterface
-    public interface AfterEntities {
+    public interface AfterRender {
         /**
-         * 在实体和方块实体提交渲染完成后触发，此时不透明地形和实体已绘制，
-         * 但半透明地形尚未绘制。适合绘制不透明或半透明的叠加层（例如实体ESP）。
+         * 在主渲染阶段完全结束后触发，此时所有不透明和半透明地形、实体、云层、天空盒等均已绘制完毕。
+         * 适合绘制覆盖整个世界的叠加层或后期处理效果，不受后续世界渲染干扰。
          *
          * @param modelViewMatrix 当前 3D 渲染的模型-视图矩阵（4x4 变换矩阵）
          * @param camera          当前帧的游戏相机
          * @param deltaTracker    帧间插值追踪器
          */
-        void onAfterEntities(Matrix4fc modelViewMatrix, Camera camera, DeltaTracker deltaTracker);
-    }
-
-
-    // ========== 3D 世界渲染（最后一阶段，用于绘制外挂方块框/ESP/基岩高亮） ==========
-    public static final TweelixEventFactory.Event<WorldLast> WORLD_LAST = TweelixEventFactory.create(WorldLast.class,
-            (listeners) -> {
-                if (listeners.length == 0) return (poseStack, camera, deltaTracker) -> {};
-                return (poseStack, camera, deltaTracker) -> {
-                    for (WorldLast listener : listeners) {
-                        listener.onRenderWorldLast(poseStack, camera, deltaTracker);
-                    }
-                };
-            }
-    );
-
-    @FunctionalInterface
-    public interface WorldLast {
-        /**
-         * 在游戏渲染完世界所有方块和实体后的最后一阶段触发。
-         *
-         * @param modelViewMatrix 当前 3D 渲染的模型-视图矩阵（4x4 变换矩阵）
-         * @param camera          当前帧的游戏相机
-         * @param deltaTracker    帧间插值追踪器
-         */
-        void onRenderWorldLast(Matrix4fc modelViewMatrix, Camera camera, DeltaTracker deltaTracker);
+        void onAfterRender(Matrix4fc modelViewMatrix, Camera camera, DeltaTracker deltaTracker);
     }
 
     // ========== 2D 屏幕渲染（用于绘制 HUD / 功能文字列表） ==========

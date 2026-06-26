@@ -6,7 +6,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.SpriteIconButton;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.ShareToLanScreen;
+import net.minecraft.client.gui.screens.MultiplayerOptionsScreen ;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.HttpUtil;
@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(ShareToLanScreen.class)
+@Mixin(MultiplayerOptionsScreen.class)
 public class ShareToLanScreenMixin extends Screen {
 
     @Shadow

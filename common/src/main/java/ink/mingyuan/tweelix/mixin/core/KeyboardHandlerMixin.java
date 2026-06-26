@@ -24,11 +24,11 @@ public class KeyboardHandlerMixin {
     private void onHandleDebugKeys(KeyEvent keyEvent, CallbackInfoReturnable<Boolean> cir) {
         Options options = minecraft.options;
 
-        if (options.keyDebugSwitchGameMode.matches(keyEvent) && this.minecraft.level != null && this.minecraft.screen == null) {
+        if (options.keyDebugSwitchGameMode.matches(keyEvent) && this.minecraft.level != null && this.minecraft.gui.screen() == null) {
 
                 if (GameModeSwitcher.isDisabled()) return;
 
-                this.minecraft.setScreen(new GameModeSwitcherScreen());
+                this.minecraft.setScreenAndShow(new GameModeSwitcherScreen());
 
                 cir.setReturnValue(true);
         }

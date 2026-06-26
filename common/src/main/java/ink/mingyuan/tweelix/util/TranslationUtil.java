@@ -1,6 +1,7 @@
 package ink.mingyuan.tweelix.util;
 
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.locale.Language;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -28,7 +29,7 @@ public class TranslationUtil {
             return "";
         }
         try {
-            if (I18n.exists(key)) {
+            if (Language.getInstance().has(key)) {
                 return I18n.get(key, args);
             }
         } catch (Exception ignored) {
@@ -45,7 +46,7 @@ public class TranslationUtil {
             return false;
         }
         try {
-            return I18n.exists(key);
+            return Language.getInstance().has(key);
         } catch (Exception ignored) {
             return false;
         }

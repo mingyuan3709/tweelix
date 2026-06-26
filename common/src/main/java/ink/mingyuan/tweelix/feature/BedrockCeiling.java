@@ -3,7 +3,7 @@ package ink.mingyuan.tweelix.feature;
 import fi.dy.masa.malilib.render.MaLiLibPipelines;
 import fi.dy.masa.malilib.render.RenderContext;
 import fi.dy.masa.malilib.render.RenderUtils;
-import fi.dy.masa.malilib.util.IntBoundingBox;
+import fi.dy.masa.malilib.util.position.IntBoundingBox;
 import fi.dy.masa.malilib.util.data.Color4f;
 import ink.mingyuan.tweelix.config.category.Display;
 import ink.mingyuan.tweelix.event.ClientRenderEvents;
@@ -18,7 +18,6 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
-import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +48,7 @@ public final class BedrockCeiling {
 
         ClientTickEvents.END.register(BedrockCeiling::onClientTickEnd);
 
-        ClientRenderEvents.AFTER_ENTITIES.register(BedrockCeiling::onRenderWorldLast);
+        ClientRenderEvents.END_MAIN.register(BedrockCeiling::onRenderWorldLast);
     }
 
     private static void onClientTickEnd(Minecraft client) {
@@ -99,7 +98,7 @@ public final class BedrockCeiling {
 
         try (RenderContext ctx = new RenderContext(
                 () -> "BedrockCeiling",
-                MaLiLibPipelines.POSITION_COLOR_TRANSLUCENT_LEQUAL_DEPTH_OFFSET_1)) {
+                MaLiLibPipelines.POSITION_COLOR_TRANSLUCENT_LEQUAL_DEPTH_OFFSET_1,0)) {
 
             var buffer = ctx.getBuilder();
 

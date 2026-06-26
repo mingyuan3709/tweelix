@@ -17,7 +17,7 @@
     "accessor.HandledScreenAccessor",
     "accessor.SuggestionsListAccessor",
     "compat.malilib.WidgetConfigOptionMixin",
-    "core.GuiMixin",
+    "core.HudMixin",
     "core.KeyboardHandlerMixin",
     "core.LevelRendererMixin",
     "core.MinecraftMixin",

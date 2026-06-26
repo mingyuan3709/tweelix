@@ -4,49 +4,32 @@ import ink.mingyuan.tweelix.config.category.Tweaks;
 import ink.mingyuan.tweelix.config.subconfig.FreeCameraSub;
 import ink.mingyuan.tweelix.feature.FreeCam;
 import net.minecraft.client.Camera;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.FogType;
 import net.minecraft.world.phys.Vec3;
+import org.jspecify.annotations.Nullable;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Camera.class)
 public abstract class CameraMixin {
     @Shadow private boolean initialized;
-    @Shadow private Level level;
-    @Shadow private Entity entity;
     @Shadow private boolean detached;
     @Shadow protected abstract void setRotation(float yaw, float pitch);
     @Shadow protected abstract void setPosition(Vec3 pos);
+    @Shadow private @Nullable Level level;
+    @Final
+    @Shadow private BlockPos.MutableBlockPos blockPosition;
 
-//    @Inject(method = "setup", at = @At("HEAD"), cancellable = true)
-//    private void onSetup(Level level, Entity entity, boolean bl, boolean bl2, float partialTick, CallbackInfo ci) {
-//        if (!Tweaks.FREE_CAM.getBooleanValue()) return;
-//
-//        FreeCam handler = FreeCam.getInstance();
-//        if (!handler.isActive()) return;
-//
-//        this.initialized = true;
-//        this.level = level;
-//        this.entity = entity;
-//        this.detached = !FreeCameraSub.HIDE_PLAYER.getBooleanValue();
-//
-//        Vec3 interpolatedPos = handler.getInterpolatedPos(partialTick);
-//        float interpolatedYaw = Mth.rotLerp(partialTick, handler.getPrevYaw(), handler.getYaw());
-//        float interpolatedPitch = Mth.lerp(partialTick, handler.getPrevPitch(), handler.getPitch());
-//
-//        this.setRotation(interpolatedYaw, interpolatedPitch);
-//        this.setPosition(interpolatedPos);
-//        ci.cancel();
-//    }
-
-
-
-    // 注入到 alignWithEntity 方法（私有方法，但 Mixin 可访问）
     @Inject(method = "alignWithEntity", at = @At("HEAD"), cancellable = true)
     private void onAlignWithEntity(float partialTick, CallbackInfo ci) {
         if (!Tweaks.FREE_CAM.getBooleanValue()) return;
@@ -54,7 +37,7 @@ public abstract class CameraMixin {
         FreeCam handler = FreeCam.getInstance();
         if (!handler.isActive()) return;
 
-        // 标记相机已初始化（如需要）
+        // 标记相机已初始化
         this.initialized = true;
         // 设置脱离状态
         this.detached = !FreeCameraSub.HIDE_PLAYER.getBooleanValue();
@@ -73,6 +56,23 @@ public abstract class CameraMixin {
     }
 
 
+    @Inject(method = "extractRenderState", at = @At("RETURN"))
+    private void disableSmartCullIfNeeded(CameraRenderState cameraState, float partialTicks, CallbackInfo ci) {
+        if (Tweaks.FREE_CAM.getBooleanValue()) {
+            assert this.level != null;
+            if (this.level.getBlockState(this.blockPosition).isSolidRender()) {
+                cameraState.smartCull = false;
+            }
+        }
+    }
 
+    @Inject(method = "getFluidInCamera", at = @At("HEAD"), cancellable = true)
+    private void disableFluidFog(CallbackInfoReturnable<FogType> cir)
+    {
+        if (Tweaks.FREE_CAM.getBooleanValue())
+        {
+            cir.setReturnValue(FogType.NONE);
+        }
+    }
 
 }

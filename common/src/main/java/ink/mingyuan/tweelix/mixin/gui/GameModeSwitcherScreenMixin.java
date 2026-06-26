@@ -39,14 +39,14 @@ public class GameModeSwitcherScreenMixin extends Screen {
         if (GameModeSwitcher.isDisabled()) return;
 
         if (keyEvent.isEscape()) {
-            minecraft.setScreen(null);
+            this.minecraft.gui.setScreen(null);
             cir.setReturnValue(true);
             return;
         }
 
         if (keyEvent.key() == GLFW.GLFW_KEY_SPACE) {
             GameModeSwitcher.handleSpaceKey(minecraft, this.currentlyHovered);
-            minecraft.setScreen(null);
+            this.minecraft.gui.setScreen(null);
             cir.setReturnValue(true);
         }
     }
@@ -58,7 +58,7 @@ public class GameModeSwitcherScreenMixin extends Screen {
         // 检查释放的是否是 F3 键 (原版 debug 组合键的修饰键)
         if (minecraft.options.keyDebugModifier.matches(keyEvent)) {
             if (GameModeSwitcher.applyGameModeSwitch(minecraft, this.currentlyHovered)) {
-                minecraft.setScreen(null);
+                this.minecraft.gui.setScreen(null);
                 cir.setReturnValue(true);
             }
         }
@@ -69,7 +69,7 @@ public class GameModeSwitcherScreenMixin extends Screen {
         if (GameModeSwitcher.isDisabled()) return;
 
         if (GameModeSwitcher.applyGameModeSwitch(minecraft, this.currentlyHovered)) {
-            minecraft.setScreen(null);
+            this.minecraft.gui.setScreen(null);
             cir.setReturnValue(true);
         }
     }

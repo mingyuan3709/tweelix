@@ -73,7 +73,7 @@ public class CrosshairCopy {
     }
 
     private static Optional<TargetInfo> resolveItem(Minecraft client) {
-        if (!(client.screen instanceof AbstractContainerScreen<?> screen)) return Optional.empty();
+        if (!(client.gui.screen() instanceof AbstractContainerScreen<?> screen)) return Optional.empty();
 
         double mouseX = client.mouseHandler.xpos() * client.getWindow().getGuiScaledWidth() / client.getWindow().getWidth();
         double mouseY = client.mouseHandler.ypos() * client.getWindow().getGuiScaledHeight() / client.getWindow().getHeight();
