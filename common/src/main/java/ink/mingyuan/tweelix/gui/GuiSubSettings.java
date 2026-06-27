@@ -2,14 +2,10 @@ package ink.mingyuan.tweelix.gui;
 
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
-import fi.dy.masa.malilib.render.GuiContext;
 import fi.dy.masa.malilib.render.RenderUtils;
 import fi.dy.masa.malilib.util.StringUtils;
-import ink.mingyuan.tweelix.gui.GuiConfigsBaseExtended;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.gui.GuiGraphics;
-import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 
@@ -73,11 +69,11 @@ public class GuiSubSettings extends GuiConfigsBaseExtended {
     protected int getBrowserHeight() { return dialogHeight - 24 - 20; }
 
     @Override
-    public void render(@NonNull GuiGraphics drawContext, int mouseX, int mouseY, float partialTicks)
+    public void render(GuiGraphics drawContext, int mouseX, int mouseY, float partialTicks)
     {
         if (this.getParent() != null) this.getParent().render(drawContext, mouseX, mouseY, partialTicks);
 
-        this.drawScreenBackground(GuiContext.fromGuiGraphics(drawContext), mouseX, mouseY);
+        this.drawScreenBackground(drawContext, mouseX, mouseY);
 
         drawContext.enableScissor(
                 this.dialogLeft,
@@ -90,12 +86,12 @@ public class GuiSubSettings extends GuiConfigsBaseExtended {
 
         drawContext.disableScissor();
 
-        this.drawTitle(GuiContext.fromGuiGraphics(drawContext), mouseX, mouseY, partialTicks);
+        this.drawTitle(drawContext, mouseX, mouseY, partialTicks);
     }
 
     @Override
-    protected void drawScreenBackground(GuiContext ctx, int mx, int my) {
-        RenderUtils.drawOutlinedBox(ctx, dialogLeft, dialogTop, dialogWidth, dialogHeight, 0xFF000000, 0xFF555555);
+    protected void drawScreenBackground(GuiGraphics gfx, int mx, int my) {
+        RenderUtils.drawOutlinedBox(gfx, dialogLeft, dialogTop, dialogWidth, dialogHeight, 0xFF000000, 0xFF555555);
     }
 
     @Override
@@ -108,29 +104,14 @@ public class GuiSubSettings extends GuiConfigsBaseExtended {
     }
 
     @Override
-    public boolean onMouseClicked(MouseButtonEvent click, boolean doubleClick) {
-        boolean inside = click.x() >= dialogLeft && click.x() <= dialogLeft + dialogWidth
-                && click.y() >= dialogTop  && click.y() <= dialogTop  + dialogHeight;
-
-        if (!inside) {
-            setActiveKeybindButton(null);
-            this.closeGui(true);
-            return true;
-        }
-        return super.onMouseClicked(click, doubleClick);
-    }
-
-    @Override
-    public boolean onMouseScrolled(double x, double y,
-                                   double horizontalAmount, double verticalAmount) {
-
-        boolean inContentArea = x >= dialogLeft && x <= dialogLeft + dialogWidth
-                && y >= dialogTop + 24 && y <= dialogTop + dialogHeight - 20;
+    public boolean onMouseScrolled(int mouseX, int mouseY, double amountX, double amountY) {
+        boolean inContentArea = mouseX >= dialogLeft && mouseX <= dialogLeft + dialogWidth
+                && mouseY >= dialogTop + 24 && mouseY <= dialogTop + dialogHeight - 20;
 
         if (!inContentArea) {
             return false;
         }
-        return super.onMouseScrolled(x, y, horizontalAmount, verticalAmount);
+        return super.onMouseScrolled(mouseX, mouseY, amountX, amountY);
     }
 
     @Override
@@ -166,10 +147,10 @@ public class GuiSubSettings extends GuiConfigsBaseExtended {
     }
 
     @Override
-    protected void drawTitle(GuiContext ctx, int mouseX, int mouseY, float partialTicks)
+    protected void drawTitle(GuiGraphics gfx, int mouseX, int mouseY, float partialTicks)
     {
         this.drawString(
-                ctx,
+                gfx,
                 titleKey,
                 this.dialogLeft + 8, this.dialogTop + 6,
                 COLOR_WHITE

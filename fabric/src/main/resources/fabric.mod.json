@@ -28,6 +28,6 @@
   "depends": {
     "fabricloader": ">=${loader_version}",
     "fabric-api": "*",
-    "minecraft": "${minecraft_version}"
+    "minecraft": "<=1.21.8>=1.21.6"
   }
 }

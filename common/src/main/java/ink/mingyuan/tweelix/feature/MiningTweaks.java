@@ -12,7 +12,7 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -197,7 +197,7 @@ public class MiningTweaks {
     @Nullable
     private static Block getBlockFromName(String name) {
         try {
-            return BuiltInRegistries.BLOCK.getValue(Identifier.parse(name));
+            return BuiltInRegistries.BLOCK.getValue(ResourceLocation.parse(name));
         } catch (Exception e) {
             return null;
         }

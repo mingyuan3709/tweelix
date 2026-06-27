@@ -49,6 +49,7 @@ repositories {
     maven {
         url = "https://api.modrinth.com/maven"
     }
+
     // 对于 Fabric API，通常使用官方 Maven，但如果您需要，可以保留
 }
 
@@ -61,19 +62,19 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    // 公共模块（与 NeoForge 一致）
+    // 公共模块
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
 
     // 第三方库
-    modImplementation "maven.modrinth:malilib:${project.malilib_version}"
+    modImplementation "fi.dy.masa.malilib:malilib-fabric-${project.minecraft_version}:${project.malilib_version}"
     modImplementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
-    include(implementation("me.fallenbreath:conditional-mixin-${loom.platform.get().id()}:${project.conditionalmixin_version}"))
 
     // 编译时依赖（可选）
-    modCompileOnly "maven.modrinth:iris:${project.iris_version}"
-    modCompileOnly "maven.modrinth:sodium:${project.sodium_version}"
-    modCompileOnly "com.github.sakura-ryoko:litematica:${project.litematica_version}"
+    //modCompileOnly "maven.modrinth:iris:${project.iris_version}"
+    //modCompileOnly "maven.modrinth:sodium:${project.sodium_version}"
+    modImplementation "fi.dy.masa.litematica:litematica-fabric-${project.minecraft_version}:${project.litematica_version}"
+
 }
 
 // ---------- 资源处理 ----------

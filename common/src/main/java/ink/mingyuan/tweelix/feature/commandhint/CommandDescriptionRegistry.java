@@ -5,7 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.resources.ResourceKey;
 
 import static ink.mingyuan.tweelix.util.TranslationUtil.exists;
@@ -156,12 +156,12 @@ public class CommandDescriptionRegistry {
 
     private boolean isItemId(String str) {
         if (str == null || !str.contains(":")) return false;
-        Identifier id = Identifier.tryParse(str);
+        ResourceLocation id = ResourceLocation.tryParse(str);
         return id != null && BuiltInRegistries.ITEM.get(id).isPresent();
     }
 
     private Component getItemDisplayName(String itemId) {
-        Identifier id = Identifier.tryParse(itemId);
+        ResourceLocation id = ResourceLocation.tryParse(itemId);
         if (id == null) return Component.literal(itemId);
 
         return BuiltInRegistries.ITEM.get(id)
@@ -171,12 +171,12 @@ public class CommandDescriptionRegistry {
 
     private boolean isEntityId(String str) {
         if (str == null || !str.contains(":")) return false;
-        Identifier id = Identifier.tryParse(str);
+        ResourceLocation id = ResourceLocation.tryParse(str);
         return id != null && BuiltInRegistries.ENTITY_TYPE.get(id).isPresent();
     }
 
     private Component getEntityDisplayName(String entityId) {
-        Identifier id = Identifier.tryParse(entityId);
+        ResourceLocation id = ResourceLocation.tryParse(entityId);
         if (id == null) return Component.literal(entityId);
         return BuiltInRegistries.ENTITY_TYPE.get(id)
                 .map(holder -> Component.translatable(holder.value().getDescriptionId()))
@@ -185,12 +185,12 @@ public class CommandDescriptionRegistry {
 
     private boolean isMobEffectId(String str) {
         if (str == null || !str.contains(":")) return false;
-        Identifier id = Identifier.tryParse(str);
+        ResourceLocation id = ResourceLocation.tryParse(str);
         return id != null && BuiltInRegistries.MOB_EFFECT.get(id).isPresent();
     }
 
     private Component getMobEffectDisplayName(String effectId) {
-        Identifier id = Identifier.tryParse(effectId);
+        ResourceLocation id = ResourceLocation.tryParse(effectId);
         if (id == null) return Component.literal(effectId);
         return BuiltInRegistries.MOB_EFFECT.get(id)
                 .map(holder -> Component.translatable(holder.value().getDescriptionId()))
@@ -199,7 +199,7 @@ public class CommandDescriptionRegistry {
 
     private boolean isBiomeId(String str) {
         if (str == null || !str.contains(":")) return false;
-        Identifier id = Identifier.tryParse(str);
+        ResourceLocation id = ResourceLocation.tryParse(str);
         if (id == null) return false;
 
         var connection = Minecraft.getInstance().getConnection();
@@ -211,7 +211,7 @@ public class CommandDescriptionRegistry {
     }
 
     private Component getBiomeDisplayName(String biomeId) {
-        Identifier id = Identifier.tryParse(biomeId);
+        ResourceLocation id = ResourceLocation.tryParse(biomeId);
         if (id == null) return Component.literal(biomeId);
         String translationKey = "biome." + id.getNamespace() + "." + id.getPath();
         return Component.translatable(translationKey);
@@ -219,12 +219,12 @@ public class CommandDescriptionRegistry {
 
     private boolean isSoundId(String str) {
         if (str == null || !str.contains(":")) return false;
-        Identifier id = Identifier.tryParse(str);
+        ResourceLocation id = ResourceLocation.tryParse(str);
         return id != null && BuiltInRegistries.SOUND_EVENT.get(id).isPresent();
     }
 
     private Component getSoundDisplayName(String soundId) {
-        Identifier id = Identifier.tryParse(soundId);
+        ResourceLocation id = ResourceLocation.tryParse(soundId);
         if (id == null) return null;
 
         String subtitleKey = "subtitles." + id.getPath();

@@ -1,16 +1,16 @@
 package ink.mingyuan.tweelix.gui;
 
 import fi.dy.masa.malilib.gui.interfaces.IGuiIcon;
-import fi.dy.masa.malilib.render.GuiContext;
 import fi.dy.masa.malilib.render.RenderUtils;
-import net.minecraft.resources.Identifier;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.resources.ResourceLocation;
 
 public enum TweelixIcons implements IGuiIcon {
     SETTINGS(236, 0, 20, 20);
 
 
-    private static final Identifier TEXTURE =
-            Identifier.parse("tweelix:textures/gui/filters_button.png");
+    private static final ResourceLocation TEXTURE =
+            ResourceLocation.parse("tweelix:textures/gui/filters_button.png");
     private final int u;
     private final int v;
     private final int w;
@@ -54,7 +54,7 @@ public enum TweelixIcons implements IGuiIcon {
     }
 
     @Override
-    public void renderAt(GuiContext guiContext, int x, int y, float zLevel, boolean enabled, boolean selected) {
+    public void renderAt(GuiGraphics guiContext, int x, int y, float zLevel, boolean enabled, boolean selected) {
         int u = this.u;
         int v = this.v;
         if (enabled) {
@@ -71,7 +71,7 @@ public enum TweelixIcons implements IGuiIcon {
     }
 
     @Override
-    public Identifier getTexture() {
+    public ResourceLocation getTexture() {
         return TEXTURE;
     }
 }
