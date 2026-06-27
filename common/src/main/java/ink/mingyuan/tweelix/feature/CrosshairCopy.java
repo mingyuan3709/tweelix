@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
+import static ink.mingyuan.tweelix.util.TranslationUtil.translate;
 import static ink.mingyuan.tweelix.util.TranslationUtil.translateOrDefault;
 
 public class CrosshairCopy {
@@ -146,8 +147,8 @@ public class CrosshairCopy {
 
         MutableComponent tagsDisplay = ExClickEvent.builder(
                 ExClickEvent.Action.EXPAND_TAGS,
-                translateOrDefault("tweelix.enum.tag")
-        ).data(tagsPlain).hover(translateOrDefault("tweelix.hover.tags")).build();
+                translate("tweelix.enum.tag")
+        ).data(tagsPlain).hover(translate("tweelix.hover.tags")).build();
 
         player.displayClientMessage(prefix
                 .append(copyableText(info.localizedName)).append(SEPARATOR)

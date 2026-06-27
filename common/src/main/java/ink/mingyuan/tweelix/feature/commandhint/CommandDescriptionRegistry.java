@@ -8,6 +8,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 
+import static ink.mingyuan.tweelix.util.TranslationUtil.exists;
+
 public class CommandDescriptionRegistry {
 
     private static final CommandDescriptionRegistry INSTANCE = new CommandDescriptionRegistry();
@@ -29,17 +31,17 @@ public class CommandDescriptionRegistry {
 
         String genericArgKey = GetTranslationKeys(suggestionText, inputCommandText, CommandPath);
 
-        if (I18n.exists(genericArgKey)) {
+        if (exists(genericArgKey)) {
             return Component.translatable(genericArgKey);
         }
 
         String shortKey = getShortCommandKey(suggestionText, inputCommandText);
-        if (shortKey != null && I18n.exists(shortKey)) {
+        if (shortKey != null && exists(shortKey)) {
             return Component.translatable(shortKey);
         }
 
         String genericKey = "commands.generic." + suggestionText + ".description";
-        if (I18n.exists(genericKey)) {
+        if (exists(genericKey)) {
             return Component.translatable(genericKey);
         }
 
@@ -117,7 +119,7 @@ public class CommandDescriptionRegistry {
     private static Component getModCommandHint(String suggestion) {
         // 专用命令描述
         String cmdKey = "tweelix.command." + suggestion + ".description";
-        if (I18n.exists(cmdKey)) {
+        if (exists(cmdKey)) {
             return Component.translatable(cmdKey);
         }
 
@@ -126,7 +128,7 @@ public class CommandDescriptionRegistry {
         // 配置项 name
         for (String cat : cats) {
             String nameKey = "tweelix.config." + cat + ".name." + suggestion;
-            if (I18n.exists(nameKey)) {
+            if (exists(nameKey)) {
                 return Component.translatable(nameKey);
             }
         }
@@ -227,7 +229,7 @@ public class CommandDescriptionRegistry {
 
         String subtitleKey = "subtitles." + id.getPath();
 
-        if (I18n.exists(subtitleKey)) {
+        if (exists(subtitleKey)) {
             return Component.translatable(subtitleKey);
         }
 

@@ -11,8 +11,7 @@ import ink.mingyuan.tweelix.config.TweelixConfig;
 import java.util.List;
 import java.util.Objects;
 
-import static ink.mingyuan.tweelix.util.TranslationUtil.translateCapitalized;
-import static ink.mingyuan.tweelix.util.TranslationUtil.translateOrDefault;
+import static ink.mingyuan.tweelix.util.TranslationUtil.translate;
 
 public class GuiConfigs extends GuiConfigsBase {
 
@@ -58,7 +57,7 @@ public class GuiConfigs extends GuiConfigsBase {
         @Override
         public void actionPerformedWithButton(ButtonBase button, int mouseButton) {
             GuiConfigs.currentTab = this.targetTab;
-            this.parent.reCreateListWidget(); // Apply new config width
+            this.parent.reCreateListWidget();
             Objects.requireNonNull(this.parent.getListWidget()).resetScrollbarPosition();
             this.parent.initGui();
         }
@@ -77,7 +76,7 @@ public class GuiConfigs extends GuiConfigsBase {
         }
 
         public String getDisplayName() {
-            return translateCapitalized(translationKey);
+            return translate(translationKey);
         }
 
     }

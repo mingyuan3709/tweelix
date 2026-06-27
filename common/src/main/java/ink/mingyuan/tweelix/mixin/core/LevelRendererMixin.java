@@ -59,43 +59,12 @@ public class LevelRendererMixin {
 
     }
 
-    @Inject(
-            method = "renderLevel",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/client/renderer/debug/DebugRenderer;emitGizmos(Lnet/minecraft/client/renderer/culling/Frustum;DDDF)V"
-            )
-    )
-    private void onBeforeDebugRender(
-            GraphicsResourceAllocator allocator,
-            DeltaTracker deltaTracker,
-            boolean renderBlockOutline,
-            Camera camera,
-            Matrix4f positionMatrix,
-            Matrix4f projectionMatrix,
-            Matrix4f cullProjectionMatrix,
-            GpuBufferSlice fogBuffer,
-            Vector4f fogColor,
-            boolean renderSky,
-            CallbackInfo ci) {
-
-        Camera mainCamera = minecraft.gameRenderer.getMainCamera();
-        ClientRenderEvents.WORLD_LAST.invoker().onRenderWorldLast(positionMatrix, mainCamera, deltaTracker);
-    }
-
-    @WrapOperation(method = "method_62214",
-            slice = @Slice(from = @At(value = "INVOKE_STRING", target = "Lnet/minecraft/util/profiling/ProfilerFiller;popPush(Ljava/lang/String;)V", args = "ldc=submitEntities")),
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/OutlineBufferSource;endOutlineBatch()V"),
-            remap = false
-    )
-    private void afterEntityRender(OutlineBufferSource instance, Operation<Void> original) {
-        original.call(instance);
-
+    @Inject(method = "method_62214", at = @At(value = "INVOKE:LAST", target = "Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;endBatch()V"))
+    private void endMainRender(CallbackInfo ci) {
         Camera mainCamera = tweelix$gameRenderer.getMainCamera();
+        ClientRenderEvents.END_MAIN.invoker().onAfterRender(tweelix$positionMatrix, mainCamera, tweelix$deltaTracker);
 
-        ClientRenderEvents.AFTER_ENTITIES.invoker().onAfterEntities(tweelix$positionMatrix, mainCamera, tweelix$deltaTracker);
     }
-
 
     @ModifyVariable(
             method = "cullTerrain",
