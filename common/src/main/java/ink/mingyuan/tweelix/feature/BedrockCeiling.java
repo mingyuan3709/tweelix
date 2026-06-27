@@ -48,7 +48,7 @@ public final class BedrockCeiling {
 
         ClientTickEvents.END.register(BedrockCeiling::onClientTickEnd);
 
-        ClientRenderEvents.AFTER_ENTITIES.register(BedrockCeiling::onRenderWorldLast);
+        ClientRenderEvents.END_MAIN.register(BedrockCeiling::onRenderWorldLast);
     }
 
     private static void onClientTickEnd(Minecraft client) {
