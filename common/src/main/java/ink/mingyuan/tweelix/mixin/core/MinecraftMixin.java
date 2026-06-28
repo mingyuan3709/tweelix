@@ -31,7 +31,7 @@ public class MinecraftMixin {
         ClientWorldEvents.LOAD.invoker().onWorldLoad((Minecraft) (Object) this, clientLevel);
     }
 
-    @Inject(method = "disconnect", at = @At("HEAD"))
+    @Inject(method = "disconnect*", at = @At("HEAD"))
     private void onDisconnect(CallbackInfo ci) {
         if (this.level != null) {
             ClientWorldEvents.UNLOAD.invoker().onWorldUnload((Minecraft) (Object) this, this.level);
