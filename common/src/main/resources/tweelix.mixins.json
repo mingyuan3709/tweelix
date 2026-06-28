@@ -3,7 +3,6 @@
   "minVersion": "0.8",
   "package": "ink.mingyuan.tweelix.mixin",
   "compatibilityLevel": "JAVA_21",
-  "refmap": "tweelix.mixins.refmap.json",
   "mixins": [
   ],
   "injectors": {
@@ -31,9 +30,9 @@
     "gui.ShareToLanScreenMixin",
     "gui.SuggestionsListMixin",
     "litematica.GuiMainMenuMixin",
-    "render.AvatarRendererMixin",
     "render.CameraMixin",
     "render.GameRendererMixin",
-    "render.LivingEntityMixin"
+    "render.LivingEntityMixin",
+    "render.PlayerRendererMixin"
   ]
 }
