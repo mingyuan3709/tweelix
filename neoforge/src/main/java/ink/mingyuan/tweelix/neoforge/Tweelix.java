@@ -20,7 +20,6 @@ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
 
-
 @Mod(value = Reference.MOD_ID,dist = Dist.CLIENT)
 @EventBusSubscriber(modid = Reference.MOD_ID, value = Dist.CLIENT)
 public class Tweelix {

@@ -1,6 +1,7 @@
 package ink.mingyuan.tweelix.mixin.core;
 
 import com.mojang.blaze3d.buffers.GpuBufferSlice;
+import com.mojang.blaze3d.framegraph.FrameGraphBuilder;
 import com.mojang.blaze3d.resource.GraphicsResourceAllocator;
 import ink.mingyuan.tweelix.config.category.Tweaks;
 import ink.mingyuan.tweelix.event.ClientRenderEvents;
@@ -8,6 +9,8 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.culling.Frustum;
+import net.minecraft.util.profiling.ProfilerFiller;
 import org.joml.Matrix4f;
 import org.joml.Vector4f;
 import org.spongepowered.asm.mixin.Final;
@@ -48,12 +51,13 @@ public class LevelRendererMixin {
         this.tweelix$gameRenderer = minecraft.gameRenderer;
     }
 
-    @Inject(method = "method_62214", at = @At(value = "INVOKE:LAST", target = "Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;endBatch()V"))
-    private void endMainRender(CallbackInfo ci) {
-        Camera mainCamera = tweelix$gameRenderer.getMainCamera();
-        ClientRenderEvents.END_MAIN.invoker().onAfterRender(tweelix$positionMatrix, mainCamera, tweelix$deltaTracker);
 
-    }
+//    @Inject(method = "method_62214", at = @At(value = "INVOKE:LAST", target = "Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;endBatch()V"))
+//    private void endMainRender(CallbackInfo ci) {
+//        Camera mainCamera = tweelix$gameRenderer.getMainCamera();
+//        ClientRenderEvents.END_MAIN.invoker().onAfterRender(tweelix$positionMatrix, mainCamera, tweelix$deltaTracker);
+//
+//    }
 
     @ModifyVariable(
             method = "setupRender",

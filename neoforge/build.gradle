@@ -8,9 +8,6 @@ architectury {
     neoForge()
 }
 
-loom {
-    accessWidenerPath = project(":common").file("src/main/resources/tweelix.accesswidener")
-}
 
 base {
     archivesName = project.archives_base_name

@@ -7,17 +7,13 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.config.options.ConfigBoolean;
-import ink.mingyuan.tweelix.command.CommandDelayScheduler;
 import ink.mingyuan.tweelix.config.TweelixConfig;
 import ink.mingyuan.tweelix.input.InputHandler;
-import ink.mingyuan.tweelix.util.CommandCompressor;
 import ink.mingyuan.tweelix.util.CommandExporter;
 import ink.mingyuan.tweelix.util.Util;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 
 public class TweelixCommonCommands {
 
