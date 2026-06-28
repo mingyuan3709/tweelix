@@ -3,6 +3,7 @@ package ink.mingyuan.tweelix.mixin.core;
 import ink.mingyuan.tweelix.event.ClientWorldEvents;
 import ink.mingyuan.tweelix.event.ClientTickEvents;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.ReceivingLevelScreen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -27,7 +28,7 @@ public class MinecraftMixin {
     }
 
     @Inject(method = "setLevel", at = @At("TAIL"))
-    private void onSetLevel(ClientLevel clientLevel, CallbackInfo ci) {
+    private void onSetLevel(ClientLevel clientLevel, ReceivingLevelScreen.Reason reason, CallbackInfo ci) {
         ClientWorldEvents.LOAD.invoker().onWorldLoad((Minecraft) (Object) this, clientLevel);
     }
 

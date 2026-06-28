@@ -1,10 +1,11 @@
 package ink.mingyuan.tweelix.mixin.gui;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import ink.mingyuan.tweelix.feature.GameModeSwitcher;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.debug.GameModeSwitcherScreen;
-import net.minecraft.client.input.KeyEvent;
-import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.Mixin;
@@ -34,43 +35,38 @@ public class GameModeSwitcherScreenMixin extends Screen {
     }
 
     @Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true)
-    private void onKeyPressed(KeyEvent keyEvent, CallbackInfoReturnable<Boolean> cir) {
-
+    private void onKeyPressed(int keyCode, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> cir) {
         if (GameModeSwitcher.isDisabled()) return;
 
-        if (keyEvent.isEscape()) {
-            minecraft.setScreen(null);
+        Minecraft mc = Minecraft.getInstance();
+
+        // ESC 关闭界面
+        if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
+            mc.setScreen(null);
             cir.setReturnValue(true);
             return;
         }
 
-        if (keyEvent.key() == GLFW.GLFW_KEY_SPACE) {
-            GameModeSwitcher.handleSpaceKey(minecraft, this.currentlyHovered);
-            minecraft.setScreen(null);
+        // 空格键触发切换
+        if (keyCode == GLFW.GLFW_KEY_SPACE) {
+            GameModeSwitcher.handleSpaceKey(mc, this.currentlyHovered);
+            mc.setScreen(null);
             cir.setReturnValue(true);
         }
     }
 
-    @Inject(method = "keyReleased", at = @At("HEAD"), cancellable = true)
-    private void onKeyReleased(KeyEvent keyEvent, CallbackInfoReturnable<Boolean> cir) {
+    // 注入到 render 方法的开头，检测F3松开
+    @Inject(method = "render", at = @At("HEAD"), cancellable = true)
+    private void onRenderHead(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, CallbackInfo ci) {
         if (GameModeSwitcher.isDisabled()) return;
-
-        // 检查释放的是否是 F3 键 (原版 debug 组合键的修饰键)
-        if (minecraft.options.keyDebugModifier.matches(keyEvent)) {
-            if (GameModeSwitcher.applyGameModeSwitch(minecraft, this.currentlyHovered)) {
-                minecraft.setScreen(null);
-                cir.setReturnValue(true);
+        Minecraft mc = Minecraft.getInstance();
+        assert this.minecraft != null;
+        if (!InputConstants.isKeyDown(this.minecraft.getWindow().getWindow(), GLFW.GLFW_KEY_F3)) {
+            // 执行自定义切换
+            if (GameModeSwitcher.applyGameModeSwitch(mc, this.currentlyHovered)) {
+                mc.setScreen(null);
+                ci.cancel();
             }
-        }
-    }
-
-    @Inject(method = "mouseReleased", at = @At("HEAD"), cancellable = true)
-    private void onMouseReleased(MouseButtonEvent mouseButtonEvent, CallbackInfoReturnable<Boolean> cir) {
-        if (GameModeSwitcher.isDisabled()) return;
-
-        if (GameModeSwitcher.applyGameModeSwitch(minecraft, this.currentlyHovered)) {
-            minecraft.setScreen(null);
-            cir.setReturnValue(true);
         }
     }
 }

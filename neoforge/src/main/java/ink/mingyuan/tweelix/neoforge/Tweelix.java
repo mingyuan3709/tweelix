@@ -7,7 +7,7 @@ import ink.mingyuan.tweelix.Reference;
 import ink.mingyuan.tweelix.neoforge.gui.ModMenuIntegration;
 import ink.mingyuan.tweelix.util.PlatformHelper;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
@@ -41,7 +41,7 @@ public class Tweelix {
     public static void onAddPackFinders(AddPackFindersEvent event) {
         if (event.getPackType() == PackType.CLIENT_RESOURCES) {
             event.addPackFinders(
-                    Identifier.fromNamespaceAndPath(Reference.MOD_ID, "resourcepacks/command_hints"),
+                    ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "resourcepacks/command_hints"),
                     PackType.CLIENT_RESOURCES,
                     Component.literal("Tweelix 命令提示扩展翻译"),
                     PackSource.BUILT_IN,

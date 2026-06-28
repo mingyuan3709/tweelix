@@ -59,8 +59,7 @@ public class MouseHandlerMixin {
         FreeCam handler = FreeCam.getInstance();
         float dx = (float) (i * 0.15F);
         float dy = (float) (j * 0.15F);
-        if (this.minecraft.options.invertMouseX().get()) dx *= -1;
-        if (this.minecraft.options.invertMouseY().get()) dy *= -1;
+        if (this.minecraft.options.invertYMouse().get()) dy *= -1;
         handler.changeLookDirection(dx, dy);
         ci.cancel();
 

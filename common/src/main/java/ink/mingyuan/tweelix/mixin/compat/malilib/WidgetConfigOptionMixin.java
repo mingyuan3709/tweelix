@@ -47,8 +47,7 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
             at = @At(value = "INVOKE",
                      target = "Lfi/dy/masa/malilib/gui/widgets/WidgetConfigOption;addBooleanAndHotkeyWidgets(IIILfi/dy/masa/malilib/config/IConfigResettable;Lfi/dy/masa/malilib/config/IConfigBoolean;Lfi/dy/masa/malilib/hotkeys/IKeybind;)V"),
             cancellable = true)
-    private void onAddConfigOption(int x, int y, int labelWidth, int configWidth,
-                                   IConfigBase config, CallbackInfo ci) {
+    private void onAddConfigOption(int x, int y, float zLevel, int labelWidth, int configWidth, IConfigBase config, CallbackInfo ci) {
         if (config instanceof ConfigBooleanHotkeyedWithSettings hotkeyConfig) {
             int settingsBtnWidth = 22;
             ButtonGeneric settingsButton = new ButtonGeneric(x, y, 20, 20, "",
@@ -68,8 +67,7 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
             at = @At(value = "INVOKE",
                      target = "Lfi/dy/masa/malilib/gui/widgets/WidgetConfigOption;addConfigButtonEntry(IILfi/dy/masa/malilib/config/IConfigResettable;Lfi/dy/masa/malilib/gui/button/ButtonBase;)V"),
             cancellable = true)
-    private void onAddConfigBooleanWithSettingsOption(int x, int y, int labelWidth, int configWidth,
-                                                      IConfigBase config, CallbackInfo ci) {
+    private void onAddConfigBooleanWithSettingsOption(int x, int y, float zLevel, int labelWidth, int configWidth, IConfigBase config, CallbackInfo ci) {
         if (config instanceof ConfigBooleanWithSettings boolConfig) {
             int settingsBtnWidth = 22;
             ButtonGeneric settingsButton = new ButtonGeneric(x, y, 20, 20, "",

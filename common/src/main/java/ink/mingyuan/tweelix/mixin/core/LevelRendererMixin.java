@@ -28,9 +28,6 @@ public class LevelRendererMixin {
     private Minecraft minecraft;
     @Shadow
     @Final
-    private LevelTargetBundle targets;
-    @Shadow
-    @Final
     private RenderBuffers renderBuffers;
 
     @Unique
@@ -59,9 +56,10 @@ public class LevelRendererMixin {
     }
 
     @ModifyVariable(
-            method = "cullTerrain",
+            method = "setupRender",
             at = @At("HEAD"),
-            argsOnly = true
+            argsOnly = true,
+            ordinal = 1
     )
     private boolean onUpdateCamera(boolean spectator){
         if (!Tweaks.FREE_CAM.getBooleanValue()) return spectator;

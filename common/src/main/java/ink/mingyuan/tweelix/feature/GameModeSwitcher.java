@@ -38,8 +38,7 @@ public class GameModeSwitcher {
         GameType selectedMode = selectionToGameMode(selection);
         lastSelectedMode = selectedMode;
 
-        boolean hasPermission = client.canSwitchGameMode() &&
-                GameModeCommand.PERMISSION_CHECK.check(client.player.permissions());
+        boolean hasPermission = client.player.hasPermissions(2);;
 
         if (hasPermission) {
             applyOriginalSwitch(client, selectedMode);

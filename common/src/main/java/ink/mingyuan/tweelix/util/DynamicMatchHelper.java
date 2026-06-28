@@ -5,7 +5,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import java.util.regex.Pattern;
 
 public class DynamicMatchHelper {
@@ -39,7 +39,7 @@ public class DynamicMatchHelper {
     }
 
     private static boolean matchesTag(Item item, String tagName) {
-        Identifier tagId = Identifier.tryParse(tagName);
+        ResourceLocation tagId = ResourceLocation.tryParse(tagName);
         if (tagId == null) return false;
         TagKey<Item> tagKey = TagKey.create(Registries.ITEM, tagId);
         return BuiltInRegistries.ITEM.wrapAsHolder(item).is(tagKey);

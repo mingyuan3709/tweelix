@@ -129,7 +129,7 @@ public class CrosshairCopy {
         Entity entity = ((EntityHitResult) client.hitResult).getEntity();
 
         String displayName = entity instanceof Player player
-                ? player.getGameProfile().name()
+                ? player.getGameProfile().getName()
                 : entity.getType().getDescription().getString();
 
         return Optional.of(new TargetInfo(

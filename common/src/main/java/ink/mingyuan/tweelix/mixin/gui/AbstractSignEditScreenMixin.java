@@ -4,7 +4,6 @@ import ink.mingyuan.tweelix.util.ISignScreenBridge;
 import ink.mingyuan.tweelix.util.SignPasteBridge;
 import net.minecraft.client.gui.font.TextFieldHelper;
 import net.minecraft.client.gui.screens.inventory.AbstractSignEditScreen;
-import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.entity.SignText;
@@ -31,12 +30,12 @@ public abstract class AbstractSignEditScreenMixin implements ISignScreenBridge {
 
     // 暂存屏幕用于粘贴（保持原有逻辑）
     @Inject(method = "keyPressed", at = @At("HEAD"))
-    private void onKeyPressedHead(KeyEvent keyEvent, CallbackInfoReturnable<Boolean> cir) {
+    private void onKeyPressedHead(int i, int j, int k, CallbackInfoReturnable<Boolean> cir) {
         SignPasteBridge.setScreen((AbstractSignEditScreen) (Object) this);
     }
 
     @Inject(method = "keyPressed", at = @At("TAIL"))
-    private void onKeyPressedTail(KeyEvent arg, CallbackInfoReturnable<Boolean> cir) {
+    private void onKeyPressedTail(int i, int j, int k, CallbackInfoReturnable<Boolean> cir) {
         SignPasteBridge.clear();
     }
 

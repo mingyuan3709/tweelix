@@ -21,7 +21,6 @@ public class KeyboardHandlerMixin {
 
     @Inject(method = "handleDebugKeys", at = @At("HEAD"), cancellable = true)
     private void onHandleDebugKeys(int keyCode, CallbackInfoReturnable<Boolean> cir) {
-        Options options = minecraft.options;
 
         if (keyCode == 293 && this.minecraft.level != null && this.minecraft.screen == null) {
 

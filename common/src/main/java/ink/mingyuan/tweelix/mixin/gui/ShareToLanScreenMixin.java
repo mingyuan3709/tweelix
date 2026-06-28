@@ -1,6 +1,5 @@
 package ink.mingyuan.tweelix.mixin.gui;
 
-import ink.mingyuan.tweelix.config.TweelixConfig;
 import ink.mingyuan.tweelix.config.category.Display;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
@@ -8,7 +7,7 @@ import net.minecraft.client.gui.components.SpriteIconButton;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.ShareToLanScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.HttpUtil;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -16,6 +15,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.Objects;
 
 @Mixin(ShareToLanScreen.class)
 public class ShareToLanScreenMixin extends Screen {
@@ -42,7 +43,7 @@ public class ShareToLanScreenMixin extends Screen {
         if (this.portEdit == null) return;
         int buttonX = this.portEdit.getX() + this.portEdit.getWidth() + 4;
         int buttonY = this.portEdit.getY();
-        Button.OnPress onPress = (button) -> {
+        Button.OnPress onPress = (_) -> {
             int newPort = HttpUtil.getAvailablePort();
             this.portEdit.setValue(String.valueOf(newPort));
         };
@@ -50,7 +51,7 @@ public class ShareToLanScreenMixin extends Screen {
         SpriteIconButton refreshButton = this.addRenderableWidget(
                 SpriteIconButton.builder(
                                 Component.translatable("options.language"), onPress, true)
-                        .size(20,20).sprite(Identifier.tryBuild("tweelix", "icon/refresh"), 16, 16).build()
+                        .size(20,20).sprite(Objects.requireNonNull(ResourceLocation.tryBuild("tweelix", "icon/refresh")), 16, 16).build()
         );
 
         refreshButton.setPosition(buttonX, buttonY);
