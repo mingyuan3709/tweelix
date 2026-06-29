@@ -1,7 +1,7 @@
 package ink.mingyuan.tweelix.fabric.event;
 
 import ink.mingyuan.tweelix.event.TweelixEventDispatcher;
-import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.Minecraft;
 
@@ -11,10 +11,10 @@ public class FabricClientEvents {
 
     public static void register() {
         // 世界渲染结束（在原版 LevelRenderer.render 返回时触发）
-        WorldRenderEvents.END.register(context -> {
+        WorldRenderEvents.END_MAIN.register(context -> {
             Minecraft mc = Minecraft.getInstance();
             TweelixEventDispatcher.onRenderLevelEnd(
-                    Objects.requireNonNull(context.matrixStack()).last().pose(),
+                    context.matrices().last().pose(),
                     mc.gameRenderer.getMainCamera(),
                     mc.getDeltaTracker()
             );

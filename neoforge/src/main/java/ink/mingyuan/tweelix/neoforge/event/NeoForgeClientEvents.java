@@ -1,6 +1,7 @@
 package ink.mingyuan.tweelix.neoforge.event;
 
 import ink.mingyuan.tweelix.event.TweelixEventDispatcher;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -13,10 +14,11 @@ public class NeoForgeClientEvents {
     @SubscribeEvent
     public static void onRenderLevel(RenderLevelStageEvent.AfterWeather event) {
         Minecraft mc = Minecraft.getInstance();
+        DeltaTracker deltaTracker = mc.getDeltaTracker();
         TweelixEventDispatcher.onRenderLevelEnd(
                 event.getPoseStack().last().pose(),
                 mc.gameRenderer.getMainCamera(),
-                event.getPartialTick()
+                deltaTracker
         );
     }
 
