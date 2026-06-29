@@ -79,6 +79,7 @@
   "tweelix.config.display.comment.lanPortRefreshButton": "Add a refresh button to the Open to LAN screen for finding available ports",
   "tweelix.config.display.name.showShadersButton": "Shader Packs Button",
   "tweelix.config.display.comment.showShadersButton": "Show shader packs button in options screen",
+  "options.shaders": "Shaders…",
   "tweelix.config.display.name.hideCrossTeamPlayerNames": "Hide Cross-Team Names",
   "tweelix.config.display.comment.hideCrossTeamPlayerNames": "Press F1 to toggle hiding name tags of players from other teams",
   "tweelix.config.display.name.showLitematicaSchematicsButton": "Litematica Schematics Button",

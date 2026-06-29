@@ -148,5 +148,7 @@
   "tweelix.mining_tweaks.blocked.attack.message": "阻止攻击",
   "tweelix.mining_tweaks.blocked.place.message": "阻止放置",
   "tweelix.mining_tweaks.blocked.interact.message": "阻止交互",
-  "tweelix.mining_tweaks.anti_over_mining.message": "挖掘冷却中，请稍后再试"
+  "tweelix.mining_tweaks.anti_over_mining.message": "挖掘冷却中，请稍后再试",
+  "tweelix.config.display.name.showPlayerHeadOnLocatorBar": "定位栏显示玩家头像",
+  "tweelix.config.display.comment.showPlayerHeadOnLocatorBar": "在定位栏中，将玩家航点图标替换为对应玩家头像，并随距离缩放"
 }

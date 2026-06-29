@@ -50,6 +50,10 @@ public class Display {
                     NightVisionSub.OPTIONS)
                     .apply(TRANSLATION_KEY);
 
+    public static final ConfigBoolean SHOW_PLAYER_HEAD_ON_LOCATOR_BAR =
+            new ConfigBoolean("showPlayerHeadOnLocatorBar", false,
+                    "Show player heads on the locator bar instead of waypoint icons, scaled by distance")
+                    .apply(TRANSLATION_KEY);
 
     public static final List<IConfigBase> OPTIONS = ImmutableList.of(
             ENABLE_COMMAND_HINT,
@@ -59,6 +63,7 @@ public class Display {
             SHOW_SHADERS_BUTTON,
             HIDE_CROSS_TEAM_PLAYER_NAMES,
             SHOW_LITEMATICA_SCHEMATICS_BUTTON,
-            NIGHT_VISION
+            NIGHT_VISION,
+            SHOW_PLAYER_HEAD_ON_LOCATOR_BAR
     );
 }
