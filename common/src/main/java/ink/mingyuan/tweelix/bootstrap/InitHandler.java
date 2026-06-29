@@ -7,6 +7,7 @@ import ink.mingyuan.tweelix.Reference;
 import ink.mingyuan.tweelix.command.CommandDelayScheduler;
 import ink.mingyuan.tweelix.config.TweelixConfig;
 import ink.mingyuan.tweelix.feature.*;
+import ink.mingyuan.tweelix.feature.cardinaldirection.CardinalDirectionFeature;
 import ink.mingyuan.tweelix.input.InputHandler;
 
 public class InitHandler implements IInitializationHandler {
@@ -29,6 +30,7 @@ public class InitHandler implements IInitializationHandler {
         FeaturesManager.register(FreeCam.getInstance()::init);
         FeaturesManager.register(SignCommand.getInstance()::init);
         FeaturesManager.register(CommandDelayScheduler.getInstance()::init);
+        FeaturesManager.register(CardinalDirectionFeature::init);
 
         FeaturesManager.initAll();
 

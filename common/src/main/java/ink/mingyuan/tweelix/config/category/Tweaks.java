@@ -65,10 +65,10 @@ public class Tweaks {
     public static final List<IConfigBase> OPTIONS = ImmutableList.of(
             FLAT_DIGGER,
             MINING_COOLDOWN,
+            PROTECT_SUSPICIOUS_BLOCKS,
             ANTI_OVER_MINING,
             PERIMETER_WALL_DIGGER,
             FREE_CAM,
-            PROTECT_SUSPICIOUS_BLOCKS,
             EMPTY_INVENTORY,
             BLACKLIST_DIGGER
     );
