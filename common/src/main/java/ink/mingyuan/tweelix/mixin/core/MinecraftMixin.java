@@ -24,7 +24,6 @@ public class MinecraftMixin {
     @Inject(method = "tick", at = @At("TAIL"))
     private void onEndTick(CallbackInfo ci) {
         ClientTickEvents.END.invoker().onEndTick((Minecraft) (Object) this);
-        ClientTickEvents.COOLDOWN.invoker().onCooldownTick((Minecraft) (Object) this);
     }
 
     @Inject(method = "setLevel", at = @At("TAIL"))

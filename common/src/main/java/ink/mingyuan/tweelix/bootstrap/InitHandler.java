@@ -9,6 +9,7 @@ import ink.mingyuan.tweelix.config.TweelixConfig;
 import ink.mingyuan.tweelix.feature.*;
 import ink.mingyuan.tweelix.feature.cardinaldirection.CardinalDirectionFeature;
 import ink.mingyuan.tweelix.input.InputHandler;
+import ink.mingyuan.tweelix.util.TimeManager;
 
 public class InitHandler implements IInitializationHandler {
 
@@ -22,6 +23,7 @@ public class InitHandler implements IInitializationHandler {
         InputEventHandler.getKeybindManager().registerKeybindProvider(InputHandler.getInstance());
         InputEventHandler.getInputManager().registerKeyboardInputHandler(InputHandler.getInstance());
         InputEventHandler.getInputManager().registerMouseInputHandler(InputHandler.getInstance());
+        TimeManager.init();
 
         // 注册功能模块
         FeaturesManager.register(VisitorMode::init);

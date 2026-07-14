@@ -12,15 +12,7 @@ import ink.mingyuan.tweelix.Reference;
 import ink.mingyuan.tweelix.config.category.Display;
 import ink.mingyuan.tweelix.config.category.Generic;
 import ink.mingyuan.tweelix.config.category.Tweaks;
-import ink.mingyuan.tweelix.config.subconfig.AntiOverMiningSub;
-import ink.mingyuan.tweelix.config.subconfig.BlacklistDiggerSub;
-import ink.mingyuan.tweelix.config.subconfig.CrosshairCopySub;
-import ink.mingyuan.tweelix.config.subconfig.DefaultPromptSub;
-import ink.mingyuan.tweelix.config.subconfig.EmptyInventorySub;
-import ink.mingyuan.tweelix.config.subconfig.FreeCameraSub;
-import ink.mingyuan.tweelix.config.subconfig.GameModeSwitcherSub;
-import ink.mingyuan.tweelix.config.subconfig.NightVisionSub;
-import ink.mingyuan.tweelix.config.subconfig.PerimeterWallDiggerSub;
+import ink.mingyuan.tweelix.config.subconfig.*;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -61,6 +53,8 @@ public class TweelixConfig implements IConfigHandler {
         configMap.put("BlacklistDiggerSub", BlacklistDiggerSub.OPTIONS);
         configMap.put("GameModeSwitcherSub", GameModeSwitcherSub.OPTIONS);
         configMap.put("NightVisionSub", NightVisionSub.OPTIONS);
+        configMap.put("ShowCardinalIndicatorSub", ShowCardinalIndicatorSub.OPTIONS);
+
     }
 
     /**

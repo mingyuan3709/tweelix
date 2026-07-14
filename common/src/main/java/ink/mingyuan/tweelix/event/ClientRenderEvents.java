@@ -52,7 +52,7 @@ public final class ClientRenderEvents {
     @FunctionalInterface
     public interface Hud {
         /**
-         * 在游戏内非菜单界面（HUD层）渲染时触发。
+         * 在游戏内非菜单界面（HUD层）渲染时触发
          *
          * @param guiGraphics  现代渲染器封装（提供 drawString、fill 等 2D 绘制方法）
          * @param deltaTracker 1.21+ 的帧间插值追踪器

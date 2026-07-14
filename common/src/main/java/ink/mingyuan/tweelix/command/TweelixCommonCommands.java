@@ -2,24 +2,34 @@ package ink.mingyuan.tweelix.command;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
+import com.mojang.brigadier.arguments.DoubleArgumentType;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
+import com.mojang.brigadier.context.CommandContext;
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.config.options.ConfigBoolean;
-import ink.mingyuan.tweelix.command.CommandDelayScheduler;
 import ink.mingyuan.tweelix.config.TweelixConfig;
 import ink.mingyuan.tweelix.input.InputHandler;
-import ink.mingyuan.tweelix.util.CommandCompressor;
 import ink.mingyuan.tweelix.util.CommandExporter;
 import ink.mingyuan.tweelix.util.Util;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
+
+import java.util.List;
 
 public class TweelixCommonCommands {
+
+    private static boolean vaultRunning = false;
+    private static String vaultNamePrefix = "";  // 例如 "vault_1_"
+
+    final static int SPAWN_DELAY = 20;          // 生成后等待多少 tick 开始检查/使用
+    final static int CHECK_INTERVAL = 20;       // 轮询间隔（若假人未在线，每隔多少 tick 重试）
+    final static int USE_DELAY = 20;           // 假人在线后等待多少 tick 执行 use
+    final static int USE_TO_KILL_DELAY = 120;    // use 后等待多少 tick 执行 kill
+    final static int KILL_TO_NEXT_DELAY = 20;  // kill 后等待多少 tick 生成下一个假人
 
     public static <S> void register(CommandDispatcher<S> dispatcher, MessageSender<S> sender) {
 
@@ -85,7 +95,7 @@ public class TweelixCommonCommands {
                             // 命令1 = 时间标记之前的所有内容
                             StringBuilder cmd1 = new StringBuilder();
                             for (int i = 0; i < timeIdx; i++) {
-                                if (cmd1.length() > 0) cmd1.append(' ');
+                                if (!cmd1.isEmpty()) cmd1.append(' ');
                                 cmd1.append(tokens[i]);
                             }
 
@@ -100,7 +110,7 @@ public class TweelixCommonCommands {
                             // 命令2 = 时间标记之后的所有内容
                             StringBuilder cmd2 = new StringBuilder();
                             for (int i = timeIdx + 1; i < tokens.length; i++) {
-                                if (cmd2.length() > 0) cmd2.append(' ');
+                                if (!cmd2.isEmpty()) cmd2.append(' ');
                                 cmd2.append(tokens[i]);
                             }
 
@@ -140,7 +150,7 @@ public class TweelixCommonCommands {
                                 IConfigBase cfg = TweelixConfig.getByKey(key);
                                 if (cfg == null) {
                                     failed++;
-                                    if (errors.length() > 0) errors.append(", ");
+                                    if (!errors.isEmpty()) errors.append(", ");
                                     errors.append(key).append("(not found)");
                                     continue;
                                 }
@@ -153,7 +163,7 @@ public class TweelixCommonCommands {
                                         newValue = false;
                                     } else {
                                         failed++;
-                                        if (errors.length() > 0) errors.append(", ");
+                                        if (!errors.isEmpty()) errors.append(", ");
                                         errors.append(key).append("(invalid value: ").append(valStr).append(")");
                                         continue;
                                     }
@@ -162,7 +172,7 @@ public class TweelixCommonCommands {
                                     success++;
                                 } else {
                                     failed++;
-                                    if (errors.length() > 0) errors.append(", ");
+                                    if (!errors.isEmpty()) errors.append(", ");
                                     errors.append(key).append("(not a boolean config)");
                                 }
                             }
@@ -178,7 +188,111 @@ public class TweelixCommonCommands {
                 )
         );
 
-        // 动态开关控制命令（自动反射路由）
+
+        // 批量假人命令：/tweelix batchplayer <prefix> <start> <end> <subcommand...>
+        rootCommand.then(LiteralArgumentBuilder.<S>literal("batchplayer")
+                .then(RequiredArgumentBuilder.<S, String>argument("prefix", StringArgumentType.word())
+                        .then(RequiredArgumentBuilder.<S, Integer>argument("start", IntegerArgumentType.integer())
+                                .then(RequiredArgumentBuilder.<S, Integer>argument("end", IntegerArgumentType.integer())
+                                        .then(RequiredArgumentBuilder.<S, String>argument("subcommand", StringArgumentType.greedyString())
+                                                .executes(context -> {
+                                                    String prefix = StringArgumentType.getString(context, "prefix");
+                                                    int start = IntegerArgumentType.getInteger(context, "start");
+                                                    int end = IntegerArgumentType.getInteger(context, "end");
+                                                    String subcommand = StringArgumentType.getString(context, "subcommand");
+
+                                                    if (start > end) {
+                                                        sender.send(context.getSource(), Component.literal("§c起始编号不能大于结束编号"));
+                                                        return 0;
+                                                    }
+                                                    int count = end - start + 1;
+                                                    if (count > 1000) {
+                                                        sender.send(context.getSource(), Component.literal("§c单次最多操作 1000 个假人"));
+                                                        return 0;
+                                                    }
+
+                                                    for (int i = start; i <= end; i++) {
+                                                        String name = prefix + i;
+                                                        String command = "/player " + name + " " + subcommand;
+                                                        Util.sendCommandOrChat(command);
+                                                    }
+                                                    sender.send(context.getSource(), Component.literal("§a已发送 " + count + " 条假人命令"));
+                                                    return 1;
+                                                })
+                                        )
+                                )
+                        )
+                )
+        );
+
+
+        LiteralArgumentBuilder<S> vaultBuilder = LiteralArgumentBuilder.<S>literal("vault")
+                .then(LiteralArgumentBuilder.<S>literal("at")
+                        .then(RequiredArgumentBuilder.<S, Double>argument("x", DoubleArgumentType.doubleArg())
+                                .then(RequiredArgumentBuilder.<S, Double>argument("y", DoubleArgumentType.doubleArg())
+                                        .then(RequiredArgumentBuilder.<S, Double>argument("z", DoubleArgumentType.doubleArg())
+                                                .then(LiteralArgumentBuilder.<S>literal("facing")
+                                                        .then(RequiredArgumentBuilder.<S, String>argument("direction", StringArgumentType.word())
+                                                                .executes(context -> {
+                                                                    double x = DoubleArgumentType.getDouble(context, "x");
+                                                                    double y = DoubleArgumentType.getDouble(context, "y");
+                                                                    double z = DoubleArgumentType.getDouble(context, "z");
+                                                                    String dir = StringArgumentType.getString(context, "direction");
+                                                                    return executeVault(context, sender, x, y, z, dir,1);
+                                                                })
+                                                                .then(LiteralArgumentBuilder.<S>literal("start")
+                                                                        .then(RequiredArgumentBuilder.<S, Integer>argument("startNumber", IntegerArgumentType.integer(1, 130))
+                                                                                .executes(context -> {
+                                                                                    double x = DoubleArgumentType.getDouble(context, "x");
+                                                                                    double y = DoubleArgumentType.getDouble(context, "y");
+                                                                                    double z = DoubleArgumentType.getDouble(context, "z");
+                                                                                    String dir = StringArgumentType.getString(context, "direction");
+                                                                                    int start = IntegerArgumentType.getInteger(context, "startNumber");
+                                                                                    return executeVault(context, sender, x, y, z, dir, start);
+                                                                                })
+                                                                        )
+                                                                )
+                                                        )
+                                                )
+                                        )
+                                )
+                        )
+                )
+                // 停止命令
+                // 停止命令
+                .then(LiteralArgumentBuilder.<S>literal("stop")
+                        .executes(context -> {
+                            if (!vaultRunning) {
+                                sender.send(context.getSource(), Component.literal("§c当前没有正在运行的宝库任务。"));
+                                return 0;
+                            }
+                            CommandDelayScheduler.getInstance().clear();
+                            Minecraft client = Minecraft.getInstance();
+                            if (client.getConnection() != null) {
+                                List<String> toKill = client.getConnection().getOnlinePlayers().stream()
+                                        .map(info -> info.getProfile().name())
+                                        .filter(name -> name.matches(".*vault_\\d+.*"))  // 支持带前缀的假人
+                                        .toList();
+
+                                if (!toKill.isEmpty()) {
+                                    for (String name : toKill) {
+                                        Util.sendCommandOrChat("/player " + name + " kill");
+                                    }
+                                    sender.send(context.getSource(), Component.literal("§a已杀死 " + toKill.size() + " 个假人。"));
+                                } else {
+                                    sender.send(context.getSource(), Component.literal("§e当前没有匹配的假人在线。"));
+                                }
+                            } else {
+                                sender.send(context.getSource(), Component.literal("§c无法获取玩家列表。"));
+                            }
+
+                            vaultRunning = false;
+                            sender.send(context.getSource(), Component.literal("§a已停止宝库任务。"));
+                            return 1;
+                        })
+                );
+
+        rootCommand.then(vaultBuilder);
 
         for (IConfigBase config : TweelixConfig.INSTANCE.getAllOptions()) {
             String configKey = config.getName();
@@ -221,15 +335,6 @@ public class TweelixCommonCommands {
         dispatcher.register(rootCommand);
     }
 
-    /**
-     * 解析时间后缀为 tick 数。支持：
-     * <ul>
-     *   <li>{@code 5t} = 5 ticks</li>
-     *   <li>{@code 2s} = 40 ticks (2 秒)</li>
-     *   <li>{@code 1m} = 1200 ticks (1 分钟)</li>
-     *   <li>{@code 30} = 30 ticks（纯数字 = ticks）</li>
-     * </ul>
-     */
     private static int parseDelayTicks(String raw) {
         if (raw == null || raw.isEmpty()) return 0;
         raw = raw.toLowerCase().trim();
@@ -254,4 +359,129 @@ public class TweelixCommonCommands {
     public interface MessageSender<S> {
         void send(S source, Component message);
     }
+
+    private static <S> int executeVault(CommandContext<S> context, MessageSender<S> sender,
+                                        Double x, Double y, Double z, String direction,int start) {
+        if (vaultRunning) {
+            sender.send(context.getSource(), Component.literal("§c已有宝库开启任务正在运行，请等待完成。"));
+            return 0;
+        }
+
+        // 获取坐标
+        if (x == null || y == null || z == null) {
+            Minecraft client = Minecraft.getInstance();
+            if (client.player == null) {
+                sender.send(context.getSource(), Component.literal("§c玩家不存在，无法获取当前位置。"));
+                return 0;
+            }
+            x = client.player.getX();
+            y = client.player.getY();
+            z = client.player.getZ();
+        }
+
+        double yaw, pitch;
+        if (direction == null || direction.isEmpty()) {
+            yaw = 90.0;
+            pitch = 0.0;
+        } else {
+            double[] angles = directionToAngles(direction);
+            if (angles == null) {
+                sender.send(context.getSource(), Component.literal("§c无效的方向，请使用 north/south/east/west"));
+                return 0;
+            }
+            yaw = angles[0];
+            pitch = angles[1];
+        }
+
+        vaultRunning = true;
+        vaultNamePrefix = "Vault_";
+
+        Minecraft client = Minecraft.getInstance();
+        String posStr = formatCoord(x) + " " + formatCoord(y) + " " + formatCoord(z);
+        String facingStr = String.format("facing %.2f %.2f", yaw, pitch);
+
+        processNextVault(client, 0, vaultNamePrefix, posStr, facingStr,start,
+                () -> {
+                    vaultRunning = false;
+                    vaultNamePrefix = "";
+                    sender.send(context.getSource(), Component.literal("§c[异常] 宝库任务意外结束。"));
+                });
+
+        sender.send(context.getSource(), Component.translatable("tweelix.command.vault.started"));
+        return 1;
+    }
+
+    private static String formatCoord(double d) {
+        if (d == (long) d) {
+            return Long.toString((long) d);
+        } else {
+            return Double.toString(d);
+        }
+    }
+
+    private static void processNextVault(Minecraft client, int index,
+                                         String prefix, String posStr, String facingStr,int startNumber,
+                                         Runnable onAllDone) {
+        if (!vaultRunning) {
+            if (onAllDone != null) onAllDone.run();
+            return;
+        }
+
+        int nameIndex = (index + startNumber - 1) % 130 + 1;
+        String name = prefix + nameIndex;
+
+        String spawnCmd = String.format("/player %s spawn at %s %s in minecraft:overworld", name, posStr, facingStr);
+        String useCmd   = "/player " + name + " use once";
+        String killCmd  = "/player " + name + " kill";
+
+        Util.sendCommandOrChat(spawnCmd);
+
+        CommandDelayScheduler.getInstance().schedule(() ->
+                        checkAndUse(client, name, useCmd, killCmd, CHECK_INTERVAL,
+                                () -> {
+                                    // 当前假人完成后，等待 KILL_TO_NEXT_DELAY 然后处理下一个（循环）
+                                    CommandDelayScheduler.getInstance().schedule(() ->
+                                                    processNextVault(client, index + 1, prefix, posStr, facingStr,startNumber, onAllDone),
+                                            KILL_TO_NEXT_DELAY);
+                                }),
+                SPAWN_DELAY);
+    }
+
+    private static void checkAndUse(Minecraft client, String name, String useCmd, String killCmd,
+                                    int intervalTicks, Runnable onComplete) {
+        client.execute(() -> {
+            if (!vaultRunning) return;
+
+            boolean isOnline = client.getConnection() != null &&
+                    client.getConnection().getOnlinePlayers().stream()
+                            .anyMatch(info -> info.getProfile().name().equals(name));
+
+            if (isOnline) {
+                CommandDelayScheduler.getInstance().schedule(() -> {
+                    Util.sendCommandOrChat(useCmd);
+                    CommandDelayScheduler.getInstance().schedule(() -> {
+                        Util.sendCommandOrChat(killCmd);
+                        onComplete.run();
+                    }, USE_TO_KILL_DELAY);
+                }, USE_DELAY);
+            } else {
+                CommandDelayScheduler.getInstance().schedule(() ->
+                                checkAndUse(client, name, useCmd, killCmd, intervalTicks, onComplete),
+                        intervalTicks);
+            }
+        });
+    }
+
+
+    private static double[] directionToAngles(String dir) {
+        if (dir == null) return null;
+        return switch (dir.toLowerCase()) {
+            case "north" -> new double[]{180.0, 0.0};
+            case "south" -> new double[]{0.0, 0.0};
+            case "east" -> new double[]{90.0, 0.0};
+            case "west" -> new double[]{-90.0, 0.0};
+            default -> null;
+        };
+    }
+
 }

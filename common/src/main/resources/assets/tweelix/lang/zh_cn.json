@@ -16,6 +16,7 @@
   "tweelix.command.exportkeys.description": "导出所有命令翻译键到 exports/command_keys.json",
   "tweelix.command.delay.description": "延迟执行命令：/tweelix delay <命令1> <时间> <命令2>",
   "tweelix.command.batch.description": "批量设置功能开关：/tweelix batch <名称> <值> ...",
+  "tweelix.command.batchplayer.description": "批量控制地毯假人玩家：/tweelix batchplayer <前缀> <起始编号> <结束编号> <子命令...>",
   "tweelix.enum.localizedName": "显示名称",
   "tweelix.enum.registryName": "注册名 (ID)",
   "tweelix.enum.position": "坐标",

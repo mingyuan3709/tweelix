@@ -134,6 +134,7 @@
   "tweelix.empty_inventory.dropped": "Dropped %s item(s)",
   "tweelix.command.delay.scheduled": "§aScheduled: %s, will execute after %s",
   "tweelix.command.batch.result": "§aBatch complete: %s success, %s failed",
+  "tweelix.command.batchplayer.description": "Batch control carpet fake players: /tweelix batchplayer <prefix> <start> <end> <subcommand...>",
   "tweelix.config.changed": "§aConfig %s§a changed to: %s",
   "tweelix.sub_config.anti_over_mining.name.cooldownTicks": "Cooldown (Ticks)",
   "tweelix.sub_config.anti_over_mining.comment.cooldownTicks": "Cooldown duration in ticks after breaking a block (1-40)",

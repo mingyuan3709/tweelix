@@ -41,7 +41,7 @@ public final class CardinalDirectionFeature {
         if (registered) return;
         registered = true;
 
-        ClientTickEvents.END.register(_ -> {
+        ClientTickEvents.END.register(minecraft -> {
             if (Display.SHOW_CARDINAL_INDICATOR.getBooleanValue()) {
                 inject();
             } else if (injected) {
@@ -49,7 +49,7 @@ public final class CardinalDirectionFeature {
             }
         });
 
-        ClientWorldEvents.UNLOAD.register((_, _) -> remove());
+        ClientWorldEvents.UNLOAD.register((minecraft, level) -> remove());
 
 
     }

@@ -9,12 +9,12 @@ import java.util.List;
 
 /**
  * 延迟命令调度器。
- * 将命令排队，在指定 tick 后执行。
+ * 将任务排队，在指定 tick 后执行。
  */
 public class CommandDelayScheduler {
 
     private static final CommandDelayScheduler INSTANCE = new CommandDelayScheduler();
-    private final List<DelayedCommand> queue = new ArrayList<>();
+    private final List<DelayedTask> queue = new ArrayList<>();
 
     public static CommandDelayScheduler getInstance() {
         return INSTANCE;
@@ -32,18 +32,30 @@ public class CommandDelayScheduler {
      */
     public void schedule(String command, int ticks) {
         if (ticks <= 0 || command == null || command.isEmpty()) return;
-        queue.add(new DelayedCommand(command, ticks));
+        // 包装为 Runnable
+        schedule(() -> ink.mingyuan.tweelix.util.Util.sendCommandOrChat(command), ticks);
     }
 
     /**
-     * 取消所有已调度的命令。
+     * 调度一个任意任务在指定 tick 后执行。
+     *
+     * @param task  要执行的任务
+     * @param ticks 延迟的 tick 数
+     */
+    public void schedule(Runnable task, int ticks) {
+        if (ticks <= 0 || task == null) return;
+        queue.add(new DelayedTask(task, ticks));
+    }
+
+    /**
+     * 取消所有已调度的任务。
      */
     public void clear() {
         queue.clear();
     }
 
     /**
-     * 当前队列中的待执行命令数。
+     * 当前队列中的待执行任务数。
      */
     public int pendingCount() {
         return queue.size();
@@ -52,28 +64,32 @@ public class CommandDelayScheduler {
     private void onTick(Minecraft client) {
         if (queue.isEmpty()) return;
 
-        List<String> toExecute = new ArrayList<>();
-        Iterator<DelayedCommand> it = queue.iterator();
+        List<Runnable> toExecute = new ArrayList<>();
+        Iterator<DelayedTask> it = queue.iterator();
         while (it.hasNext()) {
-            DelayedCommand dc = it.next();
-            dc.remaining--;
-            if (dc.remaining <= 0) {
-                toExecute.add(dc.command);
+            DelayedTask dt = it.next();
+            dt.remaining--;
+            if (dt.remaining <= 0) {
+                toExecute.add(dt.task);
                 it.remove();
             }
         }
 
-        for (String cmd : toExecute) {
-            ink.mingyuan.tweelix.util.Util.sendCommandOrChat(cmd);
+        for (Runnable task : toExecute) {
+            try {
+                task.run();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    private static class DelayedCommand {
-        final String command;
+    private static class DelayedTask {
+        final Runnable task;
         int remaining;
 
-        DelayedCommand(String command, int remaining) {
-            this.command = command;
+        DelayedTask(Runnable task, int remaining) {
+            this.task = task;
             this.remaining = remaining;
         }
     }
