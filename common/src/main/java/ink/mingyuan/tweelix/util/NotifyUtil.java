@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableList;
 import fi.dy.masa.malilib.config.IConfigBase;
 import ink.mingyuan.tweelix.config.category.Generic;
 import ink.mingyuan.tweelix.config.subconfig.DefaultPromptSub;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
@@ -90,17 +89,5 @@ public final class NotifyUtil {
                     Component.translatable(config.getTranslatedName()),
                     Component.translatable(statusKey));
         }
-    }
-
-    public static void sendConfigChangeMessage(IConfigBase config, Object newValue) {
-        sendFeatureActionbarInternal(config, "tweelix.config.changed", false, config.getTranslatedName(), String.valueOf(newValue));
-    }
-
-    public static void sendDebug(String message) {
-        if (!Boolean.getBoolean("tweelix.debug")) return;
-        LocalPlayer player = Minecraft.getInstance().player;
-        if (player == null) return;
-        Component debugMsg = Component.literal("[Debug] " + message).withStyle(ChatFormatting.GRAY);
-        player.displayClientMessage(debugMsg, false);
     }
 }

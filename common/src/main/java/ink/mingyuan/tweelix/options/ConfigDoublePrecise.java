@@ -10,7 +10,6 @@ import net.minecraft.util.Mth;
  */
 public class ConfigDoublePrecise extends ConfigDouble {
 
-    private final int decimalPlaces;
     private final double multiplier;
 
     /**
@@ -20,7 +19,6 @@ public class ConfigDoublePrecise extends ConfigDouble {
     public ConfigDoublePrecise(String name, double defaultValue, double minValue, double maxValue,
                                boolean useSlider, String comment, int decimalPlaces) {
         super(name, defaultValue, minValue, maxValue, useSlider, comment, name);
-        this.decimalPlaces = decimalPlaces;
         this.multiplier = Math.pow(10, decimalPlaces);
     }
 

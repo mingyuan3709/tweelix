@@ -91,10 +91,6 @@ public class VaultFeature {
         sender.accept(Component.translatable("tweelix.vault.stopped"));
     }
 
-    public boolean isRunning() {
-        return running;
-    }
-
     private void processNextVault(Minecraft client, int index, String prefix,
                                   String posStr, String facingStr, int startNumber, Runnable onAllDone) {
         if (!running) {

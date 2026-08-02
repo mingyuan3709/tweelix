@@ -6,7 +6,6 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
-import com.mojang.brigadier.context.CommandContext;
 import ink.mingyuan.tweelix.feature.command.VaultFeature;
 import ink.mingyuan.tweelix.input.InputHandler;
 import ink.mingyuan.tweelix.feature.command.CommandExporter;
@@ -14,20 +13,9 @@ import ink.mingyuan.tweelix.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 
-import java.util.List;
-
 import static ink.mingyuan.tweelix.util.Util.parseDelayTicks;
 
 public class TweelixCommonCommands {
-
-    private static boolean vaultRunning = false;
-    private static String vaultNamePrefix = "";
-
-    final static int SPAWN_DELAY = 20;          // 生成后等待多少 tick 开始检查/使用
-    final static int CHECK_INTERVAL = 20;       // 轮询间隔（若假人未在线，每隔多少 tick 重试）
-    final static int USE_DELAY = 20;           // 假人在线后等待多少 tick 执行 use
-    final static int USE_TO_KILL_DELAY = 120;    // use 后等待多少 tick 执行 kill
-    final static int KILL_TO_NEXT_DELAY = 20;  // kill 后等待多少 tick 生成下一个假人
 
     public static <S> void register(CommandDispatcher<S> dispatcher, MessageSender<S> sender) {
 
