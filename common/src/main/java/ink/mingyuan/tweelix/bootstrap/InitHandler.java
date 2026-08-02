@@ -1,6 +1,5 @@
 package ink.mingyuan.tweelix.bootstrap;
 
-import fi.dy.masa.litematica.gui.GuiConfigs;
 import fi.dy.masa.malilib.config.ConfigManager;
 import fi.dy.masa.malilib.event.InputEventHandler;
 import fi.dy.masa.malilib.interfaces.IInitializationHandler;
@@ -11,6 +10,7 @@ import ink.mingyuan.tweelix.command.CommandDelayScheduler;
 import ink.mingyuan.tweelix.config.TweelixConfig;
 import ink.mingyuan.tweelix.feature.*;
 import ink.mingyuan.tweelix.feature.cardinaldirection.CardinalDirectionFeature;
+import ink.mingyuan.tweelix.gui.GuiConfigs;
 import ink.mingyuan.tweelix.input.InputHandler;
 import ink.mingyuan.tweelix.util.TimeManager;
 
