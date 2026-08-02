@@ -19,7 +19,6 @@ public class KeyboardHandlerMixin {
 
     @Shadow @Final private Minecraft minecraft;
 
-
     @Inject(method = "handleDebugKeys", at = @At("HEAD"), cancellable = true)
     private void onHandleDebugKeys(KeyEvent keyEvent, CallbackInfoReturnable<Boolean> cir) {
         Options options = minecraft.options;

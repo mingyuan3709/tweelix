@@ -51,7 +51,6 @@ public final class CardinalDirectionFeature {
 
         ClientWorldEvents.UNLOAD.register((minecraft, level) -> remove());
 
-
     }
 
     private static void inject() {

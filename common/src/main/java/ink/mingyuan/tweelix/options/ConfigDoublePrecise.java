@@ -26,7 +26,6 @@ public class ConfigDoublePrecise extends ConfigDouble {
 
     @Override
     protected double getClampedValue(double value) {
-        // 先钳位，再截断精度
         double clamped = Mth.clamp(value, this.getMinDoubleValue(), this.getMaxDoubleValue());
         return Math.round(clamped * this.multiplier) / this.multiplier;
     }

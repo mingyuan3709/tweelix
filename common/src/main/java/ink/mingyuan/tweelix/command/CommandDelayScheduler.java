@@ -54,13 +54,6 @@ public class CommandDelayScheduler {
         queue.clear();
     }
 
-    /**
-     * 当前队列中的待执行任务数。
-     */
-    public int pendingCount() {
-        return queue.size();
-    }
-
     private void onTick(Minecraft client) {
         if (queue.isEmpty()) return;
 
@@ -76,11 +69,7 @@ public class CommandDelayScheduler {
         }
 
         for (Runnable task : toExecute) {
-            try {
                 task.run();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
     }
 

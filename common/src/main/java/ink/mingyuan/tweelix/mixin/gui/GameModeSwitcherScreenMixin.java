@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
- * 拦截 F3+F4 游戏模式切换界面，注入自定义命令逻辑。
+ * 拦截 F3+F4 游戏模式切换界面
  */
 @Mixin(GameModeSwitcherScreen.class)
 public class GameModeSwitcherScreenMixin extends Screen {
@@ -55,7 +55,7 @@ public class GameModeSwitcherScreenMixin extends Screen {
     private void onKeyReleased(KeyEvent keyEvent, CallbackInfoReturnable<Boolean> cir) {
         if (GameModeSwitcher.isDisabled()) return;
 
-        // 检查释放的是否是 F3 键 (原版 debug 组合键的修饰键)
+        // 检查释放的是否是 F3 键
         if (minecraft.options.keyDebugModifier.matches(keyEvent)) {
             if (GameModeSwitcher.applyGameModeSwitch(minecraft, this.currentlyHovered)) {
                 minecraft.setScreen(null);

@@ -6,9 +6,6 @@ import ink.mingyuan.tweelix.event.ClientWorldEvents;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
-/**
- * 全局时间与冷却调度
- */
 public final class TimeManager {
 
     private TimeManager() {}
@@ -66,7 +63,6 @@ public final class TimeManager {
         return isCoolingDown[0];
     }
 
-    //定期清理过期条目
     private static void cleanupExpiredEntries() {
         long now = System.currentTimeMillis();
 

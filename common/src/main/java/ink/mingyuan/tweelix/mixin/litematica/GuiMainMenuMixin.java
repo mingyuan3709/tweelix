@@ -47,6 +47,5 @@ public abstract class GuiMainMenuMixin {
             }
         });
 
-
     }
 }

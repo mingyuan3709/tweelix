@@ -63,9 +63,5 @@ public class MouseHandlerMixin {
         if (this.minecraft.options.invertMouseY().get()) dy *= -1;
         handler.changeLookDirection(dx, dy);
         ci.cancel();
-
-
-
-
     }
 }

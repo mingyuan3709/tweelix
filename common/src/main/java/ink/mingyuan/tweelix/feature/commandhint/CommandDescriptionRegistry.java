@@ -2,7 +2,6 @@ package ink.mingyuan.tweelix.feature.commandhint;
 
 import ink.mingyuan.tweelix.config.category.Display;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -36,7 +35,7 @@ public class CommandDescriptionRegistry {
         }
 
         String shortKey = getShortCommandKey(suggestionText, inputCommandText);
-        if (shortKey != null && exists(shortKey)) {
+        if (exists(shortKey)) {
             return Component.translatable(shortKey);
         }
 
@@ -74,7 +73,7 @@ public class CommandDescriptionRegistry {
 
    private static String GetTranslationKeys(String suggestionText, String inputCommandText, String CommandPath){
 
-        if (!inputCommandText.contains(" ")) return "commands." + suggestionText + ".description";;
+        if (!inputCommandText.contains(" ")) return "commands." + suggestionText + ".description";
 
         String pathLastNode = CommandPath.contains(".")
                 ? CommandPath.substring(CommandPath.lastIndexOf('.') + 1)

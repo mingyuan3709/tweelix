@@ -18,7 +18,7 @@ import com.mojang.brigadier.suggestion.Suggestion;
 import net.minecraft.client.gui.GuiGraphics;
 
 /**
- * 命令补全提示增强 — 薄注入层，业务逻辑委托给 {@link CommandHintRenderer}。
+ * 命令补全提示增强 ，业务逻辑委托给 {@link CommandHintRenderer}。
  */
 @Mixin(CommandSuggestions.SuggestionsList.class)
 public class SuggestionsListMixin {

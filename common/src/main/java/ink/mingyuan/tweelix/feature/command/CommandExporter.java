@@ -1,4 +1,4 @@
-package ink.mingyuan.tweelix.util;
+package ink.mingyuan.tweelix.feature.command;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -6,7 +6,6 @@ import com.google.gson.JsonObject;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.tree.CommandNode;
 import ink.mingyuan.tweelix.Reference;
-import ink.mingyuan.tweelix.config.TweelixConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientSuggestionProvider;
 import net.minecraft.network.chat.Component;
@@ -30,7 +29,6 @@ public class CommandExporter {
         CommandDispatcher<ClientSuggestionProvider> dispatcher = mc.player.connection.getCommands();
         JsonObject root = new JsonObject();
 
-        // 元信息
         JsonObject meta = new JsonObject();
         meta.addProperty("exportTime", LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
         meta.addProperty("modVersion", Reference.MOD_VERSION != null ? Reference.MOD_VERSION : "unknown");
@@ -40,7 +38,6 @@ public class CommandExporter {
 
         for (CommandNode<ClientSuggestionProvider> child : dispatcher.getRoot().getChildren()) {
             String rootName = child.getName();
-            // 本模组命令使用 tweelix.command.* 格式，匹配 CommandDescriptionRegistry.getModCommandHint()
             String prefix = rootName.equals("tweelix") ? "tweelix.command" : "commands." + rootName;
             walkCommandTree(child, prefix, keys);
         }
@@ -49,7 +46,6 @@ public class CommandExporter {
 
         File runDir = mc.gameDirectory;
         File exportFile = new File(runDir, "exports/command_keys.json");
-        exportFile.getParentFile().mkdirs();
 
         try (FileWriter writer = new FileWriter(exportFile)) {
             Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
@@ -66,7 +62,6 @@ public class CommandExporter {
         String descKey = currentPath + ".description";
 
         String label = node.getName();
-        // 中间节点（有子节点、无命令、无重定向）= 参数占位符
         if (node.getRedirect() == null && node.getCommand() == null && !node.getChildren().isEmpty()) {
             label = "<" + label + ">";
         }

@@ -1,29 +1,27 @@
 package ink.mingyuan.tweelix.command;
 
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import fi.dy.masa.malilib.config.IConfigBase;
-import fi.dy.masa.malilib.config.options.ConfigBoolean;
-import ink.mingyuan.tweelix.config.TweelixConfig;
+import ink.mingyuan.tweelix.feature.command.VaultFeature;
 import ink.mingyuan.tweelix.input.InputHandler;
-import ink.mingyuan.tweelix.util.CommandExporter;
+import ink.mingyuan.tweelix.feature.command.CommandExporter;
 import ink.mingyuan.tweelix.util.Util;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 
 import java.util.List;
 
+import static ink.mingyuan.tweelix.util.Util.parseDelayTicks;
+
 public class TweelixCommonCommands {
 
     private static boolean vaultRunning = false;
-    private static String vaultNamePrefix = "";  // 例如 "vault_1_"
+    private static String vaultNamePrefix = "";
 
     final static int SPAWN_DELAY = 20;          // 生成后等待多少 tick 开始检查/使用
     final static int CHECK_INTERVAL = 20;       // 轮询间隔（若假人未在线，每隔多少 tick 重试）
@@ -128,67 +126,6 @@ public class TweelixCommonCommands {
                 )
         );
 
-        // 功能 F：/tweelix batch <name1> <val1> <name2> <val2> ... -> 批量设置
-        rootCommand.then(LiteralArgumentBuilder.<S>literal("batch")
-                .then(RequiredArgumentBuilder.<S, String>argument("pairs", StringArgumentType.greedyString())
-                        .executes(context -> {
-                            String pairs = StringArgumentType.getString(context, "pairs");
-                            String[] tokens = pairs.split("\\s+");
-                            if (tokens.length < 2 || tokens.length % 2 != 0) {
-                                sender.send(context.getSource(), Component.literal("§cUsage: /tweelix batch <name1> <value1> <name2> <value2> ...  (e.g. /tweelix batch flatDigger true perimeterWallDigger true)"));
-                                return 0;
-                            }
-
-                            int success = 0;
-                            int failed = 0;
-                            StringBuilder errors = new StringBuilder();
-
-                            for (int i = 0; i < tokens.length; i += 2) {
-                                String key = tokens[i];
-                                String valStr = tokens[i + 1];
-
-                                IConfigBase cfg = TweelixConfig.getByKey(key);
-                                if (cfg == null) {
-                                    failed++;
-                                    if (!errors.isEmpty()) errors.append(", ");
-                                    errors.append(key).append("(not found)");
-                                    continue;
-                                }
-
-                                if (cfg instanceof ConfigBoolean boolCfg) {
-                                    boolean newValue;
-                                    if (valStr.equalsIgnoreCase("true") || valStr.equals("1")) {
-                                        newValue = true;
-                                    } else if (valStr.equalsIgnoreCase("false") || valStr.equals("0")) {
-                                        newValue = false;
-                                    } else {
-                                        failed++;
-                                        if (!errors.isEmpty()) errors.append(", ");
-                                        errors.append(key).append("(invalid value: ").append(valStr).append(")");
-                                        continue;
-                                    }
-
-                                    InputHandler.executeToggle(cfg, newValue, true);
-                                    success++;
-                                } else {
-                                    failed++;
-                                    if (!errors.isEmpty()) errors.append(", ");
-                                    errors.append(key).append("(not a boolean config)");
-                                }
-                            }
-
-                            if (success > 0) {
-                                sender.send(context.getSource(), Component.translatable("tweelix.command.batch.result", success, failed));
-                            }
-                            if (failed > 0) {
-                                sender.send(context.getSource(), Component.literal("§cErrors: " + errors));
-                            }
-                            return success > 0 ? 1 : 0;
-                        })
-                )
-        );
-
-
         // 批量假人命令：/tweelix batchplayer <prefix> <start> <end> <subcommand...>
         rootCommand.then(LiteralArgumentBuilder.<S>literal("batchplayer")
                 .then(RequiredArgumentBuilder.<S, String>argument("prefix", StringArgumentType.word())
@@ -238,7 +175,9 @@ public class TweelixCommonCommands {
                                                                     double y = DoubleArgumentType.getDouble(context, "y");
                                                                     double z = DoubleArgumentType.getDouble(context, "z");
                                                                     String dir = StringArgumentType.getString(context, "direction");
-                                                                    return executeVault(context, sender, x, y, z, dir,1);
+                                                                    VaultFeature.INSTANCE.start(x, y, z, dir, 1,
+                                                                            msg -> sender.send(context.getSource(), msg));
+                                                                    return 1;
                                                                 })
                                                                 .then(LiteralArgumentBuilder.<S>literal("start")
                                                                         .then(RequiredArgumentBuilder.<S, Integer>argument("startNumber", IntegerArgumentType.integer(1, 130))
@@ -248,7 +187,9 @@ public class TweelixCommonCommands {
                                                                                     double z = DoubleArgumentType.getDouble(context, "z");
                                                                                     String dir = StringArgumentType.getString(context, "direction");
                                                                                     int start = IntegerArgumentType.getInteger(context, "startNumber");
-                                                                                    return executeVault(context, sender, x, y, z, dir, start);
+                                                                                    VaultFeature.INSTANCE.start(x, y, z, dir, start,
+                                                                                            msg -> sender.send(context.getSource(), msg));
+                                                                                    return 1;
                                                                                 })
                                                                         )
                                                                 )
@@ -258,230 +199,21 @@ public class TweelixCommonCommands {
                                 )
                         )
                 )
-                // 停止命令
-                // 停止命令
                 .then(LiteralArgumentBuilder.<S>literal("stop")
                         .executes(context -> {
-                            if (!vaultRunning) {
-                                sender.send(context.getSource(), Component.literal("§c当前没有正在运行的宝库任务。"));
-                                return 0;
-                            }
-                            CommandDelayScheduler.getInstance().clear();
-                            Minecraft client = Minecraft.getInstance();
-                            if (client.getConnection() != null) {
-                                List<String> toKill = client.getConnection().getOnlinePlayers().stream()
-                                        .map(info -> info.getProfile().name())
-                                        .filter(name -> name.matches(".*vault_\\d+.*"))  // 支持带前缀的假人
-                                        .toList();
-
-                                if (!toKill.isEmpty()) {
-                                    for (String name : toKill) {
-                                        Util.sendCommandOrChat("/player " + name + " kill");
-                                    }
-                                    sender.send(context.getSource(), Component.literal("§a已杀死 " + toKill.size() + " 个假人。"));
-                                } else {
-                                    sender.send(context.getSource(), Component.literal("§e当前没有匹配的假人在线。"));
-                                }
-                            } else {
-                                sender.send(context.getSource(), Component.literal("§c无法获取玩家列表。"));
-                            }
-
-                            vaultRunning = false;
-                            sender.send(context.getSource(), Component.literal("§a已停止宝库任务。"));
+                            VaultFeature.INSTANCE.stop(msg -> sender.send(context.getSource(), msg));
                             return 1;
                         })
                 );
 
         rootCommand.then(vaultBuilder);
 
-        for (IConfigBase config : TweelixConfig.INSTANCE.getAllOptions()) {
-            String configKey = config.getName();
-
-            if (configKey.equals("openConfigGui") || configKey.equals("crosshairCopy")
-                    || configKey.equals("emptyInventory") || configKey.equals("exportkeys")
-                    || configKey.equals("delay") || configKey.equals("batch")
-                    || configKey.equals("compresscmd")) {
-                continue;
-            }
-
-            if (config instanceof ConfigBoolean boolConfig) {
-                LiteralArgumentBuilder<S> configNode = LiteralArgumentBuilder.<S>literal(configKey)
-                        .executes(context -> {
-                            sender.send(context.getSource(), Component.translatable(
-                                    "tweelix.command.configQuery",
-                                    Component.literal(configKey).withStyle(ChatFormatting.GOLD),
-                                    Component.literal(boolConfig.getStringValue()).withStyle(ChatFormatting.WHITE)
-                            ));
-                            return 1;
-                        });
-
-                configNode.then(RequiredArgumentBuilder.<S, Boolean>argument("value", BoolArgumentType.bool())
-                        .executes(context -> {
-                            boolean newValue = BoolArgumentType.getBool(context, "value");
-                            InputHandler.executeToggle(config, newValue, true);
-
-                            sender.send(context.getSource(), Component.translatable(
-                                    "tweelix.command.configSet.success",
-                                    Component.literal(configKey).withStyle(ChatFormatting.GOLD),
-                                    Component.literal(String.valueOf(newValue)).withStyle(ChatFormatting.WHITE)
-                            ));
-                            return 1;
-                        }));
-
-                rootCommand.then(configNode);
-            }
-        }
-
         dispatcher.register(rootCommand);
     }
 
-    private static int parseDelayTicks(String raw) {
-        if (raw == null || raw.isEmpty()) return 0;
-        raw = raw.toLowerCase().trim();
-        char last = raw.charAt(raw.length() - 1);
-        String numPart;
-        int multiplier;
-        switch (last) {
-            case 't' -> { numPart = raw.substring(0, raw.length() - 1); multiplier = 1; }
-            case 's' -> { numPart = raw.substring(0, raw.length() - 1); multiplier = 20; }
-            case 'm' -> { numPart = raw.substring(0, raw.length() - 1); multiplier = 1200; }
-            default -> { numPart = raw; multiplier = 1; }
-        }
-        try {
-            int val = Integer.parseInt(numPart);
-            return val * multiplier;
-        } catch (NumberFormatException e) {
-            return 0;
-        }
-    }
 
     @FunctionalInterface
     public interface MessageSender<S> {
         void send(S source, Component message);
     }
-
-    private static <S> int executeVault(CommandContext<S> context, MessageSender<S> sender,
-                                        Double x, Double y, Double z, String direction,int start) {
-        if (vaultRunning) {
-            sender.send(context.getSource(), Component.literal("§c已有宝库开启任务正在运行，请等待完成。"));
-            return 0;
-        }
-
-        // 获取坐标
-        if (x == null || y == null || z == null) {
-            Minecraft client = Minecraft.getInstance();
-            if (client.player == null) {
-                sender.send(context.getSource(), Component.literal("§c玩家不存在，无法获取当前位置。"));
-                return 0;
-            }
-            x = client.player.getX();
-            y = client.player.getY();
-            z = client.player.getZ();
-        }
-
-        double yaw, pitch;
-        if (direction == null || direction.isEmpty()) {
-            yaw = 90.0;
-            pitch = 0.0;
-        } else {
-            double[] angles = directionToAngles(direction);
-            if (angles == null) {
-                sender.send(context.getSource(), Component.literal("§c无效的方向，请使用 north/south/east/west"));
-                return 0;
-            }
-            yaw = angles[0];
-            pitch = angles[1];
-        }
-
-        vaultRunning = true;
-        vaultNamePrefix = "Vault_";
-
-        Minecraft client = Minecraft.getInstance();
-        String posStr = formatCoord(x) + " " + formatCoord(y) + " " + formatCoord(z);
-        String facingStr = String.format("facing %.2f %.2f", yaw, pitch);
-
-        processNextVault(client, 0, vaultNamePrefix, posStr, facingStr,start,
-                () -> {
-                    vaultRunning = false;
-                    vaultNamePrefix = "";
-                    sender.send(context.getSource(), Component.literal("§c[异常] 宝库任务意外结束。"));
-                });
-
-        sender.send(context.getSource(), Component.translatable("tweelix.command.vault.started"));
-        return 1;
-    }
-
-    private static String formatCoord(double d) {
-        if (d == (long) d) {
-            return Long.toString((long) d);
-        } else {
-            return Double.toString(d);
-        }
-    }
-
-    private static void processNextVault(Minecraft client, int index,
-                                         String prefix, String posStr, String facingStr,int startNumber,
-                                         Runnable onAllDone) {
-        if (!vaultRunning) {
-            if (onAllDone != null) onAllDone.run();
-            return;
-        }
-
-        int nameIndex = (index + startNumber - 1) % 130 + 1;
-        String name = prefix + nameIndex;
-
-        String spawnCmd = String.format("/player %s spawn at %s %s in minecraft:overworld", name, posStr, facingStr);
-        String useCmd   = "/player " + name + " use once";
-        String killCmd  = "/player " + name + " kill";
-
-        Util.sendCommandOrChat(spawnCmd);
-
-        CommandDelayScheduler.getInstance().schedule(() ->
-                        checkAndUse(client, name, useCmd, killCmd, CHECK_INTERVAL,
-                                () -> {
-                                    // 当前假人完成后，等待 KILL_TO_NEXT_DELAY 然后处理下一个（循环）
-                                    CommandDelayScheduler.getInstance().schedule(() ->
-                                                    processNextVault(client, index + 1, prefix, posStr, facingStr,startNumber, onAllDone),
-                                            KILL_TO_NEXT_DELAY);
-                                }),
-                SPAWN_DELAY);
-    }
-
-    private static void checkAndUse(Minecraft client, String name, String useCmd, String killCmd,
-                                    int intervalTicks, Runnable onComplete) {
-        client.execute(() -> {
-            if (!vaultRunning) return;
-
-            boolean isOnline = client.getConnection() != null &&
-                    client.getConnection().getOnlinePlayers().stream()
-                            .anyMatch(info -> info.getProfile().name().equals(name));
-
-            if (isOnline) {
-                CommandDelayScheduler.getInstance().schedule(() -> {
-                    Util.sendCommandOrChat(useCmd);
-                    CommandDelayScheduler.getInstance().schedule(() -> {
-                        Util.sendCommandOrChat(killCmd);
-                        onComplete.run();
-                    }, USE_TO_KILL_DELAY);
-                }, USE_DELAY);
-            } else {
-                CommandDelayScheduler.getInstance().schedule(() ->
-                                checkAndUse(client, name, useCmd, killCmd, intervalTicks, onComplete),
-                        intervalTicks);
-            }
-        });
-    }
-
-
-    private static double[] directionToAngles(String dir) {
-        if (dir == null) return null;
-        return switch (dir.toLowerCase()) {
-            case "north" -> new double[]{180.0, 0.0};
-            case "south" -> new double[]{0.0, 0.0};
-            case "east" -> new double[]{90.0, 0.0};
-            case "west" -> new double[]{-90.0, 0.0};
-            default -> null;
-        };
-    }
-
 }

@@ -31,7 +31,7 @@ public abstract class OptionsScreenMixin extends Screen {
     protected abstract Button openScreenButton(Component component, Supplier<Screen> supplier);
 
     @Inject(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/options/OptionsScreen;openScreenButton(Lnet/minecraft/network/chat/Component;Ljava/util/function/Supplier;)Lnet/minecraft/client/gui/components/Button;", ordinal = 8))
-    private void afterAddButtons(CallbackInfo ci, @Local(ordinal = 0) GridLayout.RowHelper adder) {
+    private void afterAddButtons(CallbackInfo ci, @Local(name = "rowHelper") GridLayout.RowHelper adder) {
 
         if (!Display.SHOW_SHADERS_BUTTON.getBooleanValue()) return;
 

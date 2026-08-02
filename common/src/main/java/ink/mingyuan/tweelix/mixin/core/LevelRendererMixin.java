@@ -18,5 +18,4 @@ public class LevelRendererMixin {
         if (!Tweaks.FREE_CAM.getBooleanValue()) return spectator;
         return true;
     }
-
 }
