@@ -15,6 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -29,6 +30,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class MultiPlayerGameModeMixin {
 
     @Shadow private int destroyDelay;
+
+    @Final
+    @Shadow
+    private Minecraft minecraft;
 
     /** 右键点击方块 */
     @Inject(method = "useItemOn", at = @At("HEAD"), cancellable = true)
@@ -121,6 +126,9 @@ public class MultiPlayerGameModeMixin {
     @Inject(method = "continueDestroyBlock", at = @At("RETURN"))
     private void onContinueDestroyBlockReturn(BlockPos pos, Direction direction, CallbackInfoReturnable<Boolean> cir) {
         if (!Tweaks.MINING_COOLDOWN.getBooleanValue()) return;
+        assert this.minecraft.player != null;
+        if (this.minecraft.player.getAbilities().instabuild) return;
+
         this.destroyDelay = 0;
     }
 }
