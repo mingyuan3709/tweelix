@@ -62,6 +62,15 @@ public class Tweaks {
                     BlacklistDiggerSub.OPTIONS
             ).apply(TRANSLATION_KEY);
 
+    public static final ConfigBooleanHotkeyedWithSettings AUTO_REPLANT =
+            new ConfigBooleanHotkeyedWithSettings(
+                    "autoReplant",
+                    false,
+                    "",
+                    "Automatically replant crops after harvesting",
+                    AutoReplantSub.OPTIONS
+            ).apply(TRANSLATION_KEY);
+
     public static final List<IConfigBase> OPTIONS = ImmutableList.of(
             FLAT_DIGGER,
             MINING_COOLDOWN,
@@ -70,6 +79,7 @@ public class Tweaks {
             PERIMETER_WALL_DIGGER,
             FREE_CAM,
             EMPTY_INVENTORY,
-            BLACKLIST_DIGGER
+            BLACKLIST_DIGGER,
+            AUTO_REPLANT
     );
 }

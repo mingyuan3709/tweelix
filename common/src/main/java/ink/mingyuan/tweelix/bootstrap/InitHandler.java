@@ -10,6 +10,7 @@ import ink.mingyuan.tweelix.command.CommandDelayScheduler;
 import ink.mingyuan.tweelix.config.TweelixConfig;
 import ink.mingyuan.tweelix.feature.*;
 import ink.mingyuan.tweelix.feature.cardinaldirection.CardinalDirectionFeature;
+import ink.mingyuan.tweelix.feature.replant.AutoReplant;
 import ink.mingyuan.tweelix.gui.GuiConfigs;
 import ink.mingyuan.tweelix.input.InputHandler;
 import ink.mingyuan.tweelix.util.TimeManager;
@@ -39,6 +40,7 @@ public class InitHandler implements IInitializationHandler {
         FeaturesManager.register(SignCommand.getInstance()::init);
         FeaturesManager.register(CommandDelayScheduler.getInstance()::init);
         FeaturesManager.register(CardinalDirectionFeature::init);
+        FeaturesManager.register(AutoReplant.getInstance()::init);
 
         FeaturesManager.initAll();
 

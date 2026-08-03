@@ -180,5 +180,23 @@
   "tweelix.sub_config.show_cardinal_indicator.comment.displayMode": "Choose how to show direction text",
   "tweelix.enum.cardinal_mode.en": "English",
   "tweelix.enum.cardinal_mode.zh": "Chinese",
-  "tweelix.enum.cardinal_mode.both": "Both (EN + CN)"
+  "tweelix.enum.cardinal_mode.both": "Both (EN + CN)",
+
+  "tweelix.config.tweaks.name.autoReplant": "Auto Replant",
+  "tweelix.config.tweaks.comment.autoReplant": "Automatically replant crops using seeds from your hotbar after harvesting",
+
+  "tweelix.sub_config.auto_replant.name.cancelOnSneak": "Cancel on Sneak",
+  "tweelix.sub_config.auto_replant.comment.cancelOnSneak": "Do not replant if the player is sneaking while breaking the crop",
+
+  "tweelix.sub_config.auto_replant.name.replantTrees": "Replant Trees",
+  "tweelix.sub_config.auto_replant.comment.replantTrees": "Also replant saplings when breaking logs",
+
+  "tweelix.sub_config.auto_replant.name.onlyMature": "Only Mature Crops",
+  "tweelix.sub_config.auto_replant.comment.onlyMature": "Only replant fully grown crops, skip immature ones",
+
+  "tweelix.sub_config.auto_replant.name.customCropMappings": "Custom Crop Mappings",
+  "tweelix.sub_config.auto_replant.comment.customCropMappings": "Custom block-to-seed mappings.\nFormat: BlockID=ItemID (e.g. minecraft:oak_log=minecraft:oak_sapling)\nOne per line.",
+
+  "tweelix.sub_config.auto_replant.name.replantInCreative": "Replant in Creative",
+  "tweelix.sub_config.auto_replant.comment.replantInCreative": "Whether to also replant when in creative mode."
 }
