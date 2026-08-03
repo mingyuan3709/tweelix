@@ -106,6 +106,8 @@
   "tweelix.config.display.comment.nightVision": "Enable infinite night vision effect",
   "tweelix.sub_config.night_vision.name.nightVisionStrength": "Night Vision Strength",
   "tweelix.sub_config.night_vision.comment.nightVisionStrength": "Adjust the brightness intensity of night vision (0.0 ~ 1.0)",
+  "tweelix.sub_config.night_vision.name.autoToggleWithShaders": "Auto-toggle with Shaders",
+  "tweelix.sub_config.night_vision.comment.autoToggleWithShaders": "Automatically enable/disable night vision when shaders are toggled",
   "tweelix.config.tweaks.name.flatDigger": "Flat Digger",
   "tweelix.config.tweaks.comment.flatDigger": "Prevents digging below the player's feet, except when sneaking",
   "tweelix.config.tweaks.name.perimeterWallDigger": "Perimeter Wall Digger",

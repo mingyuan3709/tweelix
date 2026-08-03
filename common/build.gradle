@@ -22,6 +22,8 @@ dependencies {
 
     modCompileOnly "maven.modrinth:litematica:0.26.9"
 
+    modCompileOnly "maven.modrinth:iris:${project.iris_version}"
+
 }
 
 java {

@@ -54,6 +54,8 @@ public class TweelixConfig implements IConfigHandler {
         configMap.put("GameModeSwitcherSub", GameModeSwitcherSub.OPTIONS);
         configMap.put("NightVisionSub", NightVisionSub.OPTIONS);
         configMap.put("ShowCardinalIndicatorSub", ShowCardinalIndicatorSub.OPTIONS);
+        configMap.put("AutoReplantSub", AutoReplantSub.OPTIONS);
+
 
     }
 

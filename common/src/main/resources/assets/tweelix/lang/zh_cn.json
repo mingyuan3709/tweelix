@@ -108,6 +108,10 @@
   "tweelix.config.display.comment.nightVision": "获得无限夜视效果",
   "tweelix.sub_config.night_vision.name.nightVisionStrength": "夜视强度",
   "tweelix.sub_config.night_vision.comment.nightVisionStrength": "调整夜视效果的亮度倍数 (0.0 ~ 1.0)",
+
+  "tweelix.sub_config.night_vision.name.autoToggleWithShaders": "光影开启自动禁用",
+  "tweelix.sub_config.night_vision.comment.autoToggleWithShaders": "光影启用时自动禁用夜视效果",
+
   "tweelix.config.tweaks.name.flatDigger": "平坦挖掘",
   "tweelix.config.tweaks.comment.flatDigger": "非潜行状态下，不会破坏高度低于玩家的方块",
   "tweelix.config.tweaks.name.perimeterWallDigger": "围墙挖掘",
