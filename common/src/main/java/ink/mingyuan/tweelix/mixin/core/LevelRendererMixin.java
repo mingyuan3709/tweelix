@@ -1,25 +1,17 @@
 package ink.mingyuan.tweelix.mixin.core;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.blaze3d.buffers.GpuBufferSlice;
-import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.resource.GraphicsResourceAllocator;
-import com.mojang.blaze3d.resource.ResourceHandle;
 import com.mojang.blaze3d.vertex.PoseStack;
-import fi.dy.masa.litematica.render.LitematicaRenderer;
 import ink.mingyuan.tweelix.config.category.Tweaks;
 import ink.mingyuan.tweelix.event.ClientRenderEvents;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.chunk.ChunkSectionLayerGroup;
 import net.minecraft.client.renderer.chunk.ChunkSectionsToRender;
-import net.minecraft.client.renderer.state.LightmapRenderState;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.state.level.LevelRenderState;
-import net.minecraft.util.profiling.ProfilerFiller;
 
 import org.joml.Matrix4fc;
 import org.joml.Vector4f;
@@ -31,7 +23,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = {LevelRenderer.class},

@@ -2,6 +2,7 @@ package ink.mingyuan.tweelix.config.subconfig;
 
 import com.google.common.collect.ImmutableList;
 import fi.dy.masa.malilib.config.IConfigBase;
+import fi.dy.masa.malilib.config.options.ConfigBoolean;
 import ink.mingyuan.tweelix.Reference;
 import ink.mingyuan.tweelix.options.ConfigDoublePrecise;
 
@@ -16,5 +17,12 @@ public class NightVisionSub {
             "Adjust the brightness intensity of night vision (0.0 ~ 1.0)", 4
     ).apply(TRANSLATION_KEY);
 
-    public static final List<IConfigBase> OPTIONS = ImmutableList.of(STRENGTH);
+
+    public static final ConfigBoolean AUTO_TOGGLE_WITH_SHADERS = new ConfigBoolean(
+            "autoToggleWithShaders",
+            true,
+            "Automatically enable/disable night vision when shaders are toggled"
+    ).apply(TRANSLATION_KEY);
+
+    public static final List<IConfigBase> OPTIONS = ImmutableList.of(STRENGTH,AUTO_TOGGLE_WITH_SHADERS);
 }

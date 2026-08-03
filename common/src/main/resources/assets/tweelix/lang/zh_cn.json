@@ -148,5 +148,14 @@
   "tweelix.mining_tweaks.blocked.attack.message": "阻止攻击",
   "tweelix.mining_tweaks.blocked.place.message": "阻止放置",
   "tweelix.mining_tweaks.blocked.interact.message": "阻止交互",
-  "tweelix.mining_tweaks.anti_over_mining.message": "挖掘冷却中，请稍后再试"
+  "tweelix.mining_tweaks.anti_over_mining.message": "挖掘冷却中，请稍后再试",
+  "tweelix.config.display.name.showPlayerHeadOnLocatorBar": "定位栏显示玩家头像",
+  "tweelix.config.display.comment.showPlayerHeadOnLocatorBar": "在定位栏中，将玩家航点图标替换为对应玩家头像，并随距离缩放",
+  "tweelix.config.display.name.showCardinalIndicator": "显示方向标记",
+  "tweelix.config.display.comment.showCardinalIndicator": "在定位栏上显示 N/E/S/W 方向标记，以小字显示且无背景",
+  "tweelix.sub_config.show_cardinal_indicator.name.displayMode": "显示模式",
+  "tweelix.sub_config.show_cardinal_indicator.comment.displayMode": "选择方向显示方式",
+  "tweelix.enum.cardinal_mode.en": "英文",
+  "tweelix.enum.cardinal_mode.zh": "中文",
+  "tweelix.enum.cardinal_mode.both": "中英文"
 }

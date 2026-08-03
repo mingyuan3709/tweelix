@@ -16,6 +16,12 @@ configurations {
 }
 
 repositories {
+    maven { url = "https://masa.dy.fi/maven/sakura-ryoko"
+        content {includeGroupAndSubgroups("fi.dy.masa")}
+    }
+    maven { url = 'https://maven.fallenbreath.me/releases'
+        content {includeGroupAndSubgroups("me.fallenbreath")}
+    }
     maven {
         url = "https://api.modrinth.com/maven" }
 }
@@ -27,9 +33,13 @@ dependencies {
 
     implementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    implementation "maven.modrinth:malilib:${project.malilib_version}"
+    implementation "fi.dy.masa.malilib:malilib-fabric-${project.minecraft_version}:${project.malilib_version}"
 
-    implementation "maven.modrinth:litematica:${project.litematica_version}"
+    implementation  "fi.dy.masa.litematica:litematica-fabric-${project.minecraft_version}:${project.litematica_version}"
+
+    include(implementation("me.fallenbreath:conditional-mixin-fabric:${project.conditionalmixin_version}"))
+
+
 }
 
 configurations {

@@ -79,6 +79,7 @@
   "tweelix.config.display.comment.lanPortRefreshButton": "Add a refresh button to the Open to LAN screen for finding available ports",
   "tweelix.config.display.name.showShadersButton": "Shader Packs Button",
   "tweelix.config.display.comment.showShadersButton": "Show shader packs button in options screen",
+  "options.shaders": "Shaders…",
   "tweelix.config.display.name.hideCrossTeamPlayerNames": "Hide Cross-Team Names",
   "tweelix.config.display.comment.hideCrossTeamPlayerNames": "Press F1 to toggle hiding name tags of players from other teams",
   "tweelix.config.display.name.showLitematicaSchematicsButton": "Litematica Schematics Button",
@@ -147,5 +148,14 @@
   "tweelix.mining_tweaks.blocked.attack.message": "Cannot attack entity",
   "tweelix.mining_tweaks.blocked.place.message": "Cannot place block",
   "tweelix.mining_tweaks.blocked.interact.message": "Cannot interact",
-  "tweelix.sign_command.executed": "Sign command executed"
+  "tweelix.sign_command.executed": "Sign command executed",
+  "tweelix.config.display.name.showPlayerHeadOnLocatorBar": "Show player heads on locator bar",
+  "tweelix.config.display.comment.showPlayerHeadOnLocatorBar": "Replace player waypoint icons with their corresponding player heads on the locator bar, scaled by distance",
+  "tweelix.config.display.name.showCardinalIndicator": "Show direction markers",
+  "tweelix.config.display.comment.showCardinalIndicator": "Display N/E/S/W direction markers on the locator bar as small text without background",
+  "tweelix.sub_config.show_cardinal_indicator.name.displayMode": "Display mode",
+  "tweelix.sub_config.show_cardinal_indicator.comment.displayMode": "Choose how to show direction text",
+  "tweelix.enum.cardinal_mode.en": "English",
+  "tweelix.enum.cardinal_mode.zh": "Chinese",
+  "tweelix.enum.cardinal_mode.both": "Both (EN + CN)"
 }

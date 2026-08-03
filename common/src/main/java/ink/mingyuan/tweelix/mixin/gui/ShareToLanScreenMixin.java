@@ -1,6 +1,5 @@
 package ink.mingyuan.tweelix.mixin.gui;
 
-import ink.mingyuan.tweelix.config.TweelixConfig;
 import ink.mingyuan.tweelix.config.category.Display;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;

@@ -22,14 +22,8 @@ public class AntiOverMiningSub {
                     "Only apply anti-over-mining when sneaking")
                     .apply(TRANSLATION_KEY);
 
-    public static final ConfigBoolean DISPLAY_PROMPT =
-            new ConfigBoolean("displayPrompt", true,
-                    "Show actionbar message when mining is blocked")
-                    .apply(TRANSLATION_KEY);
-
     public static final List<IConfigBase> OPTIONS = ImmutableList.of(
             COOLDOWN_TICKS,
-            ONLY_WHEN_SNEAKING,
-            DISPLAY_PROMPT
+            ONLY_WHEN_SNEAKING
     );
 }
