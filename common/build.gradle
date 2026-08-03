@@ -58,3 +58,5 @@ tasks.register('namedJar', Jar) {
 artifacts {
     namedElements namedJar
 }
+
+jar.enabled = false
