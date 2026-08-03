@@ -130,8 +130,7 @@
   "tweelix.sub_config.free_camera.comment.baseMaxSpeed": "Maximum movement speed in normal mode (blocks/tick)",
   "tweelix.config.tweaks.name.blacklistDigger": "Blacklist Digger",
   "tweelix.config.tweaks.comment.blacklistDigger": "Prevent mining blocks specified in the blacklist",
-  "tweelix.sub_config.blacklist_digger.name.blacklistBlocks": "Blacklist Blocks",
-  "tweelix.sub_config.blacklist_digger.comment.blacklistBlocks": "Block IDs to blacklist, one per line, e.g. minecraft:stone",
+
   "tweelix.config.tweaks.name.emptyInventory": "Empty Inventory",
   "tweelix.config.tweaks.comment.emptyInventory": "Enable Empty Inventory feature",
   "tweelix.sub_config.empty_inventory.name.itemsToFilter": "Items to Filter",
@@ -155,6 +154,20 @@
   "tweelix.sub_config.anti_over_mining.comment.displayPrompt": "Show actionbar message when mining is blocked",
   "tweelix.mining_tweaks.anti_over_mining.message": "Cannot mine, anti-over-mining cooldown active",
   "tweelix.mining_tweaks.blocked.message": "Cannot break block",
+
+  "tweelix.sub_config.blacklist_digger.name.blacklistBlocks": "Blacklist Blocks",
+  "tweelix.sub_config.blacklist_digger.comment.blacklistBlocks": "Block rules that cannot be mined, one per line.\nSupports block IDs (e.g. minecraft:stone) or tags (must start with #, e.g. #minecraft:logs, #c:ores).",
+
+  "tweelix.sub_config.blacklist_digger.name.silkTouchBlocks": "Silk Touch Blocks",
+  "tweelix.sub_config.blacklist_digger.comment.silkTouchBlocks": "Block rules that require Silk Touch to mine, one per line.\nSupports block IDs or #tags.",
+
+  "tweelix.sub_config.blacklist_digger.name.fortuneBlocks": "Fortune Blocks",
+  "tweelix.sub_config.blacklist_digger.comment.fortuneBlocks": "Block rules that require Fortune to mine, one per line.\nSupports block IDs or #tags.",
+
+  "tweelix.mining_tweaks.require_silk_touch.message": "Mining blocked, Silk Touch required!",
+  "tweelix.mining_tweaks.require_fortune.message": "Mining blocked, Fortune required!",
+  "tweelix.sub_config.blacklist_digger.name.allowSneakBypass": "Sneak Bypass Enchantment Restrictions",
+  "tweelix.sub_config.blacklist_digger.comment.allowSneakBypass": "Allow sneaking to bypass enchantment requirements.",
   "tweelix.mining_tweaks.blocked.attack.message": "Cannot attack entity",
   "tweelix.mining_tweaks.blocked.place.message": "Cannot place block",
   "tweelix.mining_tweaks.blocked.interact.message": "Cannot interact",
