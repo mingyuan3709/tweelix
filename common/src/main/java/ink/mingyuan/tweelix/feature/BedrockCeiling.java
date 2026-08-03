@@ -19,6 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4fc;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.HashSet;
@@ -104,22 +105,7 @@ public final class BedrockCeiling {
 
             for (BlockPos pos : CACHE) {
 
-                IntBoundingBox bb;
-
-                //如果玩家是想要在下面上天花板
-                if(playerY<123 && playerY > MIN_PLAYER_Y_FOR_SCAN ){
-                     bb = new IntBoundingBox(
-                            pos.getX(), pos.getY()+1, pos.getZ(),
-                            pos.getX(), 121 , pos.getZ()
-                    );
-
-                }else {
-                     bb = new IntBoundingBox(
-                            pos.getX(), pos.getY(), pos.getZ(),
-                            pos.getX(), pos.getY(), pos.getZ()
-                    );
-
-                }
+                IntBoundingBox bb = getIntBoundingBox(pos);
 
 
                 RenderUtils.drawBoxNoOutlines(bb, cameraPos, COLOR, buffer);
@@ -134,6 +120,26 @@ public final class BedrockCeiling {
         } catch (Exception e) {
             LOGGER.warn("Failed to render bedrock ceiling", e);
         }
+    }
+
+    private static @NonNull IntBoundingBox getIntBoundingBox(BlockPos pos) {
+        IntBoundingBox bb;
+
+        //如果玩家是想要在下面上天花板
+        if(playerY<123 && playerY > MIN_PLAYER_Y_FOR_SCAN ){
+             bb = new IntBoundingBox(
+                    pos.getX(), pos.getY()+1, pos.getZ(),
+                    pos.getX(), 121 , pos.getZ()
+            );
+
+        }else {
+             bb = new IntBoundingBox(
+                    pos.getX(), pos.getY(), pos.getZ(),
+                    pos.getX(), pos.getY(), pos.getZ()
+            );
+
+        }
+        return bb;
     }
 
     private static void scanChunk(ClientLevel world, ChunkPos chunkPos, Set<BlockPos> out) {

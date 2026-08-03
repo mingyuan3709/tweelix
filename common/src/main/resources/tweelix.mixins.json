@@ -17,7 +17,6 @@
     "accessor.HandledScreenAccessor",
     "accessor.SuggestionsListAccessor",
     "compat.malilib.WidgetConfigOptionMixin",
-    "core.HudMixin",
     "core.KeyboardHandlerMixin",
     "core.LevelRendererMixin",
     "core.MinecraftMixin",
@@ -34,6 +33,7 @@
     "render.AvatarRendererMixin",
     "render.CameraMixin",
     "render.GameRendererMixin",
-    "render.LivingEntityMixin"
+    "render.LivingEntityMixin",
+    "render.LocatorBarMixin"
   ]
 }
