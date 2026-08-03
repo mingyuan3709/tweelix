@@ -15,7 +15,17 @@
   "tweelix.command.emptyInventory.description": "一键清空背包",
   "tweelix.command.exportkeys.description": "导出所有命令翻译键到 exports/command_keys.json",
   "tweelix.command.delay.description": "延迟执行命令：/tweelix delay <命令1> <时间> <命令2>",
-  "tweelix.command.batch.description": "批量设置功能开关：/tweelix batch <名称> <值> ...",
+  "tweelix.command.batchplayer.description": "批量控制地毯假人玩家：/tweelix batchplayer <前缀> <起始编号> <结束编号> <子命令...>",
+  "tweelix.vault.already_running": "§c已有宝库开启任务正在运行，请等待完成",
+  "tweelix.vault.invalid_direction": "§c无效的方向，请使用 north/south/east/west",
+  "tweelix.vault.unexpected_end": "§c[异常] 宝库任务意外结束",
+  "tweelix.vault.not_running": "§c当前没有正在运行的宝库任务",
+  "tweelix.vault.killed_players": "§a已杀死 %s 个假人",
+  "tweelix.vault.no_matching_players": "§e当前没有匹配的假人在线",
+  "tweelix.vault.cannot_get_player_list": "§c无法获取玩家列表",
+  "tweelix.vault.stopped": "§a已停止宝库任务",
+  "tweelix.command.vault.started": "§a宝库任务已启动",
+
   "tweelix.enum.localizedName": "显示名称",
   "tweelix.enum.registryName": "注册名 (ID)",
   "tweelix.enum.position": "坐标",
@@ -49,11 +59,11 @@
   "tweelix.sub_config.default_prompt.name.attentionColor": "警示色具体色彩",
   "tweelix.sub_config.default_prompt.comment.attentionColor": "用于危险操作被拦截或功能驳回时的醒目警告颜色（默认明亮的橙红色）",
   "tweelix.sub_config.default_prompt.name.promptCooldown": "防刷屏冷却时间(ms)",
-  "tweelix.sub_config.default_prompt.comment.promptCooldown": "高频触发相同提示时的最小间隔时间（单位：毫秒）。设置为 0 彻底关闭冷却限制",
+  "tweelix.sub_config.default_prompt.comment.promptCooldown": "高频触发相同提示时的最小间隔时间（单位：毫秒）设置为 0 彻底关闭冷却限制",
   "tweelix.sub_config.default_prompt.name.promptPosition": "提示显示位置",
   "tweelix.sub_config.default_prompt.comment.promptPosition": "配置提示信息的渲染位置：快捷栏上方或是左下角聊天框",
   "tweelix.sub_config.default_prompt.name.blockedFeatures": "功能提示黑名单",
-  "tweelix.sub_config.default_prompt.comment.blockedFeatures": "在此列表中直接添加你不想看到的功能名称。例如输入 '访客模式'，则该功能下的所有提示都将被屏蔽",
+  "tweelix.sub_config.default_prompt.comment.blockedFeatures": "在此列表中直接添加你不想看到的功能名称例如输入 '访客模式'，则该功能下的所有提示都将被屏蔽",
   "tweelix.gui.sub_config.button": "打开该功能的子设置",
   "tweelix.config.generic.name.openConfigGui": "打开配置界面",
   "tweelix.config.generic.comment.openConfigGui": "打开模组配置界面的快捷键",
@@ -98,6 +108,10 @@
   "tweelix.config.display.comment.nightVision": "获得无限夜视效果",
   "tweelix.sub_config.night_vision.name.nightVisionStrength": "夜视强度",
   "tweelix.sub_config.night_vision.comment.nightVisionStrength": "调整夜视效果的亮度倍数 (0.0 ~ 1.0)",
+
+  "tweelix.sub_config.night_vision.name.autoToggleWithShaders": "光影开启自动禁用",
+  "tweelix.sub_config.night_vision.comment.autoToggleWithShaders": "光影启用时自动禁用夜视效果",
+
   "tweelix.config.tweaks.name.flatDigger": "平坦挖掘",
   "tweelix.config.tweaks.comment.flatDigger": "非潜行状态下，不会破坏高度低于玩家的方块",
   "tweelix.config.tweaks.name.perimeterWallDigger": "围墙挖掘",
@@ -123,7 +137,7 @@
   "tweelix.config.tweaks.name.emptyInventory": "一键清空背包",
   "tweelix.config.tweaks.comment.emptyInventory": "按下快捷键快速丢弃配置好的物品，可在个人设置中指定要丢弃或保留的物品",
   "tweelix.sub_config.empty_inventory.name.itemsToFilter": "要过滤的物品",
-  "tweelix.sub_config.empty_inventory.comment.itemsToFilter": "按下按键时丢弃的物品列表。支持通配符(*, ?)和标签(#)",
+  "tweelix.sub_config.empty_inventory.comment.itemsToFilter": "按下按键时丢弃的物品列表支持通配符(*, ?)和标签(#)",
   "tweelix.sub_config.empty_inventory.name.itemsToAlwaysKeep": "始终保留的物品",
   "tweelix.sub_config.empty_inventory.comment.itemsToAlwaysKeep": "始终保留的物品，会覆盖过滤列表",
   "tweelix.sub_config.empty_inventory.name.keepHotbar": "保留快捷栏",
@@ -140,11 +154,20 @@
   "tweelix.sub_config.perimeter_wall_digger.comment.perimeterOutlineBlocks": "配置什么方块可以限制",
   "tweelix.sub_config.anti_over_mining.name.displayPrompt": "防过度挖掘提示",
   "tweelix.sub_config.anti_over_mining.comment.displayPrompt": "显示防过度挖掘冷却期间的提示",
-  "tweelix.config.tweaks.name.blacklistDigger": "挖掘黑名单",
+  "tweelix.config.tweaks.name.blacklistDigger": "挖掘保护",
   "tweelix.config.tweaks.comment.blacklistDigger": "配置后禁止挖掘的方块名单",
   "tweelix.sub_config.blacklist_digger.name.blacklistBlocks": "黑名单方块列表",
-  "tweelix.sub_config.blacklist_digger.comment.blacklistBlocks": "输入方块ID，每行一个，例如 minecraft:stone",
+  "tweelix.sub_config.blacklist_digger.comment.blacklistBlocks": "禁止挖掘的方块规则，每行一个\n支持方块 ID（如 minecraft:stone）或标签（需带 # 前缀，例如 #minecraft:logs、#c:ores）",
+  "tweelix.sub_config.blacklist_digger.name.silkTouchBlocks": "精准采集附魔挖掘白名单",
+  "tweelix.sub_config.blacklist_digger.comment.silkTouchBlocks": "需要精准采集才能挖掘的方块规则，每行一个\n支持方块 ID 或 #标签",
+  "tweelix.sub_config.blacklist_digger.name.fortuneBlocks": "时运附魔挖掘白名单",
+  "tweelix.sub_config.blacklist_digger.comment.fortuneBlocks": "需要时运才能挖掘的方块规则，每行一个\n支持方块 ID 或 #标签",
   "tweelix.mining_tweaks.blocked.message": "阻止挖掘",
+  "tweelix.mining_tweaks.require_silk_touch.message": "需要精准采集",
+  "tweelix.mining_tweaks.require_fortune.message": "需要时运",
+  "tweelix.sub_config.blacklist_digger.name.allowSneakBypass": "潜行绕过挖掘附魔限制",
+  "tweelix.sub_config.blacklist_digger.comment.allowSneakBypass": "允许潜行时绕过附魔要求",
+
   "tweelix.mining_tweaks.blocked.attack.message": "阻止攻击",
   "tweelix.mining_tweaks.blocked.place.message": "阻止放置",
   "tweelix.mining_tweaks.blocked.interact.message": "阻止交互",
@@ -157,5 +180,24 @@
   "tweelix.sub_config.show_cardinal_indicator.comment.displayMode": "选择方向显示方式",
   "tweelix.enum.cardinal_mode.en": "英文",
   "tweelix.enum.cardinal_mode.zh": "中文",
-  "tweelix.enum.cardinal_mode.both": "中英文"
+  "tweelix.enum.cardinal_mode.both": "中英文",
+
+  "tweelix.config.tweaks.name.autoReplant": "自动补种",
+  "tweelix.config.tweaks.comment.autoReplant": "收获作物后自动使用快捷栏中的种子重新种植",
+
+  "tweelix.sub_config.auto_replant.name.cancelOnSneak": "蹲下时不补种",
+  "tweelix.sub_config.auto_replant.comment.cancelOnSneak": "破坏作物时若处于潜行状态，不会进行补种",
+
+  "tweelix.sub_config.auto_replant.name.replantTrees": "补种树木",
+  "tweelix.sub_config.auto_replant.comment.replantTrees": "破坏原木时也补种对应的树苗",
+
+  "tweelix.sub_config.auto_replant.name.onlyMature": "仅成熟作物",
+  "tweelix.sub_config.auto_replant.comment.onlyMature": "只对完全成熟的作物进行补种，未成熟的不补",
+
+  "tweelix.sub_config.auto_replant.name.customCropMappings": "自定义作物映射",
+  "tweelix.sub_config.auto_replant.comment.customCropMappings": "自定义方块到种子的映射\n格式：方块ID=物品ID（例如 minecraft:oak_log=minecraft:oak_sapling）\n每行一条",
+
+  "tweelix.sub_config.auto_replant.name.replantInCreative": "创造模式补种",
+  "tweelix.sub_config.auto_replant.comment.replantInCreative": "开启后，在创造模式下破坏作物也会自动补种"
+
 }

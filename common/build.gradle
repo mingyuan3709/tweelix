@@ -39,6 +39,7 @@ dependencies {
 
     include(implementation("me.fallenbreath:conditional-mixin-fabric:${project.conditionalmixin_version}"))
 
+    compileOnly "maven.modrinth:iris:${project.iris_version}"
 
 }
 

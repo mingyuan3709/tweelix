@@ -15,7 +15,16 @@
   "tweelix.command.emptyInventory.description": "Clear inventory with one click",
   "tweelix.command.exportkeys.description": "Export command translation keys to exports/command_keys.json",
   "tweelix.command.delay.description": "Delayed command execution: /tweelix delay <cmd1> <time> <cmd2>",
-  "tweelix.command.batch.description": "Batch toggle features: /tweelix batch <name> <value> ...",
+  "tweelix.vault.already_running": "§cA vault task is already running, please wait.",
+  "tweelix.vault.invalid_direction": "§cInvalid direction. Use north/south/east/west.",
+  "tweelix.vault.unexpected_end": "§c[Error] Vault task ended unexpectedly.",
+  "tweelix.vault.not_running": "§cThere is no vault task running currently.",
+  "tweelix.vault.killed_players": "§a Killed %s fake players.",
+  "tweelix.vault.no_matching_players": "§eNo matching fake players online.",
+  "tweelix.vault.cannot_get_player_list": "§cCannot retrieve player list.",
+  "tweelix.vault.stopped": "§aVault task stopped.",
+  "tweelix.command.vault.started": "§aVault task started.",
+
   "tweelix.enum.localizedName": "Display Name",
   "tweelix.enum.registryName": "Registry Name",
   "tweelix.enum.position": "Position",
@@ -97,6 +106,8 @@
   "tweelix.config.display.comment.nightVision": "Enable infinite night vision effect",
   "tweelix.sub_config.night_vision.name.nightVisionStrength": "Night Vision Strength",
   "tweelix.sub_config.night_vision.comment.nightVisionStrength": "Adjust the brightness intensity of night vision (0.0 ~ 1.0)",
+  "tweelix.sub_config.night_vision.name.autoToggleWithShaders": "Auto-toggle with Shaders",
+  "tweelix.sub_config.night_vision.comment.autoToggleWithShaders": "Automatically enable/disable night vision when shaders are toggled",
   "tweelix.config.tweaks.name.flatDigger": "Flat Digger",
   "tweelix.config.tweaks.comment.flatDigger": "Prevents digging below the player's feet, except when sneaking",
   "tweelix.config.tweaks.name.perimeterWallDigger": "Perimeter Wall Digger",
@@ -121,8 +132,7 @@
   "tweelix.sub_config.free_camera.comment.baseMaxSpeed": "Maximum movement speed in normal mode (blocks/tick)",
   "tweelix.config.tweaks.name.blacklistDigger": "Blacklist Digger",
   "tweelix.config.tweaks.comment.blacklistDigger": "Prevent mining blocks specified in the blacklist",
-  "tweelix.sub_config.blacklist_digger.name.blacklistBlocks": "Blacklist Blocks",
-  "tweelix.sub_config.blacklist_digger.comment.blacklistBlocks": "Block IDs to blacklist, one per line, e.g. minecraft:stone",
+
   "tweelix.config.tweaks.name.emptyInventory": "Empty Inventory",
   "tweelix.config.tweaks.comment.emptyInventory": "Enable Empty Inventory feature",
   "tweelix.sub_config.empty_inventory.name.itemsToFilter": "Items to Filter",
@@ -134,6 +144,7 @@
   "tweelix.empty_inventory.dropped": "Dropped %s item(s)",
   "tweelix.command.delay.scheduled": "§aScheduled: %s, will execute after %s",
   "tweelix.command.batch.result": "§aBatch complete: %s success, %s failed",
+  "tweelix.command.batchplayer.description": "Batch control carpet fake players: /tweelix batchplayer <prefix> <start> <end> <subcommand...>",
   "tweelix.config.changed": "§aConfig %s§a changed to: %s",
   "tweelix.sub_config.anti_over_mining.name.cooldownTicks": "Cooldown (Ticks)",
   "tweelix.sub_config.anti_over_mining.comment.cooldownTicks": "Cooldown duration in ticks after breaking a block (1-40)",
@@ -145,6 +156,20 @@
   "tweelix.sub_config.anti_over_mining.comment.displayPrompt": "Show actionbar message when mining is blocked",
   "tweelix.mining_tweaks.anti_over_mining.message": "Cannot mine, anti-over-mining cooldown active",
   "tweelix.mining_tweaks.blocked.message": "Cannot break block",
+
+  "tweelix.sub_config.blacklist_digger.name.blacklistBlocks": "Blacklist Blocks",
+  "tweelix.sub_config.blacklist_digger.comment.blacklistBlocks": "Block rules that cannot be mined, one per line.\nSupports block IDs (e.g. minecraft:stone) or tags (must start with #, e.g. #minecraft:logs, #c:ores).",
+
+  "tweelix.sub_config.blacklist_digger.name.silkTouchBlocks": "Silk Touch Blocks",
+  "tweelix.sub_config.blacklist_digger.comment.silkTouchBlocks": "Block rules that require Silk Touch to mine, one per line.\nSupports block IDs or #tags.",
+
+  "tweelix.sub_config.blacklist_digger.name.fortuneBlocks": "Fortune Blocks",
+  "tweelix.sub_config.blacklist_digger.comment.fortuneBlocks": "Block rules that require Fortune to mine, one per line.\nSupports block IDs or #tags.",
+
+  "tweelix.mining_tweaks.require_silk_touch.message": "Mining blocked, Silk Touch required!",
+  "tweelix.mining_tweaks.require_fortune.message": "Mining blocked, Fortune required!",
+  "tweelix.sub_config.blacklist_digger.name.allowSneakBypass": "Sneak Bypass Enchantment Restrictions",
+  "tweelix.sub_config.blacklist_digger.comment.allowSneakBypass": "Allow sneaking to bypass enchantment requirements.",
   "tweelix.mining_tweaks.blocked.attack.message": "Cannot attack entity",
   "tweelix.mining_tweaks.blocked.place.message": "Cannot place block",
   "tweelix.mining_tweaks.blocked.interact.message": "Cannot interact",
@@ -157,5 +182,23 @@
   "tweelix.sub_config.show_cardinal_indicator.comment.displayMode": "Choose how to show direction text",
   "tweelix.enum.cardinal_mode.en": "English",
   "tweelix.enum.cardinal_mode.zh": "Chinese",
-  "tweelix.enum.cardinal_mode.both": "Both (EN + CN)"
+  "tweelix.enum.cardinal_mode.both": "Both (EN + CN)",
+
+  "tweelix.config.tweaks.name.autoReplant": "Auto Replant",
+  "tweelix.config.tweaks.comment.autoReplant": "Automatically replant crops using seeds from your hotbar after harvesting",
+
+  "tweelix.sub_config.auto_replant.name.cancelOnSneak": "Cancel on Sneak",
+  "tweelix.sub_config.auto_replant.comment.cancelOnSneak": "Do not replant if the player is sneaking while breaking the crop",
+
+  "tweelix.sub_config.auto_replant.name.replantTrees": "Replant Trees",
+  "tweelix.sub_config.auto_replant.comment.replantTrees": "Also replant saplings when breaking logs",
+
+  "tweelix.sub_config.auto_replant.name.onlyMature": "Only Mature Crops",
+  "tweelix.sub_config.auto_replant.comment.onlyMature": "Only replant fully grown crops, skip immature ones",
+
+  "tweelix.sub_config.auto_replant.name.customCropMappings": "Custom Crop Mappings",
+  "tweelix.sub_config.auto_replant.comment.customCropMappings": "Custom block-to-seed mappings.\nFormat: BlockID=ItemID (e.g. minecraft:oak_log=minecraft:oak_sapling)\nOne per line.",
+
+  "tweelix.sub_config.auto_replant.name.replantInCreative": "Replant in Creative",
+  "tweelix.sub_config.auto_replant.comment.replantInCreative": "Whether to also replant when in creative mode."
 }
