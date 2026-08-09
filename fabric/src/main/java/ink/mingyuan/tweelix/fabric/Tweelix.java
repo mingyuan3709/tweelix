@@ -2,6 +2,7 @@ package ink.mingyuan.tweelix.fabric;
 
 import ink.mingyuan.tweelix.command.TweelixCommonCommands;
 import ink.mingyuan.tweelix.TweelixCommon;
+import ink.mingyuan.tweelix.fabric.event.FabricClientEvents;
 import ink.mingyuan.tweelix.util.PlatformHelper;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
@@ -43,5 +44,8 @@ public class Tweelix implements ModInitializer {
             TweelixCommonCommands.register(dispatcher, FabricClientCommandSource::sendFeedback);
 
         });
+
+        // 注册渲染事件
+        FabricClientEvents.register();
     }
 }

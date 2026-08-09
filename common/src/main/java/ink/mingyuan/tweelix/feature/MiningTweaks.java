@@ -1,7 +1,9 @@
 package ink.mingyuan.tweelix.feature;
 
+import fi.dy.masa.malilib.config.options.ConfigBooleanHotkeyed;
 import ink.mingyuan.tweelix.config.category.Tweaks;
 import ink.mingyuan.tweelix.config.subconfig.AntiOverMiningSub;
+import ink.mingyuan.tweelix.config.subconfig.BlacklistDiggerSub;
 import ink.mingyuan.tweelix.event.ClientAttackEvents;
 import ink.mingyuan.tweelix.util.NotifyUtil;
 import ink.mingyuan.tweelix.util.TimeManager;
@@ -13,7 +15,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FallingBlock;
@@ -23,14 +29,20 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.BiPredicate;
 import java.util.function.BooleanSupplier;
+import java.util.function.Predicate;
 
 public class MiningTweaks {
     private static boolean registered = false;
     private static final MiningTweaks INSTANCE = new MiningTweaks();
     private static final List<Block> PERIMETER_OUTLINE_BLOCKS = new ArrayList<>();
-    private static final List<Block> BLACKLIST_BLOCKS = new ArrayList<>();
+    // 缓存谓词列表
+    private static List<Predicate<BlockState>> BLACKLIST_BLOCKS = List.of();
+    private static List<Predicate<BlockState>> FORTUNE_BLOCKS = List.of();
+    private static List<Predicate<BlockState>> SILK_TOUCH_BLOCKS = List.of();
+
 
     private static final String MINING_COOLDOWN_KEY = "mining_cooldown";
     private static final String ANTI_OVER_MINING_KEY = "tweelix.mining_tweaks.anti_over_mining.message";
@@ -41,6 +53,7 @@ public class MiningTweaks {
 
     private MiningTweaks() {
     }
+
 
     public void init() {
         if (registered) return;
@@ -80,17 +93,21 @@ public class MiningTweaks {
         FLAT_DIGGER(
                 Tweaks.FLAT_DIGGER,
                 "tweelix.mining_tweaks.blocked.message",
-                (player, pos) -> !player.isShiftKeyDown() && pos.getY() < player.getBlockY()
+                (player, pos) -> !player.isShiftKeyDown() && pos.getY() < player.getBlockY(),
+                () -> true
         ),
         PERIMETER_WALL(
                 Tweaks.PERIMETER_WALL_DIGGER,
                 "tweelix.mining_tweaks.blocked.message",
-                (player, pos) -> !player.isShiftKeyDown() && isPositionDisallowedByPerimeterOutlineList(pos)
+                (player, pos) -> !player.isShiftKeyDown() && isPositionDisallowedByPerimeterOutlineList(pos),
+                () -> true
         ),
         SUSPICIOUS_BLOCK(
                 Tweaks.PROTECT_SUSPICIOUS_BLOCKS,
                 "tweelix.mining_tweaks.blocked.message",
-                (player, pos) -> !player.isShiftKeyDown() && (isSuspiciousBlock(pos) || wouldCauseSuspiciousBlockFall(pos))),
+                (player, pos) -> !player.isShiftKeyDown() && (isSuspiciousBlock(pos) || wouldCauseSuspiciousBlockFall(pos)),
+                () -> true
+        ),
 
         BLACKLIST(
                 Tweaks.BLACKLIST_DIGGER,
@@ -98,24 +115,90 @@ public class MiningTweaks {
                 (player, pos) -> {
                     ClientLevel level = Minecraft.getInstance().level;
                     if (level == null) return false;
-                    Block block = level.getBlockState(pos).getBlock();
-                    return BLACKLIST_BLOCKS.contains(block);
-                });
+                    BlockState state = level.getBlockState(pos);
+                    return BLACKLIST_BLOCKS.stream().anyMatch(p -> p.test(state));
+                },
+                () -> false
+        ),
+        REQUIRE_SILK_TOUCH(
+                Tweaks.BLACKLIST_DIGGER,
+                "tweelix.mining_tweaks.require_silk_touch.message",
+                (player, pos) -> {
+                    ClientLevel level = Minecraft.getInstance().level;
+                    if (level == null) return false;
+                    BlockState state = level.getBlockState(pos);
+
+                    boolean inSilk = SILK_TOUCH_BLOCKS.stream().anyMatch(p -> p.test(state));
+
+                    if (!inSilk) return false;
+
+                    boolean inFortune = FORTUNE_BLOCKS.stream().anyMatch(p -> p.test(state));
+
+                    ItemStack mainHand = player.getMainHandItem();
+                    ItemEnchantments enchantments = mainHand.getEnchantments();
+                    boolean hasSilk = enchantments.entrySet().stream()
+                            .anyMatch(entry -> entry.getKey().is(Enchantments.SILK_TOUCH));
+                    if (inFortune) {
+                        boolean hasFortune = enchantments.entrySet().stream().anyMatch(entry -> entry.getKey().is(Enchantments.FORTUNE));
+                        return !(hasSilk || hasFortune); // 都没有则阻止
+                    } else {
+                        return !hasSilk;
+                    }
+                },
+                BlacklistDiggerSub.ALLOW_SNEAK_BYPASS::getBooleanValue
+        ),
+        REQUIRE_FORTUNE(
+                Tweaks.BLACKLIST_DIGGER, // 复用同一个总开关！
+                "tweelix.mining_tweaks.require_fortune.message",
+                (player, pos) -> {
+                    ClientLevel level = Minecraft.getInstance().level;
+                    if (level == null) return false;
+                    BlockState state = level.getBlockState(pos);
+                    boolean inFortune = FORTUNE_BLOCKS.stream().anyMatch(p -> p.test(state));
+                    if (!inFortune) return false;
+
+                    boolean inSilk = SILK_TOUCH_BLOCKS.stream().anyMatch(p -> p.test(state));
+                    ItemStack mainHand = player.getMainHandItem();
+                    ItemEnchantments enchantments = mainHand.getEnchantments();
+                    boolean hasFortune = enchantments.entrySet().stream().anyMatch(entry -> entry.getKey().is(Enchantments.FORTUNE));
+                    if (inSilk) {
+                        boolean hasSilk = enchantments.entrySet().stream()
+                                .anyMatch(entry -> entry.getKey().is(Enchantments.SILK_TOUCH));
+                        return !(hasSilk || hasFortune);
+                    } else {
+                        return !hasFortune;
+                    }
+                },
+                BlacklistDiggerSub.ALLOW_SNEAK_BYPASS::getBooleanValue
+        );
 
         final IConfigBase feature;
         private final BooleanSupplier enabledSupplier;
         private final String promptKey;
         private final BiPredicate<LocalPlayer, BlockPos> condition;
+        private final BooleanSupplier sneakBypassSupplier;
 
-        TweakRule(IConfigBase feature, String promptKey, BiPredicate<LocalPlayer, BlockPos> condition) {
+        TweakRule(IConfigBase feature, String promptKey,
+                  BiPredicate<LocalPlayer, BlockPos> condition,
+                  BooleanSupplier sneakBypassSupplier) {
             this.feature = feature;
-            this.enabledSupplier = () -> ((fi.dy.masa.malilib.config.options.ConfigBooleanHotkeyed) feature).getBooleanValue();
+            this.enabledSupplier = () -> ((ConfigBooleanHotkeyed) feature).getBooleanValue();
             this.promptKey = promptKey;
             this.condition = condition;
+            this.sneakBypassSupplier = sneakBypassSupplier;
         }
 
         public boolean shouldBlock(LocalPlayer player, BlockPos pos) {
-            return enabledSupplier.getAsBoolean() && condition.test(player, pos);
+            if (!enabledSupplier.getAsBoolean()) return false;
+
+            boolean conditionMet = condition.test(player, pos);
+            if (!conditionMet) return false;
+
+            if (player.isShiftKeyDown() && sneakBypassSupplier.getAsBoolean()) {
+                return false;
+            }
+
+            return true;
         }
     }
 
@@ -184,16 +267,6 @@ public class MiningTweaks {
         }
     }
 
-    public static void setBlacklistBlocks(List<String> blocks) {
-        BLACKLIST_BLOCKS.clear();
-        for (String name : blocks) {
-            Block block = getBlockFromName(name);
-            if (block != null) {
-                BLACKLIST_BLOCKS.add(block);
-            }
-        }
-    }
-
     @Nullable
     private static Block getBlockFromName(String name) {
         try {
@@ -202,4 +275,33 @@ public class MiningTweaks {
             return null;
         }
     }
+
+    private static List<Predicate<BlockState>> compilePredicates(List<String> rules) {
+        return rules.stream()
+                .map(rule -> {
+                    if (rule.startsWith("#")) {
+                        TagKey<Block> tag = TagKey.create(
+                                BuiltInRegistries.BLOCK.key(),
+                                Objects.requireNonNull(Identifier.tryParse(rule.substring(1)))
+                        );
+                        return (Predicate<BlockState>) state -> state.is(tag);
+                    }
+                    return (Predicate<BlockState>) state ->
+                            BuiltInRegistries.BLOCK.getKey(state.getBlock()).toString().equals(rule);
+                })
+                .toList();
+    }
+
+    public static void refreshBlacklistPredicates(List<String> rules) {
+        BLACKLIST_BLOCKS = compilePredicates(rules);
+    }
+
+    public static void refreshFortunePredicates(List<String> rules) {
+        FORTUNE_BLOCKS = compilePredicates(rules);
+    }
+
+    public static void refreshSilkTouchPredicates(List<String> rules) {
+        SILK_TOUCH_BLOCKS = compilePredicates(rules);
+    }
+
 }

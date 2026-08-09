@@ -1,8 +1,6 @@
 package ink.mingyuan.tweelix.mixin.gui;
 
 import ink.mingyuan.tweelix.feature.commandhint.CommandHintRenderer;
-import ink.mingyuan.tweelix.mixin.accessor.CommandSuggestionsAccessor;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.CommandSuggestions;
 import net.minecraft.client.renderer.Rect2i;
 import org.spongepowered.asm.mixin.Final;
@@ -20,7 +18,7 @@ import com.mojang.brigadier.suggestion.Suggestion;
 import net.minecraft.client.gui.GuiGraphics;
 
 /**
- * 命令补全提示增强 — 薄注入层，业务逻辑委托给 {@link CommandHintRenderer}。
+ * 命令补全提示增强 ，业务逻辑委托给 {@link CommandHintRenderer}。
  */
 @Mixin(CommandSuggestions.SuggestionsList.class)
 public class SuggestionsListMixin {

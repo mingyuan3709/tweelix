@@ -25,7 +25,7 @@ public abstract class OptionsScreenMixin extends Screen {
     }
 
     @Unique
-    boolean isIrisLoaded = PlatformHelper.isModLoaded("iris");
+    boolean tweelix$isIrisLoaded = PlatformHelper.isModLoaded("iris");
 
     @Shadow
     protected abstract Button openScreenButton(Component component, Supplier<Screen> supplier);
@@ -35,7 +35,7 @@ public abstract class OptionsScreenMixin extends Screen {
 
         if (!Display.SHOW_SHADERS_BUTTON.getBooleanValue()) return;
 
-        if (!isIrisLoaded) return;
+        if (!tweelix$isIrisLoaded) return;
 
         try {
             Class<?> shaderScreenClass = Class.forName("net.irisshaders.iris.gui.screen.ShaderPackScreen");

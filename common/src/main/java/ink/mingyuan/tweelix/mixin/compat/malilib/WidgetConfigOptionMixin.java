@@ -23,7 +23,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
- * 扩展 MaLiLib 配置 GUI — 为带子设置的配置项渲染设置按钮。
+ * 扩展 MaLiLib 配置 GUI — 为带子设置的配置项渲染设置按钮
  */
 @Mixin(WidgetConfigOption.class)
 public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<GuiConfigsBase.ConfigOptionWrapper> {

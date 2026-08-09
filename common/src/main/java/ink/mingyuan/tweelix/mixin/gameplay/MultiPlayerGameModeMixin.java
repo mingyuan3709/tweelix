@@ -15,6 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -23,12 +24,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
- * 客户端交互（攻击/使用）事件分发。
+ * 客户端交互（攻击/使用）事件分发
  */
 @Mixin(MultiPlayerGameMode.class)
 public class MultiPlayerGameModeMixin {
 
     @Shadow private int destroyDelay;
+
+    @Final
+    @Shadow
+    private Minecraft minecraft;
 
     /** 右键点击方块 */
     @Inject(method = "useItemOn", at = @At("HEAD"), cancellable = true)
@@ -56,7 +61,7 @@ public class MultiPlayerGameModeMixin {
         }
     }
 
-    /** 右键点击实体特定位置（如盔甲架） */
+    /** 右键点击实体特定位置 */
     @Inject(method = "interactAt(Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/phys/EntityHitResult;Lnet/minecraft/world/InteractionHand;)Lnet/minecraft/world/InteractionResult;",
             at = @At("HEAD"), cancellable = true)
     private void onInteractEntityAt(Player player, Entity entity, EntityHitResult hitResult, InteractionHand hand,
@@ -104,7 +109,7 @@ public class MultiPlayerGameModeMixin {
         }
     }
 
-    /** 持续挖掘 — 斩断 sameDestroyTarget 绕过漏洞 */
+    /** 持续挖掘 */
     @Inject(method = "continueDestroyBlock", at = @At("HEAD"), cancellable = true)
     private void onContinueDestroyBlock(BlockPos pos, Direction direction, CallbackInfoReturnable<Boolean> cir) {
         LocalPlayer player = Minecraft.getInstance().player;
@@ -121,6 +126,9 @@ public class MultiPlayerGameModeMixin {
     @Inject(method = "continueDestroyBlock", at = @At("RETURN"))
     private void onContinueDestroyBlockReturn(BlockPos pos, Direction direction, CallbackInfoReturnable<Boolean> cir) {
         if (!Tweaks.MINING_COOLDOWN.getBooleanValue()) return;
+        assert this.minecraft.player != null;
+        if (this.minecraft.player.getAbilities().instabuild) return;
+
         this.destroyDelay = 0;
     }
 }

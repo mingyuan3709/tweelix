@@ -13,7 +13,7 @@ import net.minecraft.world.level.GameType;
 
 import static ink.mingyuan.tweelix.util.Util.isConfigStringNotEmpty;
 import static ink.mingyuan.tweelix.util.Util.sendCommandOrChat;
-
+//游戏切换扩展
 public class GameModeSwitcher {
 
     private static GameType lastSelectedMode = null;

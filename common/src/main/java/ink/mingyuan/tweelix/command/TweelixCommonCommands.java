@@ -1,23 +1,19 @@
 package ink.mingyuan.tweelix.command;
 
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.arguments.BoolArgumentType;
+import com.mojang.brigadier.arguments.DoubleArgumentType;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
-import fi.dy.masa.malilib.config.IConfigBase;
-import fi.dy.masa.malilib.config.options.ConfigBoolean;
-import ink.mingyuan.tweelix.command.CommandDelayScheduler;
-import ink.mingyuan.tweelix.config.TweelixConfig;
+import ink.mingyuan.tweelix.feature.command.VaultFeature;
 import ink.mingyuan.tweelix.input.InputHandler;
-import ink.mingyuan.tweelix.util.CommandCompressor;
-import ink.mingyuan.tweelix.util.CommandExporter;
+import ink.mingyuan.tweelix.feature.command.CommandExporter;
 import ink.mingyuan.tweelix.util.Util;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
+
+import static ink.mingyuan.tweelix.util.Util.parseDelayTicks;
 
 public class TweelixCommonCommands {
 
@@ -85,7 +81,7 @@ public class TweelixCommonCommands {
                             // 命令1 = 时间标记之前的所有内容
                             StringBuilder cmd1 = new StringBuilder();
                             for (int i = 0; i < timeIdx; i++) {
-                                if (cmd1.length() > 0) cmd1.append(' ');
+                                if (!cmd1.isEmpty()) cmd1.append(' ');
                                 cmd1.append(tokens[i]);
                             }
 
@@ -100,7 +96,7 @@ public class TweelixCommonCommands {
                             // 命令2 = 时间标记之后的所有内容
                             StringBuilder cmd2 = new StringBuilder();
                             for (int i = timeIdx + 1; i < tokens.length; i++) {
-                                if (cmd2.length() > 0) cmd2.append(' ');
+                                if (!cmd2.isEmpty()) cmd2.append(' ');
                                 cmd2.append(tokens[i]);
                             }
 
@@ -118,137 +114,91 @@ public class TweelixCommonCommands {
                 )
         );
 
-        // 功能 F：/tweelix batch <name1> <val1> <name2> <val2> ... -> 批量设置
-        rootCommand.then(LiteralArgumentBuilder.<S>literal("batch")
-                .then(RequiredArgumentBuilder.<S, String>argument("pairs", StringArgumentType.greedyString())
-                        .executes(context -> {
-                            String pairs = StringArgumentType.getString(context, "pairs");
-                            String[] tokens = pairs.split("\\s+");
-                            if (tokens.length < 2 || tokens.length % 2 != 0) {
-                                sender.send(context.getSource(), Component.literal("§cUsage: /tweelix batch <name1> <value1> <name2> <value2> ...  (e.g. /tweelix batch flatDigger true perimeterWallDigger true)"));
-                                return 0;
-                            }
+        // 批量假人命令：/tweelix batchplayer <prefix> <start> <end> <subcommand...>
+        rootCommand.then(LiteralArgumentBuilder.<S>literal("batchplayer")
+                .then(RequiredArgumentBuilder.<S, String>argument("prefix", StringArgumentType.word())
+                        .then(RequiredArgumentBuilder.<S, Integer>argument("start", IntegerArgumentType.integer())
+                                .then(RequiredArgumentBuilder.<S, Integer>argument("end", IntegerArgumentType.integer())
+                                        .then(RequiredArgumentBuilder.<S, String>argument("subcommand", StringArgumentType.greedyString())
+                                                .executes(context -> {
+                                                    String prefix = StringArgumentType.getString(context, "prefix");
+                                                    int start = IntegerArgumentType.getInteger(context, "start");
+                                                    int end = IntegerArgumentType.getInteger(context, "end");
+                                                    String subcommand = StringArgumentType.getString(context, "subcommand");
 
-                            int success = 0;
-                            int failed = 0;
-                            StringBuilder errors = new StringBuilder();
+                                                    if (start > end) {
+                                                        sender.send(context.getSource(), Component.literal("§c起始编号不能大于结束编号"));
+                                                        return 0;
+                                                    }
+                                                    int count = end - start + 1;
+                                                    if (count > 1000) {
+                                                        sender.send(context.getSource(), Component.literal("§c单次最多操作 1000 个假人"));
+                                                        return 0;
+                                                    }
 
-                            for (int i = 0; i < tokens.length; i += 2) {
-                                String key = tokens[i];
-                                String valStr = tokens[i + 1];
-
-                                IConfigBase cfg = TweelixConfig.getByKey(key);
-                                if (cfg == null) {
-                                    failed++;
-                                    if (errors.length() > 0) errors.append(", ");
-                                    errors.append(key).append("(not found)");
-                                    continue;
-                                }
-
-                                if (cfg instanceof ConfigBoolean boolCfg) {
-                                    boolean newValue;
-                                    if (valStr.equalsIgnoreCase("true") || valStr.equals("1")) {
-                                        newValue = true;
-                                    } else if (valStr.equalsIgnoreCase("false") || valStr.equals("0")) {
-                                        newValue = false;
-                                    } else {
-                                        failed++;
-                                        if (errors.length() > 0) errors.append(", ");
-                                        errors.append(key).append("(invalid value: ").append(valStr).append(")");
-                                        continue;
-                                    }
-
-                                    InputHandler.executeToggle(cfg, newValue, true);
-                                    success++;
-                                } else {
-                                    failed++;
-                                    if (errors.length() > 0) errors.append(", ");
-                                    errors.append(key).append("(not a boolean config)");
-                                }
-                            }
-
-                            if (success > 0) {
-                                sender.send(context.getSource(), Component.translatable("tweelix.command.batch.result", success, failed));
-                            }
-                            if (failed > 0) {
-                                sender.send(context.getSource(), Component.literal("§cErrors: " + errors));
-                            }
-                            return success > 0 ? 1 : 0;
-                        })
+                                                    for (int i = start; i <= end; i++) {
+                                                        String name = prefix + i;
+                                                        String command = "/player " + name + " " + subcommand;
+                                                        Util.sendCommandOrChat(command);
+                                                    }
+                                                    sender.send(context.getSource(), Component.literal("§a已发送 " + count + " 条假人命令"));
+                                                    return 1;
+                                                })
+                                        )
+                                )
+                        )
                 )
         );
 
-        // 动态开关控制命令（自动反射路由）
 
-        for (IConfigBase config : TweelixConfig.INSTANCE.getAllOptions()) {
-            String configKey = config.getName();
-
-            if (configKey.equals("openConfigGui") || configKey.equals("crosshairCopy")
-                    || configKey.equals("emptyInventory") || configKey.equals("exportkeys")
-                    || configKey.equals("delay") || configKey.equals("batch")
-                    || configKey.equals("compresscmd")) {
-                continue;
-            }
-
-            if (config instanceof ConfigBoolean boolConfig) {
-                LiteralArgumentBuilder<S> configNode = LiteralArgumentBuilder.<S>literal(configKey)
+        LiteralArgumentBuilder<S> vaultBuilder = LiteralArgumentBuilder.<S>literal("vault")
+                .then(LiteralArgumentBuilder.<S>literal("at")
+                        .then(RequiredArgumentBuilder.<S, Double>argument("x", DoubleArgumentType.doubleArg())
+                                .then(RequiredArgumentBuilder.<S, Double>argument("y", DoubleArgumentType.doubleArg())
+                                        .then(RequiredArgumentBuilder.<S, Double>argument("z", DoubleArgumentType.doubleArg())
+                                                .then(LiteralArgumentBuilder.<S>literal("facing")
+                                                        .then(RequiredArgumentBuilder.<S, String>argument("direction", StringArgumentType.word())
+                                                                .executes(context -> {
+                                                                    double x = DoubleArgumentType.getDouble(context, "x");
+                                                                    double y = DoubleArgumentType.getDouble(context, "y");
+                                                                    double z = DoubleArgumentType.getDouble(context, "z");
+                                                                    String dir = StringArgumentType.getString(context, "direction");
+                                                                    VaultFeature.INSTANCE.start(x, y, z, dir, 1,
+                                                                            msg -> sender.send(context.getSource(), msg));
+                                                                    return 1;
+                                                                })
+                                                                .then(LiteralArgumentBuilder.<S>literal("start")
+                                                                        .then(RequiredArgumentBuilder.<S, Integer>argument("startNumber", IntegerArgumentType.integer(1, 130))
+                                                                                .executes(context -> {
+                                                                                    double x = DoubleArgumentType.getDouble(context, "x");
+                                                                                    double y = DoubleArgumentType.getDouble(context, "y");
+                                                                                    double z = DoubleArgumentType.getDouble(context, "z");
+                                                                                    String dir = StringArgumentType.getString(context, "direction");
+                                                                                    int start = IntegerArgumentType.getInteger(context, "startNumber");
+                                                                                    VaultFeature.INSTANCE.start(x, y, z, dir, start,
+                                                                                            msg -> sender.send(context.getSource(), msg));
+                                                                                    return 1;
+                                                                                })
+                                                                        )
+                                                                )
+                                                        )
+                                                )
+                                        )
+                                )
+                        )
+                )
+                .then(LiteralArgumentBuilder.<S>literal("stop")
                         .executes(context -> {
-                            sender.send(context.getSource(), Component.translatable(
-                                    "tweelix.command.configQuery",
-                                    Component.literal(configKey).withStyle(ChatFormatting.GOLD),
-                                    Component.literal(boolConfig.getStringValue()).withStyle(ChatFormatting.WHITE)
-                            ));
+                            VaultFeature.INSTANCE.stop(msg -> sender.send(context.getSource(), msg));
                             return 1;
-                        });
+                        })
+                );
 
-                configNode.then(RequiredArgumentBuilder.<S, Boolean>argument("value", BoolArgumentType.bool())
-                        .executes(context -> {
-                            boolean newValue = BoolArgumentType.getBool(context, "value");
-                            InputHandler.executeToggle(config, newValue, true);
-
-                            sender.send(context.getSource(), Component.translatable(
-                                    "tweelix.command.configSet.success",
-                                    Component.literal(configKey).withStyle(ChatFormatting.GOLD),
-                                    Component.literal(String.valueOf(newValue)).withStyle(ChatFormatting.WHITE)
-                            ));
-                            return 1;
-                        }));
-
-                rootCommand.then(configNode);
-            }
-        }
+        rootCommand.then(vaultBuilder);
 
         dispatcher.register(rootCommand);
     }
 
-    /**
-     * 解析时间后缀为 tick 数。支持：
-     * <ul>
-     *   <li>{@code 5t} = 5 ticks</li>
-     *   <li>{@code 2s} = 40 ticks (2 秒)</li>
-     *   <li>{@code 1m} = 1200 ticks (1 分钟)</li>
-     *   <li>{@code 30} = 30 ticks（纯数字 = ticks）</li>
-     * </ul>
-     */
-    private static int parseDelayTicks(String raw) {
-        if (raw == null || raw.isEmpty()) return 0;
-        raw = raw.toLowerCase().trim();
-        char last = raw.charAt(raw.length() - 1);
-        String numPart;
-        int multiplier;
-        switch (last) {
-            case 't' -> { numPart = raw.substring(0, raw.length() - 1); multiplier = 1; }
-            case 's' -> { numPart = raw.substring(0, raw.length() - 1); multiplier = 20; }
-            case 'm' -> { numPart = raw.substring(0, raw.length() - 1); multiplier = 1200; }
-            default -> { numPart = raw; multiplier = 1; }
-        }
-        try {
-            int val = Integer.parseInt(numPart);
-            return val * multiplier;
-        } catch (NumberFormatException e) {
-            return 0;
-        }
-    }
 
     @FunctionalInterface
     public interface MessageSender<S> {

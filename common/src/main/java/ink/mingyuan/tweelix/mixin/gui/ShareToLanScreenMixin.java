@@ -1,6 +1,5 @@
 package ink.mingyuan.tweelix.mixin.gui;
 
-import ink.mingyuan.tweelix.config.TweelixConfig;
 import ink.mingyuan.tweelix.config.category.Display;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
@@ -16,6 +15,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.Objects;
 
 @Mixin(ShareToLanScreen.class)
 public class ShareToLanScreenMixin extends Screen {
@@ -50,7 +51,7 @@ public class ShareToLanScreenMixin extends Screen {
         SpriteIconButton refreshButton = this.addRenderableWidget(
                 SpriteIconButton.builder(
                                 Component.translatable("options.language"), onPress, true)
-                        .size(20,20).sprite(Identifier.tryBuild("tweelix", "icon/refresh"), 16, 16).build()
+                        .size(20,20).sprite(Objects.requireNonNull(Identifier.tryBuild("tweelix", "icon/refresh")), 16, 16).build()
         );
 
         refreshButton.setPosition(buttonX, buttonY);

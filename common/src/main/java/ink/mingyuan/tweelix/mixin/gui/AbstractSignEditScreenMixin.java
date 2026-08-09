@@ -25,11 +25,8 @@ public abstract class AbstractSignEditScreenMixin implements ISignScreenBridge {
     @Shadow @Final private boolean isFrontText;
     @Shadow private SignText text;
     @Shadow private int line;
-
-    // 🆕 获取 signField 以便更新光标
     @Shadow private TextFieldHelper signField;
 
-    // 暂存屏幕用于粘贴（保持原有逻辑）
     @Inject(method = "keyPressed", at = @At("HEAD"))
     private void onKeyPressedHead(KeyEvent keyEvent, CallbackInfoReturnable<Boolean> cir) {
         SignPasteBridge.setScreen((AbstractSignEditScreen) (Object) this);
@@ -57,13 +54,11 @@ public abstract class AbstractSignEditScreenMixin implements ISignScreenBridge {
 
     @Override
     public int tweelix$getMaxLineWidth() {
-        // 直接使用 sign 提供的方法
         return this.sign.getMaxTextLineWidth();
     }
 
     @Override
     public void tweelix$bulkUpdateLines(List<String> lines, int targetCursorLine) {
-        // 1. 更新所有行
         for (int i = 0; i < 4; i++) {
             String lineContent = (i < lines.size()) ? lines.get(i) : "";
             this.messages[i] = lineContent;
@@ -71,10 +66,8 @@ public abstract class AbstractSignEditScreenMixin implements ISignScreenBridge {
         }
         this.sign.setText(this.text, this.isFrontText);
 
-        // 2. 设置光标行
         this.line = Math.min(Math.max(targetCursorLine, 0), 3);
 
-        // 3. 🎯 将光标移到当前行末尾（不重建 GUI）
         if (this.signField != null) {
             String currentLineText = this.messages[this.line];
             int endPos = currentLineText.length();

@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.entity.SignText;
 import net.minecraft.world.phys.BlockHitResult;
 
+//告示牌命令功能
 public class SignCommand {
     private static final SignCommand INSTANCE = new SignCommand();
 

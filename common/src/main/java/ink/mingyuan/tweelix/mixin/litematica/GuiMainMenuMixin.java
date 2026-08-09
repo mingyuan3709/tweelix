@@ -3,7 +3,6 @@ package ink.mingyuan.tweelix.mixin.litematica;
 import fi.dy.masa.litematica.config.Configs;
 import fi.dy.masa.litematica.gui.GuiMainMenu;
 import fi.dy.masa.malilib.gui.button.ButtonGeneric;
-import ink.mingyuan.tweelix.config.TweelixConfig;
 import ink.mingyuan.tweelix.config.category.Display;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Util;
@@ -47,7 +46,6 @@ public abstract class GuiMainMenuMixin {
                 Util.getPlatform().openFile(schematicsDir);
             }
         });
-
 
     }
 }

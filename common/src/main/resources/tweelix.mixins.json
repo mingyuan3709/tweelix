@@ -34,6 +34,7 @@
     "render.AvatarRendererMixin",
     "render.CameraMixin",
     "render.GameRendererMixin",
-    "render.LivingEntityMixin"
+    "render.LivingEntityMixin",
+    "render.LocatorBarRendererMixin"
   ]
 }

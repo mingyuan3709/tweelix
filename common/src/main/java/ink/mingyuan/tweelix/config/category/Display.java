@@ -7,6 +7,7 @@ import fi.dy.masa.malilib.config.options.ConfigBooleanHotkeyed;
 import ink.mingyuan.tweelix.Reference;
 import ink.mingyuan.tweelix.config.subconfig.GameModeSwitcherSub;
 import ink.mingyuan.tweelix.config.subconfig.NightVisionSub;
+import ink.mingyuan.tweelix.config.subconfig.ShowCardinalIndicatorSub;
 import ink.mingyuan.tweelix.options.ConfigBooleanWithSettings;
 
 import java.util.List;
@@ -50,15 +51,27 @@ public class Display {
                     NightVisionSub.OPTIONS)
                     .apply(TRANSLATION_KEY);
 
+    public static final ConfigBoolean SHOW_PLAYER_HEAD_ON_LOCATOR_BAR =
+            new ConfigBoolean("showPlayerHeadOnLocatorBar", false,
+                    "Show player heads on the locator bar instead of waypoint icons, scaled by distance")
+                    .apply(TRANSLATION_KEY);
+
+    public static final ConfigBooleanWithSettings SHOW_CARDINAL_INDICATOR =
+            new ConfigBooleanWithSettings("showCardinalIndicator", false,
+                    "Show N/E/S/W direction markers on the locator bar", ShowCardinalIndicatorSub.OPTIONS)
+                    .apply(TRANSLATION_KEY);
 
     public static final List<IConfigBase> OPTIONS = ImmutableList.of(
-            ENABLE_COMMAND_HINT,
             DRAW_BEDROCK_CEILING_BLOCKS,
             GAME_MODE_SWITCHER_CONFIG,
+            NIGHT_VISION,
+            SHOW_CARDINAL_INDICATOR,
+            ENABLE_COMMAND_HINT,
             LAN_PORT_REFRESH_BUTTON,
             SHOW_SHADERS_BUTTON,
             HIDE_CROSS_TEAM_PLAYER_NAMES,
             SHOW_LITEMATICA_SCHEMATICS_BUTTON,
-            NIGHT_VISION
+            SHOW_PLAYER_HEAD_ON_LOCATOR_BAR
+
     );
 }
