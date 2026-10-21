@@ -4,9 +4,8 @@
 > *A vanilla-focused lightweight client-side utility mod.*
 
 [![License: LGPL-3.0](https://img.shields.io/badge/License-LGPL%203.0-blue.svg)](LICENSE.txt)
-[![Minecraft](https://img.shields.io/badge/Minecraft-1.21.11-green.svg)](https://www.minecraft.net)
+[![Minecraft](https://img.shields.io/badge/Minecraft-26.3-green.svg)](https://www.minecraft.net)
 [![Fabric](https://img.shields.io/badge/Fabric-✓-orange.svg)](#-支持平台-platforms)
-[![NeoForge](https://img.shields.io/badge/NeoForge-✓-red.svg)](#-支持平台-platforms)
 
 ---
 
@@ -30,20 +29,15 @@
 | 平台 | 状态 |
 |------|------|
 | <img src="https://cdn.jsdelivr.net/npm/simple-icons@v7/icons/fabric.svg" width="16" height="16"> Fabric | ✅ 支持 |
-| <img src="https://cdn.jsdelivr.net/npm/simple-icons@v7/icons/neoforge.svg" width="16" height="16"> NeoForge | ✅ 支持 |
 
-**Minecraft 版本：`1.21.11`**
+**Minecraft 版本：`26.3`**（仅 Fabric 单模块）
 
 ---
 
 ## 🔧 依赖 | Dependencies
 
-- **Fabric 端**
-    - [MaLiLib](https://github.com/maruohon/malilib) — 配置系统（必需）
-    - [ModMenu](https://github.com/TerraformersMC/ModMenu) — 模组菜单集成（可选）
-
-- **NeoForge 端**
-    - [mafglib](https://github.com/mafugly/mafglib) — 配置系统（必需）
+- [MaLiLib](https://github.com/maruohon/malilib) — 配置系统（必需）
+- [ModMenu](https://github.com/TerraformersMC/ModMenu) — 模组菜单集成（可选）
 
 ---
 
@@ -125,3 +119,26 @@
 
 ```text
 /tweelix delay <命令1> <时间> <命令2>
+```
+
+---
+
+## 🛠️ 构建 | Build
+
+项目为**单项目**结构：根目录即 Fabric 模组，源码位于 `src/`，没有子模块（原 `common` / `neoforge` / `fabric` 目录均已移除）。
+
+- 需要 **JDK 25**：Minecraft 26.3 的依赖为 class file 69，且 Loom 要求 Gradle 运行在 25 上。
+  `gradle.properties` 中的 `org.gradle.java.home` / `org.gradle.java.installations.paths` 指向本机 JDK 25，换机器时按实际路径修改。
+- Gradle Wrapper：9.7.1
+
+```bash
+./gradlew projects      # 只应出现根项目 tweelix（No sub-projects）
+./gradlew clean build   # 产物：build/libs/tweelix-<版本>-mc26.3-fabric.jar
+./gradlew runClient
+```
+
+---
+
+## 📄 许可证 | License
+
+本项目基于 [LGPL-3.0-or-later](LICENSE.txt) 发布。

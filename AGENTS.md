@@ -2,9 +2,12 @@
 
 This file provides context for AI assistants working on this project.
 
-## Project Type: Unknown
+## Project Type: Fabric 客户端模组（Minecraft 26.3，单项目）
 
-<!-- Add build/test commands here -->
+- 单项目结构：根目录即 Fabric 模组，源码在 `src/`，无子模块
+- Gradle Wrapper 9.7.1，需要 JDK 25（`gradle.properties` 的 `org.gradle.java.home`）
+- 构建/验收命令：`./gradlew clean build`
+- 运行客户端：`./gradlew runClient`
 
 ### Documentation
 See README.md for project overview.
@@ -21,21 +24,23 @@ This project uses Git. See .gitignore for excluded files.
 - **CodeWhale reads this file as:** AGENTS.md (canonical cross-agent project instructions). <!-- WHALE.md is deprecated; put CodeWhale-specific authority policy in .codewhale/constitution.json -->
 - **Read-only surface:** <!-- Which directories can the agent read but not write? -->
 - **Never edit:** <!-- Files that are generated, vendored, or owned by another tool -->
-- **Always test with:** <!-- The single command that validates a change (e.g. `cargo test -p foo`) -->
+- **Always test with:** `./gradlew clean build`
 
 ## Architecture
 
-<!-- Describe the high-level structure. What are the key modules and how -->
-<!-- do they connect? Focus on the context a new contributor would need. -->
+单项目 Fabric 模组。源码、资源、Mixin 配置与 accessWidener 全部位于根目录 `src/`。
 
 ### Entry Points
-<!-- Where does execution start? Binary entry, request handler, main loop? -->
+`src/main/java/ink/mingyuan/tweelix/Tweelix.java`（Fabric `ModInitializer`）
 
 ### Key Modules
-<!-- List the 3-6 most important directories/files and their role -->
+- `src/main/java/ink/mingyuan/tweelix/` — 全部业务代码
+- `src/main/resources/fabric.mod.json` — 模组元数据与入口
+- `src/main/resources/tweelix.mixins.json` — Mixin 列表
+- `src/main/resources/tweelix.accesswidener` — 访问拓宽
 
 ### Data Flow
-<!-- How does a request / event / input travel through the system? -->
+Fabric 入口 `Tweelix` → `TweelixCommon` → `InitHandler`（MaLiLib 初始化）→ 各 feature / 事件监听。
 
 ## Cache Stability
 

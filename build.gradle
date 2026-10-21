@@ -1,21 +1,108 @@
 plugins {
     id 'architectury-plugin' version '3.5-SNAPSHOT'
-    id 'dev.architectury.loom-no-remap' version '1.17-SNAPSHOT' apply false
+    id 'dev.architectury.loom-no-remap' version '1.17-SNAPSHOT'
+    id 'maven-publish'
     id 'java'
 }
 
-subprojects {
-    apply plugin: 'architectury-plugin'
-    apply plugin: 'dev.architectury.loom-no-remap'
-    apply plugin: 'maven-publish'
+group = project.maven_group
+version = project.mod_version
 
-    group = rootProject.maven_group
-    version = rootProject.mod_version
-
-    repositories {
-        mavenCentral()
-        maven { url = uri("https://maven.fabricmc.net/") }
-        maven { url = uri("https://maven.neoforged.net/releases/") }
-        maven { url = uri("https://maven.architectury.dev/") }
+// Minecraft 26.3 的依赖以 Java 25（class file 69）编译，Loom 也要求 Gradle 运行在 25 上
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
     }
+}
+
+architectury {
+    platformSetupLoomIde()
+    fabric()
+}
+
+loom {
+    accessWidenerPath = file("src/main/resources/tweelix.accessWidener")
+}
+
+base {
+    archivesName = project.archives_base_name
+}
+
+repositories {
+    mavenCentral()
+    maven { url = uri("https://maven2.fabricmc.net/") }
+    maven { url = uri("https://maven.fabricmc.net/") }
+    maven { url = uri("https://maven.architectury.dev/") }
+
+    exclusiveContent {
+        forRepository {
+            maven {
+                url = "https://masa.dy.fi/maven/sakura-ryoko"
+            }
+        }
+        filter {
+            includeGroupAndSubgroups("fi.dy.masa")
+        }
+    }
+
+    exclusiveContent {
+        forRepository {
+            maven {
+                url = "https://maven.fallenbreath.me/releases"
+            }
+        }
+        filter {
+            includeGroupAndSubgroups("me.fallenbreath")
+        }
+    }
+
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "Modrinth"
+                url = "https://api.modrinth.com/maven"
+            }
+        }
+        filter {
+            includeGroup("maven.modrinth")
+        }
+    }
+}
+
+dependencies {
+
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+    //implementation "fi.dy.masa.malilib:malilib-fabric-${project.minecraft_version}:${project.malilib_version}"
+    implementation "maven.modrinth:GcWjdA9I:JX9bESec"
+
+    //implementation  "fi.dy.masa.litematica:litematica-fabric-${project.minecraft_version}:${project.litematica_version}"
+    implementation "maven.modrinth:bEpr0Arc:ZqV316KY"
+
+    implementation "maven.modrinth:modmenu:${project.mod_menu_version}"
+
+    implementation("me.fallenbreath:conditional-mixin-fabric:${project.conditionalmixin_version}")
+
+    compileOnly "maven.modrinth:iris:${project.iris_version}"
+    compileOnly "maven.modrinth:sodium:${project.sodium_version}"
+}
+
+processResources {
+    inputs.property "version", project.version
+    inputs.property "minecraft_version", project.minecraft_version
+    inputs.property "loader_version", project.loader_version
+    filteringCharset "UTF-8"
+
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version,
+                "minecraft_version": project.minecraft_version,
+                "loader_version": project.loader_version
+    }
+}
+
+tasks.named("jar") {
+    archiveFileName = "${project.archives_base_name}-${project.version}-mc${project.minecraft_version}-fabric.jar"
 }

@@ -1,7 +1,14 @@
 //配置Gradle插件的下载解析仓库
 pluginManagement {
     repositories {
+        maven { url 'https://maven.fastmirror.net/repositories/minecraft/' }
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin/' }
         maven { url = uri("https://maven.fabricmc.net/") }
+        maven { url = uri("https://maven2.fabricmc.net/") }
+        maven { url 'https://bmclapi2.bangbang93.com/maven' }
+        maven { url 'https://maven.fallenbreath.me/releases' }
+        maven { url 'https://mirror.sjtu.edu.cn/bmclapi/' }
         maven { url = uri("https://maven.architectury.dev/") }
         maven { url = uri("https://maven.minecraftforge.net/") }
         maven { url = uri("https://jitpack.io") }
@@ -18,7 +25,4 @@ if (JavaVersion.current() < JavaVersion.VERSION_21) {
 //根项目的名称
 rootProject.name = "tweelix"
 
-//声明项目包含下面3个子模块
-include("common")
-include("fabric")
-include("neoforge")
+//单项目结构：根项目即 Fabric 模组，源码位于 ./src
