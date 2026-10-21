@@ -2,7 +2,6 @@ package ink.mingyuan.tweelix.event;
 
 import net.minecraft.client.Camera;
 import net.minecraft.client.DeltaTracker;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
 import org.joml.Matrix4fc;
 
 /**
@@ -15,7 +14,7 @@ public final class ClientRenderEvents {
     // ========== 主渲染结束 ==========
     public static final TweelixEventFactory.Event<AfterRender> END_MAIN = TweelixEventFactory.create(AfterRender.class,
             (listeners) -> {
-                if (listeners.length == 0) return (poseStack, camera, deltaTracker) -> {};
+                if (listeners.length == 0) return (_, _, _) -> {};
                 return (poseStack, camera, deltaTracker) -> {
                     for (AfterRender listener : listeners) {
                         listener.onAfterRender(poseStack, camera, deltaTracker);
@@ -35,28 +34,5 @@ public final class ClientRenderEvents {
          * @param deltaTracker    帧间插值追踪器
          */
         void onAfterRender(Matrix4fc modelViewMatrix, Camera camera, DeltaTracker deltaTracker);
-    }
-
-    // ========== 2D 屏幕渲染（用于绘制 HUD / 功能文字列表） ==========
-    public static final TweelixEventFactory.Event<Hud> HUD = TweelixEventFactory.create(Hud.class,
-            (listeners) -> {
-                if (listeners.length == 0) return (guiGraphics, deltaTracker) -> {};
-                return (guiGraphics, deltaTracker) -> {
-                    for (Hud listener : listeners) {
-                        listener.onRenderHud(guiGraphics, deltaTracker);
-                    }
-                };
-            }
-    );
-
-    @FunctionalInterface
-    public interface Hud {
-        /**
-         * 在游戏内非菜单界面（HUD层）渲染时触发。
-         *
-         * @param guiGraphics  现代渲染器封装（提供 drawString、fill 等 2D 绘制方法）
-         * @param deltaTracker 1.21+ 的帧间插值追踪器
-         */
-        void onRenderHud(GuiGraphicsExtractor guiGraphics, DeltaTracker deltaTracker);
     }
 }
