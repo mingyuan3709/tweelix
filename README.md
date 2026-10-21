@@ -6,6 +6,7 @@
 [![License: LGPL-3.0](https://img.shields.io/badge/License-LGPL%203.0-blue.svg)](LICENSE.txt)
 [![Minecraft](https://img.shields.io/badge/Minecraft-26.3-green.svg)](https://www.minecraft.net)
 [![Fabric](https://img.shields.io/badge/Fabric-✓-orange.svg)](#-支持平台-platforms)
+[![NeoForge](https://img.shields.io/badge/NeoForge-via%20Connector-lightgrey.svg)](https://modrinth.com/mod/connector)
 
 ---
 
@@ -28,9 +29,18 @@
 
 | 平台 | 状态 |
 |------|------|
-| <img src="https://cdn.jsdelivr.net/npm/simple-icons@v7/icons/fabric.svg" width="16" height="16"> Fabric | ✅ 支持 |
+| <img src="https://cdn.jsdelivr.net/npm/simple-icons@v7/icons/fabric.svg" width="16" height="16"> Fabric | ✅ 官方支持 |
+| <img src="https://cdn.jsdelivr.net/npm/simple-icons@v7/icons/neoforge.svg" width="16" height="16"> NeoForge | ⚠️ 无官方版本，可通过 [Sinytra Connector](https://modrinth.com/mod/connector) 运行 |
 
-**Minecraft 版本：`26.3`**（仅 Fabric 单模块）
+**Minecraft 版本：`26.3`**（官方构建仅 Fabric）
+
+> **为什么不再提供 NeoForge 版本？**
+>
+> 维护者精力有限，而 NeoForge 端本模组的使用人数相对较少。为保证 Fabric 版本的更新质量，Tweelix 今后**只发布 Fabric 构建，不再提供 NeoForge 版本**。
+>
+> **NeoForge 用户怎么办？**
+>
+> 可以安装 [Sinytra Connector](https://modrinth.com/mod/connector) 来加载本模组。后续开发会**尽量保持与 Connector 的兼容**（不主动引入会破坏 Connector 的特性），但 Connector 本身的兼容性、以及 MaLiLib / Litematica 等依赖在 NeoForge 下能否正常工作，取决于对应项目与 Connector；遇到问题请先确认是否为 Connector 侧限制。
 
 ---
 
@@ -56,31 +66,31 @@
 <details>
 <summary><b>🛠️ 通用 (Generic)</b></summary>
 
-| 功能 | 默认 | 说明 |
-|------|:----:|------|
-| **打开配置界面** | `Z` | 打开 Tweelix 配置界面的快捷键 |
-| **参观模式** | ❌ | 禁止破坏/放置方块以及伤害实体，适合服务器参观 |
-| **复制准心目标信息** | ❌ | 复制方块、实体、背包物品的注册名(ID)、显示名称或坐标 |
-| **默认提示开关** | ❌ | 为没有独立提示开关的功能提供默认值 |
+| 功能 | 默认 | 说明                            |
+|------|:----:|-------------------------------|
+| **打开配置界面** | `Z` | 打开 Tweelix 配置界面的快捷键           |
+| **参观模式** | ❌ | 禁止破坏/放置方块以及伤害实体，适合原版服务器参观     |
+| **复制准心目标信息** | ❌ | 复制方块、实体、背包物品的注册名(ID)、显示名称或坐标  |
+| **默认提示开关** | ❌ | 为没有独立提示开关的功能提供默认值、关闭功能的开关提示   |
 | **执行告示牌命令** | ❌ | 右键点击告示牌背面，执行以 `/` 或 `!!` 开头的命令 |
-| **告示牌编辑自动换行** | ❌ | 粘贴文字时自动按像素宽度换行 |
-| **告示牌背面粘贴无限制** | ❌ | 背面粘贴时忽略客户端文字长度限制，配合执行命令使用 |
+| **告示牌编辑自动换行** | ❌ | 粘贴文字时自动按像素宽度换行                |
+| **告示牌背面粘贴无限制** | ❌ | 背面粘贴时忽略客户端文字长度限制，配合执行命令使用     |
 
 </details>
 
 <details>
 <summary><b>🖥️ 显示 (Display)</b></summary>
 
-| 功能 | 默认 | 说明 |
-|------|:----:|------|
-| **命令提示** | ❌ | 输入命令时展示参数说明（需启用内置资源包） |
-| **显示单层基岩** | ❌ | 在下界顶层高亮标记仅有一层的基岩 |
-| **自定义游戏模式切换** | ❌ | 自定义 F3+F4 切换行为，可配置各模式指令 |
-| **局域网端口刷新** | ❌ | 在“开放局域网”界面添加刷新按钮 |
-| **显示光影包按钮** | ❌ | 在选项界面材质包按钮下方添加光影包按钮 |
-| **隐藏跨队伍玩家名称** | ❌ | 按 F1 切换隐藏其他队伍的玩家名牌 |
+| 功能 | 默认 | 说明                            |
+|------|:----:|-------------------------------|
+| **命令提示** | ❌ | 输入命令时展示参数说明（需手动启用内置的翻译资源包）    |
+| **显示单层基岩** | ❌ | 在下界顶层高亮标记仅有一层的基岩              |
+| **自定义游戏模式切换** | ❌ | 自定义 F3+F4 切换行为，可配置各模式指令       |
+| **局域网端口刷新** | ❌ | 在“开放局域网”界面添加刷新按钮              |
+| **显示光影包按钮** | ❌ | 在选项界面材质包按钮下方添加光影包按钮           |
+| **隐藏跨队伍玩家名称** | ❌ | 按 F1 切换隐藏其他队伍的玩家名牌            |
 | **显示投影文件夹按钮** | ❌ | 在 Litematica 主菜单中添加打开投影文件夹的按钮 |
-| **无限夜视** | ❌ | 获得无限夜视效果，可调节亮度强度 |
+| **无限夜视** | ❌ | 获得无限夜视效果，可调节亮度强度              |
 
 </details>
 
@@ -128,7 +138,8 @@
 项目为**单项目**结构：根目录即 Fabric 模组，源码位于 `src/`，没有子模块（原 `common` / `neoforge` / `fabric` 目录均已移除）。
 
 - 需要 **JDK 25**：Minecraft 26.3 的依赖为 class file 69，且 Loom 要求 Gradle 运行在 25 上。
-  `gradle.properties` 中的 `org.gradle.java.home` / `org.gradle.java.installations.paths` 指向本机 JDK 25，换机器时按实际路径修改。
+  请在用户级 `%USERPROFILE%\.gradle\gradle.properties`（Linux/macOS 为 `~/.gradle/gradle.properties`）中配置本机 JDK 25，**不要写进仓库**：
+  `org.gradle.java.home` 与 `org.gradle.java.installations.paths` 指向 JDK 25 目录。
 - Gradle Wrapper：9.7.1
 
 ```bash

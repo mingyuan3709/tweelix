@@ -1,9 +1,9 @@
 {
   "pack": {
-    "description": "Tweelix 命令提示扩展翻译",
-    "pack_format": 46,
-    "supported_formats": [46, 75],
+    "description": "Tweelix 命令提示扩展中文翻译",
+    "pack_format": 97.1,
+    "supported_formats": [46, 97.1],
     "min_format": 46,
-    "max_format": 75
+    "max_format": 97.1
   }
 }
