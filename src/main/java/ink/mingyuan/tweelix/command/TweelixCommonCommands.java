@@ -52,9 +52,11 @@ public class TweelixCommonCommands {
         // 功能 D：/tweelix exportkeys -> 导出命令 Key
         rootCommand.then(LiteralArgumentBuilder.<S>literal("exportkeys")
                 .executes(context -> {
-                    CommandExporter.exportAllCommandKeys();
-                    sender.send(context.getSource(), Component.translatable("tweelix.command.exportkeys.success"));
-                    return 1;
+                    boolean exported = CommandExporter.exportAllCommandKeys();
+                    sender.send(context.getSource(), Component.translatable(exported
+                            ? "tweelix.command.exportkeys.success"
+                            : "tweelix.command.exportkeys.failed"));
+                    return exported ? 1 : 0;
                 }));
 
         // 功能 E：/tweelix delay <command1> <time> <command2>

@@ -28,21 +28,14 @@ public class CommandDescriptionRegistry {
             return null;
         }
 
-        String genericArgKey = GetTranslationKeys(suggestionText, inputCommandText, CommandPath);
+        Component hint = lookupCommandKey(GetTranslationKeys(suggestionText, inputCommandText, CommandPath));
+        if (hint != null) return hint;
 
-        if (Language.getInstance().has(genericArgKey)) {
-            return Component.translatable(genericArgKey);
-        }
+        hint = lookupCommandKey(getShortCommandKey(suggestionText, inputCommandText));
+        if (hint != null) return hint;
 
-        String shortKey = getShortCommandKey(suggestionText, inputCommandText);
-        if (shortKey != null && Language.getInstance().has(shortKey)) {
-            return Component.translatable(shortKey);
-        }
-
-        String genericKey = "commands.generic." + suggestionText + ".description";
-        if (Language.getInstance().has(genericKey)) {
-            return Component.translatable(genericKey);
-        }
+        hint = lookupCommandKey("commands.generic." + suggestionText + ".description");
+        if (hint != null) return hint;
 
         // 本模组命令描述查找
         Component modHint = getModCommandHint(suggestionText);
@@ -109,6 +102,27 @@ public class CommandDescriptionRegistry {
                 ? inputWithoutSlash.substring(inputWithoutSlash.lastIndexOf(' ') + 1).trim()
                 : inputWithoutSlash.trim();
         return pathLastNode.equals(inputLastNode);
+    }
+
+    /**
+     * 查翻译 key；若 key 里带默认命名空间 {@code minecraft:}，同时尝试无前缀形式。
+     * 资源包因此只需保留无前缀版本，候选值无论是否带命名空间都能命中。
+     */
+    private static Component lookupCommandKey(String key) {
+        if (key == null) return null;
+
+        if (Language.getInstance().has(key)) {
+            return Component.translatable(key);
+        }
+
+        int ns = key.indexOf("minecraft:");
+        if (ns >= 0) {
+            String stripped = key.substring(0, ns) + key.substring(ns + "minecraft:".length());
+            if (Language.getInstance().has(stripped)) {
+                return Component.translatable(stripped);
+            }
+        }
+        return null;
     }
 
     /**
